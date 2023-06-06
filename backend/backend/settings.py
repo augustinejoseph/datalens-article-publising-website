@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 import environ
 env = environ.Env()
 environ.Env.read_env()
 from pathlib import Path
-import psycopg2
 import os
 import urllib.parse as up
 
@@ -33,8 +33,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = env('DEBUG').lower() == 'true'
+print(DEBUG)
+print(type(DEBUG))
 ALLOWED_HOSTS = []
 
 
@@ -47,9 +48,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authentication',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,20 +89,34 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+if DEBUG == True:
+    print("insdie sqlite")
+    DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'USER': url.username,
-    'PASSWORD': url.password,
-    'NAME': url.path[1:],
-    'HOST': url.hostname,
-    'PORT': url.port,
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    "articles": {
+        "articles": {
 
-    }
+        }
 }
+
+else:
+        print("insdie elephant")
+        DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'USER': url.username,
+        'PASSWORD': url.password,
+        'NAME': url.path[1:],
+        'HOST': url.hostname,
+        'PORT': url.port,
+
+        },
+        "articles": {
+
+        }
+    }
 
 
 # Password validation
@@ -139,3 +159,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'authentication.AllUsers'
+
+REST_FRAMEWORK = {
+     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+      ],
+}
+
+
+CORS_ORIGIN_ALLOW_ALL = True
