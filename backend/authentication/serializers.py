@@ -4,7 +4,7 @@ from .models import AllUsers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AllUsers
-        fields = ['id', 'name', 'email', 'password']
+        fields = ['id', 'email', 'password', "first_name", "last_name"]
         
     def create(self, validated_data):
         password = validated_data.pop("password")

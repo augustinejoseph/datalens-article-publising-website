@@ -3,14 +3,23 @@ import { FaRegBell, FaRegUser, FaRegEdit } from "react-icons/fa";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
+
 const Navbar = () => {
   return (
     <div className="navbar_container">
       <div>
-        <img className="logo" src={image} alt="full_logo"></img>
+        <Link to="/">
+          <img className="logo" src={image} alt="full_logo"></img>
+        </Link>
       </div>
       <div className="ul_container">
         <ul className="navbar_ul">
+        <li>
+            <Link className="navbar_link" to="/register">
+              {" "}
+              Register
+            </Link>
+          </li>
           <li>
             <Link className="navbar_link" to="/login">
               {" "}

@@ -1,2 +1,3 @@
 datalens-virtual-env
 backend/backend/.env
+backend/authentication/__pycache__
