@@ -1,27 +1,38 @@
-import { useState } from "react";
-import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./Components/Login/Login.jsx";
-import Navbar from "./Components/Navbar/Navbar";
-import Home from "./Components/Home/Home.jsx";
-import Register from "./Components/Register/Register.jsx";
-import RequireAuth from "./Components/RequireAuthSample/RequireAuth";
+// import "./App.css";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import Login from "./Components/Login.jsx";
+import Navbar from "./Components/Navbar.jsx";
+import Home from "./Components/Home.jsx";
+import Register from "./Components/Register.jsx";
+import RequireAuth from "./RequireAuthSample/RequireAuth.jsx";
+import Logout from "./Components/Logout.jsx";
+import { useContext } from "react";
+import AuthContext from "./Contexts/AuthContext.jsx";
+import PageNotFound from "./Components/PageNotFound.jsx";
+import Footer from "./Components/Footer.jsx";
+
+
 function App() {
-  const [count, setCount] = useState(0);
+  const {user} = useContext(AuthContext)
 
   return (
+
     <div>
       <Router>
         <Navbar />
 
         <Routes>
           <Route path="/" Component={Home} />
-          <Route path="/login" Component={Login} />
-          <Route path="/register" Component={Register} />
-          <Route path="/protected" Component={RequireAuth} />
+          <Route path = "*" Component={PageNotFound} />
+          <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
+          <Route path="/register" element ={user ? <Navigate to="/logout" /> : <Register />} />
+          <Route path="/logout" Component={Logout} />
+          <Route path="/new-story" />
         </Routes>
+        <Footer />
       </Router>
     </div>
+   
   );
 }
 

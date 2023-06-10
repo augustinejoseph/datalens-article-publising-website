@@ -32,6 +32,7 @@ const Register = () => {
       );
       if (data.success) {
         setSuccessMsg(data.message);
+        navigate("/login")
       } else {
         setErrorMsg(data.errors);
       }
