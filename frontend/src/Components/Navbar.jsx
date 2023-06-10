@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../Contexts/AuthContext";
 import Logout from "./Logout";
-import { Dropdown, Navbar as Header, Avatar} from 'flowbite-react';
+import "./Navbar.css"
 
 
 const Navbar  = () => {

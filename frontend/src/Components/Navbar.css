@@ -1,0 +1,27 @@
+.logo{
+    height: 60px;
+}
+.navbar_container{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    /* flex-direction: row; */
+}
+.ul_container{
+    text-decoration: none;    
+}
+.navbar_ul{
+    display: flex;
+    flex-direction: row;
+    
+}
+.navbar_li{
+    padding: 3px 7px;
+    list-style: none;
+    color: black;
+}
+.navbar_container a{
+    list-style: none;
+    text-decoration: none;
+    
+}
