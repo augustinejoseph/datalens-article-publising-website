@@ -70,7 +70,9 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+              os.path.join(BASE_DIR, 'authentication', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,7 +92,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 if DEBUG == True:
-    print("insdie sqlite")
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -102,7 +103,6 @@ if DEBUG == True:
 }
 
 else:
-        print("insdie elephant")
         DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -170,3 +170,11 @@ REST_FRAMEWORK = {
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# email smtp 
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', '').lower() == 'true'
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')

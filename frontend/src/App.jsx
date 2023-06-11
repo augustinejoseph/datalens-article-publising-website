@@ -10,6 +10,7 @@ import { useContext } from "react";
 import AuthContext from "./Contexts/AuthContext.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import Footer from "./Components/Footer.jsx";
+import VerifyEmail from "./Components/VerifyEmail.jsx";
 
 
 function App() {
@@ -22,12 +23,13 @@ function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/" Component={Home} />
+          <Route path="/" element={Home} />
           <Route path = "*" Component={PageNotFound} />
           <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
           <Route path="/register" element ={user ? <Navigate to="/logout" /> : <Register />} />
           <Route path="/logout" Component={Logout} />
           <Route path="/new-story" />
+          <Route path="/verify-email" element={user ?<Navigate to = "/" /> : <VerifyEmail />} />
         </Routes>
         <Footer />
       </Router>

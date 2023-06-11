@@ -1,21 +1,56 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+from .serializers import UserSerializer, InterestSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .models import AllUsers
+from .models import AllUsers, Interests, UserInterests
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken, TokenError
 from rest_framework import status
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+# Email
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.urls import reverse
+from .emailFunctions import generate_verification_token
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.utils.encoding import force_str
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from rest_framework.response import Response
 
 class RegisterView(APIView):
     def post(self, request):
         with transaction.atomic():
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
-                serializer.save()
+                user = serializer.save()
+                # Verification Email
+                verification_token = generate_verification_token(user)
+                verification_link = reverse('verify-email', kwargs ={"token": verification_token})
+                verification_link = request.build_absolute_uri(verification_link)
+                # Send mail
+                subject = 'Email Verification'
+                context = {
+                    'user': user,
+                    'verification_link': verification_link,
+                }
+                text_message = 'Please enable HTML to view this email.'
+                html_message = render_to_string('email_verification.html', context)
+
+                # Send the email with both plain text and HTML content
+                sender = getattr(settings, 'EMAIL_HOST_USER')
+                email = EmailMultiAlternatives(subject, text_message, sender, [user.email])
+                email.attach_alternative(html_message, "text/html")
+                email.send(fail_silently=False)
                 return Response({"success": True, "message": "Registration Successful. Verify Email"},
                                 status=status.HTTP_201_CREATED)
             else:
@@ -102,11 +137,37 @@ class EmailCheckView(APIView):
 class EmailAvailability(APIView):
     def post(self, request):
         email = request.data.get("email")
-        print('recieved email', email)
+        # print('recieved email', email)
         try:
             user = AllUsers.objects.get(email = email)
             return Response(False)
         except ObjectDoesNotExist:
             return Response(True)
 
-        
+    
+class AllInterests(APIView):
+    def get(self, request):
+        interests = Interests.objects.all()
+        serializer = InterestSerializer(interests, many=True)
+        print("inside all interests sending fn")
+        return Response(serializer.data)
+
+
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from rest_framework.response import Response
+
+def verify_email(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = AllUsers.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, AllUsers.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return Response({"success": True, "message": "Email Verification Successful"})
+    else:
+        return Response({"success": False, "message": "Email Verification Failed"})

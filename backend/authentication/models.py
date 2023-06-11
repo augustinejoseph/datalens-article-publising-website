@@ -83,12 +83,17 @@ class AllUsers(AbstractUser):
 class Interests(models.Model):
     interestName  = models.CharField(max_length=250)
     def __str__(self):
-        return self.interests
+        return self.interestName
+    class Meta:
+        db_table = "All Interests"
 
 
 # 
 class UserInterests(models.Model):
     user  = models.ForeignKey(AllUsers, on_delete=models.CASCADE)
-    Interest = models.ForeignKey(Interests, on_delete=models.CASCADE)
+    interest = models.ForeignKey(Interests, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.user.name} - {self.Interest.name}"
+    
+    class Meta:
+        db_table = "User Interests"

@@ -46,7 +46,7 @@
 .login-next-button{
     background-color: rgb(0, 0, 0);
     color: white;
-    padding: 2px 4vw;
+    padding: 7px 5vw;
     border-radius: 20px;
     margin-top: 20px;
 }
@@ -85,3 +85,20 @@
     padding-bottom: 5px;
 
 }
+.interest-button{
+    padding: 7px 15px;
+    background-color: rgb(2, 130, 2);
+    border-radius: 20px;
+    margin: 5px;
+    color: whitesmoke;
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+    font-weight: 400;
+
+}
+.interest-button.selected{
+    background-color: rgb(30, 30, 182);
+
+}
+.tick-mark {
+    margin-left: 5px;
+  }

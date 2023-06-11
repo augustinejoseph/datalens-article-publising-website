@@ -64,6 +64,11 @@ const Login = () => {
       };
 
       setUser(LoggedInUser);
+      if (!LoggedInUser.is_active){
+        navigate("/verify-email")
+      }else{
+        navigate("/")
+      }
       navigate("/");
     } catch (error) {
       if (error.response || error.response.data) {
