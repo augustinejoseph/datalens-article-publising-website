@@ -27,30 +27,47 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.response import Response
 
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.core.mail import send_mail
+from django.conf import settings
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.core.mail import EmailMessage
+
+
 class RegisterView(APIView):
     def post(self, request):
         with transaction.atomic():
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
                 user = serializer.save()
-                # Verification Email
-                verification_token = generate_verification_token(user)
-                verification_link = reverse('verify-email', kwargs ={"token": verification_token})
-                verification_link = request.build_absolute_uri(verification_link)
-                # Send mail
-                subject = 'Email Verification'
-                context = {
-                    'user': user,
+                
+                # Send verification email
+                current_site = get_current_site(request)
+                verification_token = default_token_generator.make_token(user)
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                verification_link = f"{settings.SITE_URL}/user/verify-email/{uidb64}/{verification_token}/"
+                email_subject = 'Email Verification'
+                email_message = render_to_string('email_verification.html', {
                     'verification_link': verification_link,
-                }
-                text_message = 'Please enable HTML to view this email.'
-                html_message = render_to_string('email_verification.html', context)
+                })
+                email = EmailMessage(
+                    email_subject,
+                    email_message,
+                    settings.EMAIL_HOST_USER,
+                    [user.email],
+                )
+                email.content_subtype = "html"  # Set content type as HTML
 
-                # Send the email with both plain text and HTML content
-                sender = getattr(settings, 'EMAIL_HOST_USER')
-                email = EmailMultiAlternatives(subject, text_message, sender, [user.email])
-                email.attach_alternative(html_message, "text/html")
-                email.send(fail_silently=False)
+                # Send the email
+                email.send()
+
+                # send_mail(email_subject, email_message, settings.EMAIL_HOST_USER, [user.email])
+
                 return Response({"success": True, "message": "Registration Successful. Verify Email"},
                                 status=status.HTTP_201_CREATED)
             else:
@@ -153,10 +170,16 @@ class AllInterests(APIView):
         return Response(serializer.data)
 
 
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
+# views.py
 from django.contrib.auth.tokens import default_token_generator
-from rest_framework.response import Response
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.shortcuts import redirect
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.shortcuts import render
+from authentication.models import AllUsers
 
 def verify_email(request, uidb64, token):
     try:
@@ -168,6 +191,13 @@ def verify_email(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return Response({"success": True, "message": "Email Verification Successful"})
+        return redirect('email_verification_success')
     else:
-        return Response({"success": False, "message": "Email Verification Failed"})
+        return redirect('email_verification_failed')
+
+
+def email_verification_success(request):
+    return render(request, 'email_verification_success.html')
+
+def email_verification_failed(request):
+    return render(request, 'email_verification_failed.html')

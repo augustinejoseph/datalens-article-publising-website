@@ -4,7 +4,6 @@ import Login from "./Components/Login.jsx";
 import Navbar from "./Components/Navbar.jsx";
 import Home from "./Components/Home.jsx";
 import Register from "./Components/Register.jsx";
-import RequireAuth from "./RequireAuthSample/RequireAuth.jsx";
 import Logout from "./Components/Logout.jsx";
 import { useContext } from "react";
 import AuthContext from "./Contexts/AuthContext.jsx";
@@ -21,9 +20,8 @@ function App() {
     <div>
       <Router>
         <Navbar />
-
         <Routes>
-          <Route path="/" element={Home} />
+          <Route path="/" Component={Home} />
           <Route path = "*" Component={PageNotFound} />
           <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
           <Route path="/register" element ={user ? <Navigate to="/logout" /> : <Register />} />

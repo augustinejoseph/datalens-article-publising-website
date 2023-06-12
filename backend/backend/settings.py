@@ -178,3 +178,5 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', '').lower() == 'true'
 EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+SITE_URL = 'http://localhost:8000'

@@ -28,12 +28,14 @@
     font-size: 3vh;
     padding: 20px;
     color: gray;
+    margin-bottom: 30px;
+    margin-top: 30px;
 
 
 
 }
 .login-paragraph{
-    padding: 10px;
+    padding: 0px 40px;
     color: gray;
 
 }
@@ -48,7 +50,7 @@
     color: white;
     padding: 7px 5vw;
     border-radius: 20px;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .login-register-container{
     margin: 20px;

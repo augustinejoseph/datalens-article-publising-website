@@ -1,133 +1,48 @@
-import image from "../Constants/full_logo.png";
-// import { FaRegUser, FaRegEdit } from "react-icons";
+import imageFull from "../Constants/full_logo.png";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../Contexts/AuthContext";
 import Logout from "./Logout";
-import "./Navbar.css"
+import "./Navbar.css";
 
-
-const Navbar  = () => {
+const Navbar = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
+  const [showModal, setShowModal] = useState(false);
 
-//   return (
-//     <>
- 
-//     <Header
-//       fluid
-//       rounded
-//     >
-//       <Header.Brand href="https://flowbite-react.com">
-//         <img
-//           alt="Flowbite React Logo"
-//           className="mr-3 h-6 sm:h-9"
-//           src="/favicon.svg"
-//         />
-//         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-//           Flowbite React
-//         </span>
-//       </Header.Brand>
-//       <div className="flex md:order-2">
-//         <Dropdown
-//           inline
-//           label={<Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded/>}
-//         >
-//           <Dropdown.Header>
-//             <span className="block text-sm">
-//               Bonnie Green
-//             </span>
-//             <span className="block truncate text-sm font-medium">
-//               name@flowbite.com
-//             </span>
-//           </Dropdown.Header>
-//           <Dropdown.Item>
-//             Dashboard
-//           </Dropdown.Item>
-//           <Dropdown.Item>
-//             Settings
-//           </Dropdown.Item>
-//           <Dropdown.Item>
-//             Earnings
-//           </Dropdown.Item>
-//           <Dropdown.Divider />
-//           <Dropdown.Item>
-//             Sign out
-//           </Dropdown.Item>
-//         </Dropdown>
-//         <Header.Toggle />
-//       </div>
-//       <Header.Collapse>
-//         <Header.Link
-//           active
-//           href="#"
-//         >
-//           <p>
-//             Home
-//           </p>
-//         </Header.Link>
-//         <Header.Link href="#">
-//           About
-//         </Header.Link>
-//         <Header.Link href="#">
-//           Services
-//         </Header.Link>
-//         <Header.Link href="#">
-//           Pricing
-//         </Header.Link>
-//         <Header.Link href="#">
-//           Contact
-//         </Header.Link>
-//       </Header.Collapse>
-//     </Header>
-  
-
-//     </>
-//   );
-// }
-
+  const handleClick = () => {
+    setShowModal(!showModal);
+  };
 
   return (
-    <div className="Header_container">
-      <div>
-        <Link to="/">
-          <img className="logo" src={image} alt="full_logo"></img>
-        </Link>
+    <div className="nav_container">
+      <div className="nav_left">
+        <img src={imageFull} alt="logo" />
       </div>
-      <div className="ul_container">
-        <ul className="Header_ul">
-        <li>
-            <Link className="Header_link" to="/register">
-
-              {user ? "" : "Register"}
-            </Link>
-          </li>
-          <li>
-            {user ?
-            <Link to="/about/:id">{user.name} <Logout /></Link> :
-            <Link to="/login">Login</Link> }
-          </li>
-          <li>
-            {user ?
-            < Logout /> :"" }
-          </li>
-          {user ? <li className="Header_li">
-            {/* <FaRegEdit /> */}
-            write
-          </li> : ""}
-          {user ? <li className="Header_li">
-
-            {/* <FaRegBell /> */}
-          </li> : ""}
-          <li className="Header_li">
-
-            {/* <FaRegUser /> */}
-          </li>
-        </ul>
+      <div className="nav_right">
+        {user ? (
+          <div className="nav_userContainer" onClick={handleClick}>
+            <Link to="/profile">{user.name}</Link>
+            {showModal && (
+              <div className="nav_modal">
+                <button className="nav_closeBtn" onClick={handleClick}>
+                  &times;
+                </button>
+                <ul>
+                  <li>Account</li>
+                  <li>Write</li>
+                  <li>About</li>
+                  <li>Home</li>
+                  {user ? <Logout /> : <Link to=""></Link>}
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
       </div>
     </div>
   );
 };
-
 
 export default Navbar;

@@ -1,0 +1,17 @@
+.homecategory_container{
+    width: 73vw;
+    height: 40px;
+    background-color: brown;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    overflow: scroll;
+    margin: 5px;
+
+
+}
+.homecategory_container::-webkit-scrollbar {
+  width: 0.5em;
+}
+
