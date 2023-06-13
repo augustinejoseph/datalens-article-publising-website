@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AllUsers
+from .models import Allusers
 
 class AllUsersAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'last_name', 'email', 'created_at', "is_superuser"]
@@ -8,4 +8,4 @@ class AllUsersAdmin(admin.ModelAdmin):
     # list_editable = ['first_name', 'last_name',]
     
 
-admin.site.register(AllUsers, AllUsersAdmin)
+admin.site.register(Allusers, AllUsersAdmin)

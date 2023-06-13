@@ -7,13 +7,16 @@ import { useContext } from 'react'
 const Logout = () => {
     const navigate = useNavigate()
     const {setUser} = useContext(AuthContext)
+    const {user} = useContext(AuthContext)
 
     const handleLogout = () => {
         Cookies.remove("access_token")
         Cookies.remove("refresh_token")
+        {!user.is_admin ?
+        navigate("/") :
+        navigate("/admin-dashboard")
+        }
         setUser(null)
-        
-        navigate("/")
     }
 
     return(

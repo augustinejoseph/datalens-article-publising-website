@@ -10,6 +10,9 @@ import AuthContext from "./Contexts/AuthContext.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import Footer from "./Components/Footer.jsx";
 import VerifyEmail from "./Components/VerifyEmail.jsx";
+import AdminLogin from "./Components/AdminLogin.jsx";
+import AdminDashboard from "./Components/AdminDashboard.jsx";
+import ArticlePage from "./Components/ArticlePage.jsx";
 
 
 function App() {
@@ -28,8 +31,10 @@ function App() {
           <Route path="/logout" Component={Logout} />
           <Route path="/new-story" />
           <Route path="/verify-email" element={user ?<Navigate to = "/" /> : <VerifyEmail />} />
+          <Route path="admin-login" Component={AdminLogin} />
+          <Route path="/admin-dashboard" Component={AdminDashboard} />
+          <Route path="/article/:id" Component={ArticlePage} />
         </Routes>
-        <Footer />
       </Router>
     </div>
    

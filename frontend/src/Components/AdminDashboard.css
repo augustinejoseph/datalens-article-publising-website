@@ -1,0 +1,17 @@
+.admindash_container{
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.admindash_sidbar_container{
+    max-width: fit-content;
+    height: 100vh;
+    /* background-color: aqua; */
+}
+
+.admindash_main_container{
+    max-width: 100vw;
+    height: 100vw;
+    /* background-color: blueviolet; */
+}

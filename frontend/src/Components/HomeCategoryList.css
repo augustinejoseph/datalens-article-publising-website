@@ -1,7 +1,7 @@
 .homecategory_container{
-    width: 73vw;
+    width: 63vw;
     height: 40px;
-    background-color: brown;
+    /* background-color: brown; */
     display: flex;
     flex-direction: row;
     align-items: center;

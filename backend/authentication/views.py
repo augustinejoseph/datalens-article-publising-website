@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import UserSerializer, InterestSerializer
+from .serializers import UserSerializer, InterestSerializer, AllUsersSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .models import AllUsers, Interests, UserInterests
+from .models import Allusers, Interests, Userinterests
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken, TokenError
 from rest_framework import status
 from rest_framework import status
@@ -91,7 +91,9 @@ class Loginview(APIView):
         # print("Received from React", email, password)
         
         
-        user = AllUsers.objects.get(email = email)
+        user = Allusers.objects.get(email = email)
+        if user.is_banned:
+            raise AuthenticationFailed("Banned user")
 
         if user is None:
             raise AuthenticationFailed("Invalid email or password")
@@ -102,6 +104,7 @@ class Loginview(APIView):
         access_token['email'] = user.email
         access_token['is_active'] = user.is_active
         access_token['is_banned'] = user.is_banned
+        access_token['is_admin'] = user.is_superuser
         access_token = str(access_token)
         refresh_token = str(RefreshToken.for_user(user))
         return Response({
@@ -126,7 +129,7 @@ class EmailCheckView(APIView):
         print('recieved emil', email)
         if email:
             try:
-                user = AllUsers.objects.get(email=email)
+                user = Allusers.objects.get(email=email)
                 name = user.first_name
                 response = {
             "user": {
@@ -140,7 +143,7 @@ class EmailCheckView(APIView):
             "status" : True
         }
                 return Response(response)  # Return a Response with the boolean value
-            except AllUsers.DoesNotExist:
+            except Allusers.DoesNotExist:
                 response ={
                     "status" : False
                 }
@@ -156,7 +159,7 @@ class EmailAvailability(APIView):
         email = request.data.get("email")
         # print('recieved email', email)
         try:
-            user = AllUsers.objects.get(email = email)
+            user = Allusers.objects.get(email = email)
             return Response(False)
         except ObjectDoesNotExist:
             return Response(True)
@@ -179,13 +182,13 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import render
-from authentication.models import AllUsers
+from authentication.models import Allusers
 
 def verify_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = AllUsers.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, AllUsers.DoesNotExist):
+        user = Allusers.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, Allusers.DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
@@ -201,3 +204,42 @@ def email_verification_success(request):
 
 def email_verification_failed(request):
     return render(request, 'email_verification_failed.html')
+
+
+# Admin Login
+class AdminLogin(APIView):
+    def post(self, request):
+        email = self.request.data['email']
+        password = self.request.data['password']
+        user = Allusers.objects.get(email = email)
+        if user is None:
+            raise AuthenticationFailed("No such admin exist")
+        if not user.check_password(password):
+            raise AuthenticationFailed("Incorrect Password")
+        if not user.is_superuser:
+            raise AuthenticationFailed("No admin privileges")
+        access_token = AccessToken.for_user(user)
+        access_token['name'] = user.first_name
+        access_token['email'] = user.email
+        access_token['is_active'] = user.is_active
+        access_token['is_banned'] = user.is_banned
+        access_token['is_admin'] = user.is_superuser
+        access_token = str(access_token)
+        refresh_token = str(RefreshToken.for_user(user))
+        return Response({
+            "access_token" : access_token,
+            "refresh_token" : refresh_token
+        })
+    
+class AllUsersList(APIView):
+    def get(self, request):
+        allUsers = Allusers.objects.all()
+        serializer = AllUsersSerializer(allUsers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class BlockUser(APIView):
+    def patch(self, request, user_id):
+        user = Allusers.objects.get(id=user_id)
+        user.is_banned = not user.is_banned
+        user.save()
+        return Response({"message" : "User is Blocked"})

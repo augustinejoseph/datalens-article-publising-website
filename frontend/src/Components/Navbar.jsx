@@ -1,5 +1,5 @@
 import imageFull from "../Constants/full_logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../Contexts/AuthContext";
 import Logout from "./Logout";
@@ -8,6 +8,8 @@ import "./Navbar.css";
 const Navbar = () => {
   const { user } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
+  const location = useLocation();
+  const currentUrl = location.pathname;
 
   const handleClick = () => {
     setShowModal(!showModal);
@@ -16,13 +18,14 @@ const Navbar = () => {
   return (
     <div className="nav_container">
       <div className="nav_left">
-        <img src={imageFull} alt="logo" />
+        <Link to="/"><img src={imageFull} alt="logo" /></Link>
       </div>
       <div className="nav_right">
         {user ? (
           <div className="nav_userContainer" onClick={handleClick}>
-            <Link to="/profile">{user.name}</Link>
-            {showModal && (
+            {user.is_admin ? <Logout /> : ""}
+            <Link to="/profile">{!user.is_admin ? user.name : "Admin"}</Link>
+            {showModal && user.name && (
               <div className="nav_modal">
                 <button className="nav_closeBtn" onClick={handleClick}>
                   &times;
@@ -38,7 +41,27 @@ const Navbar = () => {
             )}
           </div>
         ) : (
-          <Link to="/login">Login</Link>
+          <div>
+            {currentUrl === "/admin-login" ? (
+              <Link to="/">View Site</Link>
+              ) :
+               
+              (
+                <div>
+                {currentUrl === "/login" ? (
+
+                  <Link to="/register">Register</Link>
+                ) :
+                (
+                  <Link to="/login">Login</Link>
+
+                )}
+                </div>
+
+                )}
+          </div>
+
+          // <Link to="/login">Login</Link>
         )}
       </div>
     </div>
@@ -46,3 +69,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+// <Link to="/login">Login</Link>

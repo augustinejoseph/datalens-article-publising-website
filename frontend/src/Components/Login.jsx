@@ -23,10 +23,17 @@ const Login = () => {
   const handleEmailCheck = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    console.log(`${BACKEND_BASE_URL}users/email-check`);
     const response = await axios.post(
-      "http://localhost:8000/user/email-check",
+      `${BACKEND_BASE_URL}user/email-check`,
       { email: email }
     );
+
+    // const response = await axios.post(
+    //   "http://localhost:8000/user/email-check",
+    //   { email: email }
+    // );
+    
     console.log("response from api",response);
     if (response.data.status == true) {
       console.log("email check success");
@@ -48,7 +55,7 @@ const Login = () => {
     };
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/user/login",
+        `${BACKEND_BASE_URL}user/login`,
         user
       );
 
@@ -62,6 +69,7 @@ const Login = () => {
         email: tokenData.email,
         is_active: tokenData.is_active,
         is_banned: tokenData.is_banned,
+        
       };
 
       setUser(LoggedInUser);

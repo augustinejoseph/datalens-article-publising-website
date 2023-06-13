@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import "./Register.css";
 import { Link } from "react-router-dom";
 import VerifyEmail from "./VerifyEmail";
+import { BACKEND_BASE_URL } from "../API/Api";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ const Register = () => {
 
   const getAllInterestsListFromServer = async () => {
     const response = await axios.get(
-      "http://localhost:8000/user/all-interests",
+      `${BACKEND_BASE_URL}user/all-interests`,
       
     );
     setAllIntersetFromAPI(response.data);
@@ -54,7 +55,7 @@ const Register = () => {
       return;
     }
     const response = await axios.post(
-      "http://localhost:8000/user/email-availability",
+      `${BACKEND_BASE_URL}user/email-availability`,
       { email: email }
     );
     console.log(response.data);
@@ -136,7 +137,7 @@ const Register = () => {
     };
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/user/register",
+        `${BACKEND_BASE_URL}user/register`,
         user
       );
       if (data.success) {

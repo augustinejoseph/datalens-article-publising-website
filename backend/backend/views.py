@@ -6,13 +6,13 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from authentication.models import AllUsers
+from authentication.models import Allusers
 
 def verify_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = AllUsers.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, AllUsers.DoesNotExist):
+        user = Allusers.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, Allusers.DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
