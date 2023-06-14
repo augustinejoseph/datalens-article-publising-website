@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import "./Register.css";
 import { Link } from "react-router-dom";
 import VerifyEmail from "./VerifyEmail";
-import { BACKEND_BASE_URL } from "../API/Api";
+import { BACKEND_BASE_URL } from "../../API/Api";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -50,10 +50,20 @@ const Register = () => {
   const handleEmailCheck = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-    if (email.length == 0) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       setErrorMessage("Enter a valid email id");
       return;
     }
+  
+    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com"]; // Add more valid domains as needed
+  
+    const domain = email.split("@")[1];
+    if (!validDomains.includes(domain)) {
+      setErrorMessage("Enter a valid email domain");
+      return;
+    }
+  
     const response = await axios.post(
       `${BACKEND_BASE_URL}user/email-availability`,
       { email: email }
@@ -172,7 +182,7 @@ const Register = () => {
             <input
               className="login-email-input"
               type="email"
-              placeholder=""
+              placeholder="Enter a valid email id"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -206,13 +216,13 @@ const Register = () => {
       {emailStepCompleted && !isPasswordStepCompleted && (
         <div className="login-container">
           <h1 className="login-heading">Set a Password</h1>
-          <p className="login-paragraph">Enter a strong Password</p>
+          <p className="login-paragraph">Enter a strong Password at least 8 letters and one special character.</p>
           <span className="login-title">{email}</span>
           <div className="login-email">
             <input
               className="login-email-input"
               type="password"
-              placeholder=""
+              placeholder="password"
               required
               value={password}
               onChange={handlePasswordChange}

@@ -1,6 +1,6 @@
 import React from 'react'
-import HomeCategoryList from './HomeCategoryList'
-import HomePostContainer from './HomePostContainer'
+import HomeCategoryList from '../Home/HomeCategoryList'
+import HomePostContainer from '../Home/HomePostContainer'
 import './MainFeed.css'
 
 const MainFeed = () => {

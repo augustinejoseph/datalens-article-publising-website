@@ -1,7 +1,7 @@
 import React, {useState, useContext} from "react";
 import Login from "./Login";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import AuthContext from "../Contexts/AuthContext";
+import AuthContext from "../../Contexts/AuthContext";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";

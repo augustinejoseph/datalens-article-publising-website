@@ -1,7 +1,7 @@
 import React from "react";
-import "./ArticlePage.css";
-import HomePostContainer from './HomePostContainer'
-import Footer from './Footer'
+import "./SingleArticlePage.css";
+import HomePostContainer from "../Home/HomePostContainer";
+import Footer from "../Footer/Footer"
 const ArticlePage = () => {
 
   return (

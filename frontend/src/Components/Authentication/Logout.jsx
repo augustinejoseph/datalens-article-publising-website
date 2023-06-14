@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router' 
-import AuthContext  from '../Contexts/AuthContext'
+import AuthContext from '../../Contexts/AuthContext'
 import { useContext } from 'react'
 
 

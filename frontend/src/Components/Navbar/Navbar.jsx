@@ -1,8 +1,8 @@
-import imageFull from "../Constants/full_logo.png";
+import imageFull from "../../Constants/full_logo.png";
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
-import AuthContext from "../Contexts/AuthContext";
-import Logout from "./Logout";
+import AuthContext from "../../Contexts/AuthContext";
+import Logout from "../Authentication/Logout";
 import "./Navbar.css";
 
 const Navbar = () => {

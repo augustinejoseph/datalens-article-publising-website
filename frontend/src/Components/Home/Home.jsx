@@ -1,12 +1,9 @@
 import React from "react";
 import { useContext } from "react";
-import AuthContext from "../Contexts/AuthContext";
+import AuthContext from "../../Contexts/AuthContext";
 import "./Home.css";
-import Feed from "./Feed";
-import Sidebar from "./Sidebar";
-import HomePostContainer from "./HomePostContainer";
-import HomeCategoryList from "./HomeCategoryList";
-import MainFeed from "./MainFeed";
+import Sidebar from '../Article/Sidebar'
+import MainFeed from "../Article/MainFeed";
 
 function Home() {
   const { user } = useContext(AuthContext);

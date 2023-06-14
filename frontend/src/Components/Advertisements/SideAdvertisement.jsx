@@ -1,5 +1,4 @@
 import React from 'react'
-import "./SideAdvertisement.css"
 
 const SideAdvertisement = () => {
   return (

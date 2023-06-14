@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AuthContext from "../Contexts/AuthContext";
+import AuthContext from "../../Contexts/AuthContext";
 import { useContext } from "react";
 import jwt_decode from "jwt-decode";
 import "./Login.css";
-import { BACKEND_BASE_URL } from "../API/Api";
+import { BACKEND_BASE_URL } from "../../API/Api";
 
 const Login = () => {
   const [name, setName] = useState("")

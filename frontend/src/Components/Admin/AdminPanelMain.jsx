@@ -1,7 +1,7 @@
 import "./AdminPanelMain.css";
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
-import { BACKEND_BASE_URL } from "../API/Api";
+import { BACKEND_BASE_URL } from "../../API/Api";
 
 const AdminPanelMain = () => {
   const [allUsersList, setAllUsersList] = useState([]);
