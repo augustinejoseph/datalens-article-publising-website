@@ -10,14 +10,10 @@ from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 # Email
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.urls import reverse
-from .emailFunctions import generate_verification_token
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.utils.encoding import force_str
@@ -31,12 +27,22 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.mail import EmailMessage
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.shortcuts import redirect
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.shortcuts import render
+from authentication.models import Allusers
+
 
 
 class RegisterView(APIView):
@@ -174,15 +180,7 @@ class AllInterests(APIView):
 
 
 # views.py
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
-from django.shortcuts import redirect
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.shortcuts import render
-from authentication.models import Allusers
+
 
 def verify_email(request, uidb64, token):
     try:
@@ -219,7 +217,7 @@ class AdminLogin(APIView):
         if not user.is_superuser:
             raise AuthenticationFailed("No admin privileges")
         access_token = AccessToken.for_user(user)
-        access_token['name'] = user.first_name
+        access_token['name'] = "Admin"
         access_token['email'] = user.email
         access_token['is_active'] = user.is_active
         access_token['is_banned'] = user.is_banned
@@ -243,3 +241,8 @@ class BlockUser(APIView):
         user.is_banned = not user.is_banned
         user.save()
         return Response({"message" : "User is Blocked"})
+    
+
+
+
+# Social Login

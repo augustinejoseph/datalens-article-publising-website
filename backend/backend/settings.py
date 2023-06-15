@@ -50,8 +50,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'corsheaders',
+    # Dajngo rest framework
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
+    #for social login
+   
 ]
 
 MIDDLEWARE = [
@@ -180,3 +184,5 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 SITE_URL = 'http://localhost:8000'
+
+# For social login

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AuthContext from "../../Contexts/AuthContext";
@@ -9,15 +9,17 @@ import "./Login.css";
 import { BACKEND_BASE_URL } from "../../API/Api";
 
 const Login = () => {
+  const originalLocation = sessionStorage.getItem('originalLocation');
+  console.log("redirevt locaion in login componen", originalLocation)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailChecked, setEmailChecked] = useState(false)
-  console.log("email check state status", emailChecked)
   const navigate = useNavigate();
-  // const [loggedIn, setLoggedIn] = useState({})
+  const [loggedIn, setLoggedIn] = useState({})
   const { setUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
+  // console.log("email check state status", emailChecked)
 
   // Email check
   const handleEmailCheck = async (e) => {
@@ -36,11 +38,11 @@ const Login = () => {
     
     console.log("response from api",response);
     if (response.data.status == true) {
-      console.log("email check success");
+      // console.log("email check success");
       setEmailChecked(true)
       setName(response.data.user.first_name)
     } else {
-      console.log("else");
+      // console.log("else");
       setErrorMessage("Invalid email id");
       setEmailChecked(false)
     }
@@ -69,21 +71,31 @@ const Login = () => {
         email: tokenData.email,
         is_active: tokenData.is_active,
         is_banned: tokenData.is_banned,
+        is_admin : tokenData.is_admin
         
       };
-
+      
       setUser(LoggedInUser);
       if (!LoggedInUser.is_active){
         navigate("/verify-email")
       }else{
-        navigate("/")
+        if(originalLocation){
+          sessionStorage.removeItem("originalLocation")
+          return <Navigate to={originalLocation} replace />;
+        }else{
+
+          return <Navigate to="/" replace />;
+        }
       }
       navigate("/");
     } catch (error) {
-      if (error.response || error.response.data) {
+      if (error.response || error.response) {
         setErrorMessage("Invalid email or password");
+        console.log(error);
       } else {
+        
         setErrorMessage("An error occurred during authentication.");
+        console.log(error)
       }
     }
   };

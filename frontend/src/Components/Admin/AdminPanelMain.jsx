@@ -11,11 +11,11 @@ const AdminPanelMain = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`${BACKEND_BASE_URL}user/all-users`);
-        console.log(response);
+        // console.log(response);
         setAllUsersList(response.data);
 
       } catch (error) {
-        console.error("Error fetching users:", error);
+        // console.error("Error fetching users:", error);
       }
     };
 

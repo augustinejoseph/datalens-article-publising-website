@@ -17,7 +17,10 @@ urlpatterns = [
 
     # Admin Functionality
     path('all-users/', AllUsersList.as_view(), name='all-users'),
-    path('block-user/<int:user_id>', BlockUser.as_view(), name='block-user')
+    path('block-user/<int:user_id>', BlockUser.as_view(), name='block-user'),
+
+
+    # Social Login
 
 
 

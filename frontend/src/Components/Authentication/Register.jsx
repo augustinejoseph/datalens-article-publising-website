@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import "./Register.css";
 import { Link } from "react-router-dom";
 import VerifyEmail from "./VerifyEmail";
 import { BACKEND_BASE_URL } from "../../API/Api";
+import ReCAPTCHA from "react-google-recaptcha"
+import { GOOGLE_CAPTCHA_SITE_KEY } from "../../API/Api";
+
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +17,7 @@ const Register = () => {
   const [isInterestStepsCompleted, setIsInterestStepsCompleted] = useState(false);
   const [isEmailVerifCompleted, setisEmailVerifCompleted] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isCaptchaSuccess, setIsCaptchaSuccess] = useState(false)
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirm_password] = useState("");
   const [first_name, setFirst_name] = useState("");
@@ -24,18 +28,22 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [allIntersetFromAPI, setAllIntersetFromAPI] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
-  console.log("email in state", email);
-  console.log("password is state", password);
-  console.log("firstname is state", first_name);
-  console.log("lasename is state", last_name);
-  console.log("email step completed?", emailStepCompleted);
-  console.log("is password valid", isPasswordValid);
-  console.log("is password step completed", isPasswordStepCompleted);
-  console.log("is user details  completed", isUserDetailsStepCompleted);
-  console.log("is interest step completed", isInterestStepsCompleted)
-  console.log("is email verification completed", isEmailVerifCompleted);
-  console.log("all interests from api", allIntersetFromAPI);
-  console.log("list of selected interests", selectedInterests);
+  // Captcha Verification
+  const captchaRef = useRef(null)
+
+
+  // console.log("email in state", email);
+  // console.log("password is state", password);
+  // console.log("firstname is state", first_name);
+  // console.log("lasename is state", last_name);
+  // console.log("email step completed?", emailStepCompleted);
+  // console.log("is password valid", isPasswordValid);
+  // console.log("is password step completed", isPasswordStepCompleted);
+  // console.log("is user details  completed", isUserDetailsStepCompleted);
+  // console.log("is interest step completed", isInterestStepsCompleted)
+  // console.log("is email verification completed", isEmailVerifCompleted);
+  // console.log("all interests from api", allIntersetFromAPI);
+  // console.log("list of selected interests", selectedInterests);
 
   const getAllInterestsListFromServer = async () => {
     const response = await axios.get(
@@ -43,7 +51,7 @@ const Register = () => {
       
     );
     setAllIntersetFromAPI(response.data);
-    console.log("api for all interests", response)
+    // console.log("api for all interests", response)
   };
 
   // Email page
@@ -134,11 +142,21 @@ const Register = () => {
     }
   };
 
+  // Captcha submission
+  const handleCaptchaChange = () => {
+    const captchaValue = captchaRef.current.getValue();
+
+  if (captchaValue) {
+    setIsCaptchaSuccess(true)
+  }else{
+    setErrorMsg("Captcha verification Failed")
+  }
+}
+
   // submit final data to DB
   const submit = async (e) => {
-    e.preventDefault();
-
-    const user = {
+  e.preventDefault();
+      const user = {
       email: email,
       password: password,
       first_name: first_name,
@@ -163,8 +181,9 @@ const Register = () => {
       console.error("Error: ", error);
       setErrorMsg({ general: "An error occurred. Please try again." });
     }
+  
   };
-
+  
   return (
     <>
       
@@ -340,6 +359,11 @@ const Register = () => {
               ))}
               
             </div>
+            <div>
+            <ReCAPTCHA sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+            ref = {captchaRef}
+            onChange={handleCaptchaChange} />
+            </div>
 
             <div className="login-next-container">
               {errorMessage && (
@@ -347,7 +371,8 @@ const Register = () => {
                   {errorMessage}{" "}
                 </div>
               )}
-              <button onClick={submit} className="login-next-button">
+              <button onClick={submit} className="login-next-button"
+              disabled={!isCaptchaSuccess}>
                 Finish SignUp
               </button>
             </div>

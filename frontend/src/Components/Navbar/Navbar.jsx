@@ -5,11 +5,15 @@ import AuthContext from "../../Contexts/AuthContext";
 import Logout from "../Authentication/Logout";
 import "./Navbar.css";
 
+
 const Navbar = () => {
   const { user } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const currentUrl = location.pathname;
+  console.log('user name',user?.name)
+  console.log('user admin', user?.is_admin)
+
 
   const handleClick = () => {
     setShowModal(!showModal);
@@ -23,8 +27,10 @@ const Navbar = () => {
       <div className="nav_right">
         {user ? (
           <div className="nav_userContainer" onClick={handleClick}>
-            {user.is_admin ? <Logout /> : ""}
-            <Link to="/profile">{!user.is_admin ? user.name : "Admin"}</Link>
+            {user.is_admin ? <Logout /> : user.name}
+            {/* {user.is_admin ? " " : <Link to="/ account">{user?.name}</Link>} */}
+            
+            {/* {user.is_admin ? "Admin" : ""} */}
             {showModal && user.name && (
               <div className="nav_modal">
                 <button className="nav_closeBtn" onClick={handleClick}>
@@ -35,7 +41,7 @@ const Navbar = () => {
                   <li>Write</li>
                   <li>About</li>
                   <li>Home</li>
-                  {user ? <Logout /> : <Link to=""></Link>}
+                  {user ? <Logout currentUrl={currentUrl}/> : <Link to=""></Link>}
                 </ul>
               </div>
             )}
@@ -44,6 +50,7 @@ const Navbar = () => {
           <div>
             {currentUrl === "/admin-login" ? (
               <Link to="/">View Site</Link>
+              
               ) :
                
               (
@@ -53,7 +60,10 @@ const Navbar = () => {
                   <Link to="/register">Register</Link>
                 ) :
                 (
-                  <Link to="/login">Login</Link>
+                  <>
+                  <Link style={{paddingRight:"10px"}} to="/login">Login</Link>
+                  <Link to="/register">Register</Link>
+                  </>
 
                 )}
                 </div>

@@ -1,6 +1,6 @@
 .admindash_main_container{
     width: 72vw;
-    height: 250px;
+    height: fit-content;
     background-color: rgb(228, 232, 220);
     display: flex;
     flex-direction: column;

@@ -17,7 +17,7 @@ const AdminLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate()
   const { setUser } = useContext(AuthContext);
-  console.log(email, "  .. ", password)
+  // console.log(email, "  .. ", password)
 
 
   const submit = async (e) => {
@@ -43,6 +43,7 @@ const AdminLogin = () => {
         is_active: tokenData.is_active,
         is_banned: tokenData.is_banned,
         is_admin : tokenData.is_admin,
+        name : "Admin"
       };
       setUser(LoggedInUser);
       navigate("/admin-dashboard")
