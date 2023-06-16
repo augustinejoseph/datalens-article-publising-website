@@ -1,8 +1,8 @@
 import Embed from '@editorjs/embed'
 import Table from '@editorjs/table'
-import Paragraph from '@editorjs/paragraph'
-// import List from '@editorjs/list'
-// import Warning from '@editorjs/warning'
+// import Paragraph from '@editorjs/paragraph'
+import List from '@editorjs/list'
+import Warning from '@editorjs/warning'
 import Code from '@editorjs/code'
 import LinkTool from '@editorjs/link'
 import Image from '@editorjs/image'
@@ -20,8 +20,8 @@ export const EDITOR_JS_TOOLS = {
   // paragraph: Paragraph,
   embed: Embed,
   table: Table,
-  // list: List,
-  // warning: Warning,
+  list: List,
+  warning: Warning,
   code: Code,
   linkTool: LinkTool,
   image: Image,

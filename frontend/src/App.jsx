@@ -41,7 +41,7 @@ function App() {
           <Route path="/article/:id" Component={ArticlePage} />
 
           {/* User Protected Routes  */}
-          <Route path='/new-article/:id' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />
+          <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />
           <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} />
 
           {/* Admin Protected Routes */}

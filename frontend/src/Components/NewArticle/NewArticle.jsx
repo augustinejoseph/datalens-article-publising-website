@@ -1,38 +1,22 @@
-import EditorJS from "@editorjs/editorjs";
 import React, { useEffect, useRef } from "react";
+import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
-import {EDITOR_JS_TOOLS} from './tools'
+import { EDITOR_JS_TOOLS } from "./tools";
 
 const NewArticle = () => {
-  const initEditor = () => {
-    const editor = new EditorJS({
-      holder: "editorjs",
-      onReady: () => {
-        ejInstance.current = editor;
-      },
-      autofocus: true,
-      data: DEFAULT_INITIAL_DATA,
-      onChange: async () => {
-        let content = await editor.save();
+  const ejInstance = useRef(null);
 
-        console.log('content in editor.js', content);
-        console.log("editor const in editor.js", editor)
-      },
-      tools: {
-        header: {
-          class: Header,
-          config: {
-            placeholder: "Enter a header",
-            levels: [1, 2, 3, 4, 5, 6], // Specify the header levels you want to allow
-          },
-        },
-        
-        // Other tools
-      },
-    });
+  const loadDraftFromLocalStorage = () => {
+    const draft = localStorage.getItem("articleDraft");
+    if (draft) {
+      return JSON.parse(draft);
+    }
+    return null;
   };
 
-  const ejInstance = useRef();
+  const saveDraftToLocalStorage = (data) => {
+    localStorage.setItem("articleDraft", JSON.stringify(data));
+  };
 
   const DEFAULT_INITIAL_DATA = {
     time: new Date().getTime(),
@@ -47,18 +31,45 @@ const NewArticle = () => {
     ],
   };
 
+  const clearDraftFromLocalStorage = () => {
+    localStorage.removeItem("articleDraft");
+  };
+
   useEffect(() => {
-    if (ejInstance.current === null) {
-      initEditor();
-    }
+    const initEditor = async () => {
+      const draftData = loadDraftFromLocalStorage();
+
+      const editor = new EditorJS({
+        holder: "editorjs",
+        autofocus: true,
+        data: draftData ? draftData : DEFAULT_INITIAL_DATA,
+        onChange: async () => {
+          let content = await editor.save();
+          saveDraftToLocalStorage(content);
+          console.log("Content saved in draft:", content);
+        },
+        tools: EDITOR_JS_TOOLS,
+      });
+
+      ejInstance.current = editor;
+    };
+
+    initEditor();
 
     return () => {
-      ejInstance?.current?.destroy();
+      const editorInstance = ejInstance.current;
+      if (editorInstance && typeof editorInstance.destroy === "function") {
+        editorInstance.destroy();
+      }
       ejInstance.current = null;
     };
   }, []);
 
-  return <div id="editorjs"></div>;
+  return (
+    <div id="editorjs">
+      <button onClick={clearDraftFromLocalStorage}>Clear Draft</button>
+    </div>
+  );
 };
 
-export default NewArticle;
+export default NewArticle
