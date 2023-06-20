@@ -1,4 +1,16 @@
-.newarticle_container{
-    background-color: red
-    ;
-}
+.newarticle_container {
+    padding: 10px 350px 10px 350px;
+  }
+  
+  @media ( max-width: 1200px) {
+    .newarticle_container {
+      padding: 10px 100px;
+    }
+  }
+  
+
+  .newarticle_actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }

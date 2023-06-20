@@ -1,75 +1,93 @@
-import React, { useEffect, useRef } from "react";
-import EditorJS from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import { EDITOR_JS_TOOLS } from "./tools";
+import { useMutation } from '@apollo/client';
+import { gql } from 'apollo-boost';
+import { modules, formats } from "./tools";
+import "./NewArticle.css";
+import React, { useState, useEffect } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
+import { sampleData } from "./sampleData";
+import { useContext } from 'react';
+
+
 
 const NewArticle = () => {
-  const ejInstance = useRef(null);
+  // const [content, setContent] = useState(() => {
+  //   const savedData = localStorage.getItem("articleData");
+  //   return savedData ? JSON.parse(savedData) : { title: "", body: "" };
 
-  const loadDraftFromLocalStorage = () => {
-    const draft = localStorage.getItem("articleDraft");
-    if (draft) {
-      return JSON.parse(draft);
-    }
-    return null;
-  };
-
-  const saveDraftToLocalStorage = (data) => {
-    localStorage.setItem("articleDraft", JSON.stringify(data));
-  };
-
-  const DEFAULT_INITIAL_DATA = {
-    time: new Date().getTime(),
-    blocks: [
-      {
-        type: "header",
-        data: {
-          text: "This is my awesome editor!",
-          level: 1,
-        },
-      },
-    ],
-  };
-
-  const clearDraftFromLocalStorage = () => {
-    localStorage.removeItem("articleDraft");
-  };
+  // });
+  const [content, setContent] = useState({})
+  console.log(content)
 
   useEffect(() => {
-    const initEditor = async () => {
-      const draftData = loadDraftFromLocalStorage();
+    const articleData = JSON.stringify(content);
+    localStorage.setItem("articleData", articleData);
+  }, [content]);
 
-      const editor = new EditorJS({
-        holder: "editorjs",
-        autofocus: true,
-        data: draftData ? draftData : DEFAULT_INITIAL_DATA,
-        onChange: async () => {
-          let content = await editor.save();
-          saveDraftToLocalStorage(content);
-          console.log("Content saved in draft:", content);
-        },
-        tools: EDITOR_JS_TOOLS,
+  const handleContentChange = (value, delta, source, editor) => {
+    const newContent = { ...content, body: editor.getContents() };
+    setContent(newContent);
+  };
+
+  const handleTitleChange = (e) => {
+    const newContent = { ...content, title: e.target.value };
+    setContent(newContent);
+  };
+
+  const clearLocalStorage = () => {
+    localStorage.removeItem("articleData");
+    setContent({ title: "", body: "" });
+  };
+
+  const handlePublish = () => {
+    const user_id = 
+
+    // Make a POST request to the backend server
+    fetch('http://localhost:4000/api/newarticle', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(content),
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Display success message in the frontend
+      console.log('Article saved:', data);
+        // Clear the content
+        setContent({ title: "", body: "" });
+      })
+      .catch(error => {
+        // Display error message in the frontend
+        console.error('Error saving article:', error);
       });
-
-      ejInstance.current = editor;
-    };
-
-    initEditor();
-
-    return () => {
-      const editorInstance = ejInstance.current;
-      if (editorInstance && typeof editorInstance.destroy === "function") {
-        editorInstance.destroy();
-      }
-      ejInstance.current = null;
-    };
-  }, []);
-
+  };
+  
   return (
-    <div id="editorjs">
-      <button onClick={clearDraftFromLocalStorage}>Clear Draft</button>
+    <div className="newarticle_container">
+      <div className="newarticle_actions">
+      {/* <button onClick={SaveDraftToServer}>Save to Drafts</button> */}
+      <button onClick={handlePublish}>Publish</button>
+      <button onClick={clearLocalStorage}>Clear Draft</button>
+
+      </div>
+      <div className="newarticle_title">
+        <input
+          placeholder="Enter a title"
+          value={content.title || ""}
+          onChange={handleTitleChange}
+        />
+      </div>
+      <ReactQuill
+        modules={modules}
+        formats={formats}
+        theme="bubble"
+        value={content.body || ""}
+        onChange={handleContentChange}
+      />
     </div>
   );
 };
 
-export default NewArticle
+export default NewArticle;

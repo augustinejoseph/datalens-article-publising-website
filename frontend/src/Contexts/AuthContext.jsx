@@ -11,13 +11,14 @@ export const AuthProvider = ({ children }) => {
     const access_token = Cookies.get("access_token")
     if (access_token) {
       const decoded_token =  jwt_decode(access_token)
-      const {name, email, is_active, is_banned, is_admin} = decoded_token
+      const {name, email, is_active, is_banned, is_admin, user_id} = decoded_token
       const user = {
         name : name,
         email : email,
         is_active : is_active,
         is_banned : is_banned,
-        is_admin : is_admin
+        is_admin : is_admin,
+        user_id : user_id
       }
       setUser(user)
     }

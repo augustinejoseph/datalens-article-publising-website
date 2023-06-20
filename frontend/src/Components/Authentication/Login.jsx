@@ -71,7 +71,8 @@ const Login = () => {
         email: tokenData.email,
         is_active: tokenData.is_active,
         is_banned: tokenData.is_banned,
-        is_admin : tokenData.is_admin
+        is_admin : tokenData.is_admin,
+        user_id : tokenData.user_id
         
       };
       

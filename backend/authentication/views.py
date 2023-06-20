@@ -107,6 +107,7 @@ class Loginview(APIView):
             raise AuthenticationFailed("Incorrect Password")
         access_token = AccessToken.for_user(user)
         access_token['name'] = user.first_name
+        access_token['user_id'] = user.id
         access_token['email'] = user.email
         access_token['is_active'] = user.is_active
         access_token['is_banned'] = user.is_banned
