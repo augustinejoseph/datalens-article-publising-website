@@ -1,45 +1,47 @@
+// const { gql } = require('apollo-server');
+
+
+// const typeDefs = gql`
+//   type Article {
+//     title: String!
+//     category: [Category]
+//     name: String!
+//     createdAt: String
+//     summary: String
+//     is_premium: Boolean
+//     readingTime : Int
+//     articleId: String
+    
+//   }
+
+//   type Query {
+//     articles: [Article!]!
+//   }
+// `;
+
+// module.exports = typeDefs;
+
 const { gql } = require('apollo-server');
 
-const articleSchema = gql`
-  type Article {
-    id: ID!
-    title: String!
-    body: String!
-    description: String
-    images: [String]
-    author: String
-    category: String
-    hashtags: [String]
-    readingTime: Int
-    updatedAt: String
-    claps: Int
-    comments: [String]
+const typeDefs = gql`
+  type Category {
+    name: String!
   }
 
-  input ArticleInput {
+  type Article {
     title: String!
-    body: String!
-    description: String
-    images: [String]
-    author: String
-    category: String
-    hashtags: [String]
-    readingTime: Int
-    updatedAt: String
-    claps: Int
-    comments: [String]
+    category: [Category]
+    name: String!
+    createdAt: String
+    summary: String
+    is_premium: Boolean
+    readingTime : Int
+    articleId: String
   }
 
   type Query {
-    articles: [Article]
-    article(id: ID!): Article
-  }
-
-  type Mutation {
-    createArticle(article: ArticleInput!): Article
-    updateArticle(id: ID!, article: ArticleInput!): Article
-    deleteArticle(id: ID!): Article
+    articles: [Article!]!
   }
 `;
 
-module.exports = articleSchema;
+module.exports = typeDefs;

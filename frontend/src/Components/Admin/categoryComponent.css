@@ -1,0 +1,51 @@
+.categories-container {
+    max-width: 400px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.categories-container>h2 {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 700;
+    padding: 20px;
+}
+
+.search-container {
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+
+}
+.search-container > input {
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid gray;
+}
+
+.create-category input{
+    align-items: center;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid gray;
+}
+.create-category button {
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: normal;
+    font-weight: 500;
+}
+.category-table thead tr{
+    background-color: rgb(186, 187, 188);
+    padding: 10px;
+}
+.category-table td {
+    padding: 5px 10px 5px 10px;
+}

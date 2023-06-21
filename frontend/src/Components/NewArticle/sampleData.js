@@ -8,7 +8,7 @@ export const sampleData = {
     category: "Technology",
     hashtags: ["sample", "article"],
     readingTime: 5,
-    updatedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     claps: 0,
     comments: [],
   };

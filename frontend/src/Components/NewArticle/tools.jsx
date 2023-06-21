@@ -1,7 +1,7 @@
 export const modules = {
   // bubble style
   toolbar: [
-    // [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ header: '1' }, { header: '2' }, { font: [] }],
     // [{ size: [] }],
     ['bold', 'underline', 'blockquote'],
     [

@@ -22,6 +22,8 @@ import UserProtectedRoute from "./Components/Authentication/UserProtectedRoute.j
 import Account from "./Components/Account/Account.jsx";
 import AdminProtectedRoute from "./Components/Authentication/AdminProtectedRoute.jsx";
 import NewArticle from "./Components/NewArticle/NewArticle.jsx";
+import AdminPanelMain from "./Components/Admin/AdminPanelMain.jsx";
+import AdminFull from "./Components/Admin/AdminFull.jsx";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -45,7 +47,7 @@ function App() {
           <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} />
 
           {/* Admin Protected Routes */}
-          <Route path="/admin-dashboard/*" element={<AdminProtectedRoute user={user}> <AdminDashboard /> </AdminProtectedRoute> } />
+          <Route path="/admin-dashboard/*" element={<AdminProtectedRoute user={user}> <AdminFull /> </AdminProtectedRoute> } />
           <Route path="admin-login" Component={AdminLogin} />
         </Routes>
       </Router>

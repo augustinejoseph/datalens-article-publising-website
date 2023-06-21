@@ -15,6 +15,9 @@
     position: relative;
     cursor: pointer;
   }
+  .nav_userContainer > * {
+    padding: 10px;
+  }
   
   .nav_modal {
     position: fixed;

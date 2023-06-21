@@ -27,11 +27,12 @@ const Navbar = () => {
       <div className="nav_right">
         {user ? (
           <div className="nav_userContainer" onClick={handleClick}>
+            {!user.is_admin && user && currentUrl === '/new-article' ? "" : "" } 
             {user.is_admin ? <Logout /> : user.name}
             {/* {user.is_admin ? " " : <Link to="/ account">{user?.name}</Link>} */}
             
             {/* {user.is_admin ? "Admin" : ""} */}
-            {showModal && user.name && (
+            {showModal && user.name && !user.is_admin && (
               <div className="nav_modal">
                 <button className="nav_closeBtn" onClick={handleClick}>
                   &times;
