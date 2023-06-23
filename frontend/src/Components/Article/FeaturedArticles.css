@@ -1,0 +1,71 @@
+.recomented_topics_container{
+    /* background-color: crimson; */
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-bottom:solid 2px rgb(231, 219, 219) ;
+    width: 20vw;
+
+
+}
+.recomented_topics_heading{
+    text-align: center;
+    justify-content: center;
+    font-size: larger;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 10px 0px 10px 0px;
+    
+
+}
+.recomented_topics_topics{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.home_sidebar_firstrow span{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(245, 241, 241);
+    color: rgb(0, 0, 0);
+    border-radius: 20px;
+    margin: 1rem 0 1rem 0;
+}
+
+
+.featured_article_secondrow p{
+display: flex;
+flex-direction: row;
+align-items: center;
+font-size: medium;
+font-weight: 500;
+color: grey;
+
+}
+
+.featured_article_secondrow{
+    display: flex;
+    flex-direction: row;
+    /* margin: 1rem; */
+}
+
+.featured_article_secondrow svg{
+    margin-right: 1rem;
+}
+
+.featured_article_thirdrow{
+    font-size: medium;
+    font-weight: 500;
+}
+.featured_wrapper{
+    margin-bottom: 1.5rem;
+}
+
+.featured_wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.featured_category_container{
+    margin-top: 1rem;
+
+}

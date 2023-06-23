@@ -18,14 +18,14 @@
     padding: 0;
 }
 .login-heading{
-    font-size: 5vh;
+    font-size: x-large;
     font-weight: 500;
     padding-bottom: 40px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     
 }
 .login-title{
-    font-size: 3vh;
+    font-size: large;
     padding: 20px;
     color: gray;
     margin-bottom: 30px;

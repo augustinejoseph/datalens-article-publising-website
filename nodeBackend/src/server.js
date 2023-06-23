@@ -7,6 +7,7 @@ const { ApolloServer } = require('apollo-server-express');
 const resolvers = require('./resolvers/articleResolvers');
 const typeDefs = require('./schema/articleSchema');
 const singleArticleRouter = require('./router/singleArticleRouter')
+const adminArticleManagementRouter = require('./router/adminArticleManagementRouter')
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ async function startServer() {
   app.use('/api', apiRouter);
   app.use('/category', categoryRouter)
   app.use('/article', singleArticleRouter); 
+  app.use('/article-management', adminArticleManagementRouter)
 
 
   // Start the server

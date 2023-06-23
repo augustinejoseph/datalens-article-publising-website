@@ -1,6 +1,6 @@
 import './Sidebar.css'
 import TrendingInSide from './TrendingInSide';
-import ReccomentedTopics from '../Article/ReccomentedTopics';
+import FeaturedArticles from './FeaturedArticles';
 import SideAdvertisement from '../Advertisements/SideAdvertisement';
 import Footer from "../Footer/Footer"
 const Sidebar = () => {
@@ -8,7 +8,7 @@ const Sidebar = () => {
         <div>
         <TrendingInSide />
         <TrendingInSide />
-        <ReccomentedTopics />
+        <FeaturedArticles />
         <SideAdvertisement />
         <Footer />
         </div>

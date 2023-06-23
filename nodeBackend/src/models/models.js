@@ -25,6 +25,8 @@ const articleSchema = new mongoose.Schema({
   is_banned : Boolean,
   is_premium : Boolean,
   summary: String,
+  previewImage:String,
+  is_featured: Boolean
 
 });
 

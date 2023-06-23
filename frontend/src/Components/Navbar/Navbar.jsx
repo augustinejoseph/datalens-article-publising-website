@@ -27,6 +27,7 @@ const Navbar = () => {
       <div className="nav_right">
         {user ? (
           <div className="nav_userContainer" onClick={handleClick}>
+            {!user.is_admin && user ? <Link to="/new-article">New Idea</Link> : ""}
             {!user.is_admin && user && currentUrl === '/new-article' ? "" : "" } 
             {user.is_admin ? <Logout /> : user.name}
             {/* {user.is_admin ? " " : <Link to="/ account">{user?.name}</Link>} */}

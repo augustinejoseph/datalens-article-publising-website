@@ -4,7 +4,7 @@ const {Article} = require('../models/models')
 
 router.get('/:id', async (req, res) => {
     const {id} = req.params;
-    console.log('id from frontend which is recieved  in backed', id);
+    // console.log('id from frontend which is recieved  in backed', id);
     try{
         const article = await Article.findOne({articleId:id})
         console.log('article', article)

@@ -3,30 +3,32 @@ import "./HomePostContainer.css";
 import { Link } from "react-router-dom";
 
 const HomePostContainer = (props) => {
-  const { title, name, articleId, createdAt, is_premium, summary, category } =
-    props;
-  const formattedDate = new Date(createdAt).toLocaleString();
+  const { title, name, articleId, createdAt, is_premium, summary, category, readingTime, previewImage } =
+  props;
+  const datetimeString = createdAt;
+  const datetime = new Date(datetimeString);
+  const localizedDatetime = datetime.toLocaleDateString();
 
   return (
     <Link to={`/article/${articleId}`} className="homepost_container">
       <div className="homepost_container_firstrow">
         <span>{name}</span>
-        <span>{formattedDate}</span>
+        <span>{localizedDatetime}</span>
         <span>{is_premium}</span>
       </div>
 
       <div className="homepost_container_secondrow">
-        <h2>{title}</h2>
+        <h2 className="tooltip">{title && title.length > 60 ? `${title.slice(0, 70)}...` : title}</h2>
       </div>
 
       <div className="homepost_container_thirdrow">
-        <p>{summary}</p>
-        <img src="https://miro.medium.com/v2/da:true/resize:fill:140:140/0*nu7giaItaETOmJ_d.gif"></img>
+        <p>{summary && summary.length  >200 ?  `${summary.slice(0,200)}...` : summary}</p>
+        <img src={previewImage}/>
       </div>
 
       <div className="homepost_container_forthrow">
         <span>{category?.name}</span>
-        <span>7 min read</span>
+        <span>{ readingTime ? readingTime +"min read": ""} </span>
         <span>save</span>
         <span>More</span>
       </div>

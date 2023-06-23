@@ -1,26 +1,3 @@
-// const { gql } = require('apollo-server');
-
-
-// const typeDefs = gql`
-//   type Article {
-//     title: String!
-//     category: [Category]
-//     name: String!
-//     createdAt: String
-//     summary: String
-//     is_premium: Boolean
-//     readingTime : Int
-//     articleId: String
-    
-//   }
-
-//   type Query {
-//     articles: [Article!]!
-//   }
-// `;
-
-// module.exports = typeDefs;
-
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
@@ -35,12 +12,17 @@ const typeDefs = gql`
     createdAt: String
     summary: String
     is_premium: Boolean
-    readingTime : Int
+    is_banned: Boolean
+    readingTime: Int
     articleId: String
+    previewImage: String
+    claps: Int
+    is_featured: Boolean
   }
 
   type Query {
     articles: [Article!]!
+    featuredArticles: [Article]!  # New field for featured articles
   }
 `;
 

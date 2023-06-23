@@ -18,22 +18,40 @@
   .newarticle_title > input{
     font-size: xx-large;
     border-radius: 20px;
-    border: 1px solid gray;
+    border-left: 1px solid gray;
+/* border-right:  1px solid grey; */
     padding:  10px;
-    margin: 10px;
+    margin-bottom: 30px;
     min-width: 800px;
   }
 
 .newarticle_quill{
+  border-left:  1px solid grey;
   border:  1px solid grey;
   border-radius: 20px;
-  padding: 20px;
+  padding: 10px;
   min-height: 70vh;
+  /* position: fixed;
+  top: 220px;
+  bottom: 100px;
+  left: 300px;
+  right: 300px;
+  overflow-y: hidden; */
+
 
 }
 .newarticle_quill > *{
   margin-top: 15px;
   font-size: larger;
+  line-height: 1.5;
+}
+.newarticle_quill h1,
+.newarticle_quill h2,
+.newarticle_quill h3,
+.newarticle_quill h4,
+.newarticle_quill h5,
+.newarticle_quill h6 {
+  margin-top: 20px; /* Adjust the margin as needed */
 }
 
 .newarticle_actions{
@@ -60,19 +78,19 @@
   flex-direction: column;
   margin: 20px 100px 20px 100px;
   justify-content: center;
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 .articleCompleted_details_container{
   display: flex;
   flex-direction: row;
   /* margin: 20px 500px 20px 500px; */
   justify-content: center;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
 .articleCompleted_buttons {
   display: flex;
   justify-content: flex-end;
-  background-color: coral;
+  /* background-color: coral; */
 }
 
 .articleCompleted_buttons > button {
@@ -87,20 +105,54 @@
   display: flex;
   flex-direction: column;
   /* margin: 10px; */
-  background-color: green;
+  /* background-color: green; */
 
 }
 
-
-.articleCompleted_summary {
+.articleCompleted_summary{
   width: 100%;
-  height: 100%;
+  height: fit-content;
   margin: 10px;
+  padding: 5px;
   border: 1px solid grey;
   border-radius: 10px;
-  resize: none;
+  overflow: auto;
+  word-wrap: break-word; /* Use word-wrap to wrap the overflow content */
+  /* background-color: red; */
+
 }
 
+.articleCompleted_summary input {
+  width: 100%;
+  height: fit-content;
+  /* margin: 10px; */
+  /* padding: 5px; */
+  /* border: 1px solid grey; */
+  /* border-radius: 10px; */
+  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  /* background-color: aquamarine; */
+  border: none;
+  border-color: transparent;
+}
+
+.articleCompleted_publishingDetails select {
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  appearance: none; /* Remove default arrow icon */
+  background-image: url("path/to/custom-arrow-icon.png"); /* Add custom arrow icon */
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 20px;
+}
+
+.articleCompleted_publishingDetails select option {
+  padding: 5px;
+}
 
 .articleCompleted_preview > span{
   font-size: large;
@@ -111,8 +163,45 @@
 .articleCompleted_publishingDetails{
   display: flex;
   flex-direction: column;
-  background-color: rgb(159, 128, 118);
+  /* background-color: rgb(159, 128, 118); */
   padding: 100px;
 
 }
 
+.quill > .ql-container > .ql-editor.ql-blank::before{
+  font-size: 20px;
+  color: grey;
+}
+.newarticle_errormessage{
+  text-align: center;
+  color: white;
+  background-color: red;
+  margin: 10px 150px;
+  border-radius: 20px;
+
+}
+
+.newarticle_successmessage{
+  text-align: center;
+  color: white;
+  background-color: green;
+  margin: 10px 150px;
+  border-radius: 20px;
+
+}
+
+.articleCompleted_authorname{
+  font-size: larger;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.articleCompleted_category{
+  font-size: larger;
+  font-weight: 500;
+}
+.articleCompleted_hashtags{
+  margin-top: 20px;
+}
+.articleCompleted_hashtag{
+  border-radius: 20px;
+}

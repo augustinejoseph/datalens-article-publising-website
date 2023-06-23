@@ -1,6 +1,12 @@
 .mainfeed_container{
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     border-right: 2px solid rgb(221, 204, 204);
     margin-left: 30px;
     min-width: 60vw
 }
+
+@media (max-width: 1100px) {
+    .mainfeed_container {
+        min-width: 100vw
+    }
+  }

@@ -6,11 +6,13 @@ const slugify = require('slugify');
 
 router.post('/newarticle', function(req, res) {
   // Extract the article data from req.body
-  const { title, body,summary, description, images, name, category, hashtags, readingTime, claps, comments, user_id } = req.body;
+  const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage,  } = req.body;
   const createdAt = Date.now();
   const updatedAt = Date.now();
   const is_banned = false
   const is_premium = false
+  const is_featured = false
+  const claps = 0
   const slug = slugify(title, {
     replacement: '-', 
     lower: true,   
@@ -18,6 +20,7 @@ router.post('/newarticle', function(req, res) {
   })
   const uuid = uuidv4()
   const articleId = `${slug}-${uuid}`;
+  console.log('backend recieveed reading time', readingTime)
 
   // Create a new instance of the Article model
   const newArticle = new Article({
@@ -39,13 +42,15 @@ router.post('/newarticle', function(req, res) {
     is_banned,
     is_premium,
     summary,
+    previewImage,
+    is_featured,
   });
 
   // Save the article in the database
   newArticle.save()
     .then((article) => {
       console.log('Article saved:', article);
-      res.status(201).json(article);
+      res.status(201).json(article.articleId);
     })
     .catch((error) => {
       console.error('Error saving article:', error);
