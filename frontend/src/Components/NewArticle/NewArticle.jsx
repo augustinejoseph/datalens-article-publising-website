@@ -109,7 +109,7 @@ const NewArticle = () => {
 
     try {
       const response = await axios.post(
-        `${ARTICLE_SERVER_NODE_BASE_URL}api/newarticle`,
+        `${ARTICLE_SERVER_NODE_BASE_URL}newarticle`,
         updatedContent
       );
 
@@ -145,104 +145,6 @@ const NewArticle = () => {
   const handleHashtagChange = (e) => {
     
   };
-
-  // return (
-  //   <div>
-  //     {errorMessage && (
-  //       <div className="newarticle_errormessage">{errorMessage}</div>
-  //     )}
-  //     {successMsg && (
-  //       <div className="newarticle_successmessage">{successMsg}</div>
-  //     )}
-  //     {!isArticleWritingCompleted ? (
-  //       <div className="newarticle_container">
-  //         <div className="newarticle_actions">
-  //           {!isArticleWritingCompleted ? (
-  //             <button
-  //               disabled={isNextButtonDisabled}
-  //               onClick={() => setArticleWritingCompleted(true)}
-  //             >
-  //               Next
-  //             </button>
-  //           ) : (
-  //             <button onClick={handlePublish}>Publish</button>
-  //           )}
-  //           <button onClick={clearLocalStorage}>Clear Draft</button>
-  //         </div>
-  //         <div className="newarticle_title">
-  //           <input
-  //             placeholder="Tell a Story...!"
-  //             value={content.title || ""}
-  //             onChange={handleTitleChange}
-  //           />
-  //         </div>
-  //         <ReactQuill
-  //           className="newarticle_quill"
-  //           placeholder="Start crafting a story..."
-  //           modules={modules}
-  //           formats={formats}
-  //           theme="bubble"
-  //           value={content.body || ""}
-  //           onChange={handleContentChange}
-  //         />
-  //       </div>
-  //     ) : (
-  //       <div className="articleCompleted_container">
-  //         <div className="articleCompleted_buttons">
-  //           <button disabled={isNextButtonDisabled} onClick={handlePublish}>
-  //             Publish
-  //           </button>
-  //         </div>
-  //         <div className="articleCompleted_details_container">
-  //           <div className="articleCompleted_preview">
-  //             <span>Story Preview</span>
-  //             <img
-  //               style={{ height: "200px", width: "350px" }}
-  //               src={previewImage}
-  //               alt="Preview"
-  //             />
-  //             {/* {previewImage && <img style={{ height: '200px', width: '350px' }} src={previewImage} alt="Preview" />} */}
-
-  //             <span>Write a summary</span>
-  //             <div className="articleCompleted_summary">
-
-  //             <input
-  //               // className="articleCompleted_summary"
-  //               required
-  //               value={summaryValue}
-  //               onChange={(e) => setSummaryValue(e.target.value)}
-  //               />
-  //               </div>
-  //           </div>
-  //           <div className="articleCompleted_publishingDetails">
-  //             <span>Publishing to: {user.name}</span>
-  //             <span>Select Categories</span>
-  //             <select
-  //               multiple
-  //               value={selectedCategories}
-  //               onChange={handleCategoryChange}
-  //             >
-  //               {categories.map((category) => (
-  //                 <option key={category._id} value={category._id}>
-  //                   {category.name}
-  //                 </option>
-  //               ))}
-  //             </select>
-  //             {/* hash tags */}
-  //             <span>Add Hashtags</span>
-  //             <input
-  //               className="articleCompleted_hashtags"
-  //               value={hashtags.join(" ")}
-  //               onChange={handleHashtagChange}
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     )}
-  //   </div>
-  // );
-
-
 
 
   return (

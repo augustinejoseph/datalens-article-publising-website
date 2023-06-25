@@ -7,6 +7,7 @@ import VerifyEmail from "./VerifyEmail";
 import { BACKEND_BASE_URL } from "../../API/Api";
 import ReCAPTCHA from "react-google-recaptcha"
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../../API/Api";
+import { Flag } from "react-bootstrap-icons";
 
 
 const Register = () => {
@@ -259,7 +260,7 @@ const Register = () => {
             <button
               disabled={!isPasswordValid}
               onClick={handlePasswordSubmission}
-              className="login-next-button"
+              className={`login-next-button ${!isPasswordValid ? 'disabled-button' : ''}`}
             >
               User Details
             </button>
@@ -284,9 +285,9 @@ const Register = () => {
             <p className="login-paragraph">
               Enter your first name and last name
             </p>
-            <span className="login-title">
+            {/* <span className="login-title">
               {first_name} {last_name}
-            </span>
+            </span> */}
 
             <span style={{ color: "grey" }} className="register-name-display">
               {email}
@@ -317,7 +318,9 @@ const Register = () => {
                   {errorMessage}{" "}
                 </div>
               )}
-              <button onClick={handleUserData} className="login-next-button">
+              <button 
+              
+              disabled={!first_name || ! last_name } onClick={handleUserData} className={`login-next-button ${!first_name || ! last_name ? 'disabled-button' : ''}`}>
                 Choose Interests
               </button>
             </div>
@@ -371,7 +374,9 @@ const Register = () => {
                   {errorMessage}{" "}
                 </div>
               )}
-              <button onClick={submit} className="login-next-button"
+              <button onClick={submit} 
+              className={`login-next-button ${!isCaptchaSuccess || !selectedInterests ? 'disabled-button' : ''}`}
+              // className="login-next-button"
               disabled={!isCaptchaSuccess}>
                 Finish SignUp
               </button>

@@ -1,5 +1,5 @@
 const express = require('express');
-const apiRouter = require('./router/api');
+const newArticleRouter = require('./router/article');
 const categoryRouter = require('./router/categoryRouter')
 const cors = require('cors');
 const connectToDatabase = require('./db');
@@ -26,7 +26,7 @@ async function startServer() {
   server.applyMiddleware({ app });
 
   // REST API routes
-  app.use('/api', apiRouter);
+  app.use('/newarticle', newArticleRouter);
   app.use('/category', categoryRouter)
   app.use('/article', singleArticleRouter); 
   app.use('/article-management', adminArticleManagementRouter)

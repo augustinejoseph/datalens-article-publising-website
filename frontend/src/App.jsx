@@ -1,4 +1,4 @@
-// import "./App.css";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -16,7 +16,7 @@ import AuthContext from "./Contexts/AuthContext.jsx";
 import VerifyEmail from "./Components/Authentication/VerifyEmail.jsx";
 import AdminLogin from "./Components/Authentication/AdminLogin.jsx";
 import AdminDashboard from "./Components/Admin/AdminDashboard.jsx";
-import ArticlePage from "./Components/Article/SingleArticlePage.jsx";
+import ArticlePage from "./Components/Article/SingleArticlePage/SingleArticlePage.jsx";
 import PageNotFound from "./Components/Others/PageNotFound.jsx";
 import UserProtectedRoute from "./Components/Authentication/UserProtectedRoute.jsx";
 import Account from "./Components/Account/Account.jsx";
@@ -24,6 +24,7 @@ import AdminProtectedRoute from "./Components/Authentication/AdminProtectedRoute
 import NewArticle from "./Components/NewArticle/NewArticle.jsx";
 import AdminPanelMain from "./Components/Admin/AdminPanelMain.jsx";
 import AdminFull from "./Components/Admin/AdminFull.jsx";
+import EditArticle from "./Components/EditArticle/EditArticle.jsx";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" Component={Home} />
           <Route path="*" Component={PageNotFound} />
+          <Route path="/404" Component={PageNotFound} />
           <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
           <Route  path="/register" element={user ?<Navigate to = "/" /> : <Register />} />
           <Route path="/logout" Component={Logout} />
@@ -45,6 +47,7 @@ function App() {
           {/* User Protected Routes  */}
           <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />
           <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} />
+          <Route path='edit-article/:articleId' element={<UserProtectedRoute user={user}> <EditArticle /></UserProtectedRoute>} />
 
           {/* Admin Protected Routes */}
           <Route path="/admin-dashboard/*" element={<AdminProtectedRoute user={user}> <AdminFull /> </AdminProtectedRoute> } />

@@ -61,13 +61,26 @@
 .article_interaction img{
     height: 30px;
 }
+
 .article_interaction_leftside{
     display: flex;
     flex-direction: row;
-    /* padding: 5px 10px 5px 10px; */
 }
-.article_share_commend_icon span, img{
+
+.article_interaction_leftside span{
+    padding: 2px 8px 2px 20px;
+    cursor: pointer;
+}
+
+.article_share_commend_icon{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.article_share_commend_icon span{
     padding: 2px 10px 2px 10px;
+    cursor: pointer;
 }
 .article_content_start p{
     padding: 50px 0 10px 0;

@@ -31,12 +31,11 @@
     margin-bottom: 30px;
     margin-top: 30px;
 
-
-
 }
 .login-paragraph{
     padding: 0px 50px;
     color: gray;
+    margin-bottom: 2rem;
 
 }
 .login-email-underline{
@@ -103,4 +102,10 @@
 }
 .tick-mark {
     margin-left: 5px;
+  }
+
+
+  .disabled-button {
+    opacity: 0.6;
+    cursor: not-allowed;
   }

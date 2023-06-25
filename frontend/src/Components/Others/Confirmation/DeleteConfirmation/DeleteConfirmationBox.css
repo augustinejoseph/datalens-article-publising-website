@@ -1,0 +1,43 @@
+.confirmation-box-modal {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.confirmation-box-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 31px -2px rgba(0,0,0,0.85);
+
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+}
+
+.confirmation-box-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.confirmation-box-buttons button {
+  margin-left: 10px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.confirm-button {
+  background-color: rgb(249, 67, 67);
+  color: white;
+}
+
+.cancel-button {
+  background-color: rgb(97, 97, 255);
+  color: white;
+}

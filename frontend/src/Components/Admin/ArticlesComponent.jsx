@@ -4,6 +4,7 @@ import LoadingMainFeed from '../Shimmers/LoadingMainFeed';
 import axios from 'axios';
 import { ARTICLE_SERVER_NODE_BASE_URL } from '../../API/Api';
 import './ArticlesComponent.css'
+import { GET_ARTICLES } from '../../Queries/getArticlesGraphQL';
 
 const ArticlesComponent = () => {
   const [articleId, setArticleId] = useState("");

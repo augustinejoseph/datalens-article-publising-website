@@ -4,7 +4,7 @@ const {Article} = require('../models/models');
 const { v4: uuidv4 } = require('uuid');
 const slugify = require('slugify');
 
-router.post('/newarticle', function(req, res) {
+router.post('/', function(req, res) {
   // Extract the article data from req.body
   const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage,  } = req.body;
   const createdAt = Date.now();

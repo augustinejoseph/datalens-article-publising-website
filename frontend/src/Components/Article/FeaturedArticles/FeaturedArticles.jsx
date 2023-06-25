@@ -34,15 +34,16 @@ const FeaturedArticles = () => {
       </div>
       {featuredArticles.map((article) => {
         return (
-          <div className="featured_wrapper">
+          
+          <div key={article.articleId} className="featured_wrapper">
 
           <React.Fragment key={article.articleId}>
             <Link to={`/article/${article.articleId}`}>
             <div className="featured_article_secondrow">
-              <p>
+              <div>
                 <PersonCircle />
                 <p>{article.name}</p>
-              </p>
+              </div>
             </div>
             <div className="featured_article_thirdrow">
               <span
