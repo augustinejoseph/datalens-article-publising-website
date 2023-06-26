@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {Article} = require('../models/models');
+const {Article, Draft} = require('../models/models');
 const { v4: uuidv4 } = require('uuid');
 const slugify = require('slugify');
 
+// Create a new Article
 router.post('/', function(req, res) {
-  // Extract the article data from req.body
   const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage,  } = req.body;
   const createdAt = Date.now();
   const updatedAt = Date.now();
@@ -22,7 +22,7 @@ router.post('/', function(req, res) {
   const articleId = `${slug}-${uuid}`;
   console.log('backend recieveed reading time', readingTime)
 
-  // Create a new instance of the Article model
+
   const newArticle = new Article({
     articleId,
     uuid,
@@ -46,7 +46,6 @@ router.post('/', function(req, res) {
     is_featured,
   });
 
-  // Save the article in the database
   newArticle.save()
     .then((article) => {
       console.log('Article saved:', article);
@@ -57,5 +56,27 @@ router.post('/', function(req, res) {
       res.status(500).json({ error: 'Failed to create article',error });
     });
 });
+
+
+router.post('/savetodraft',function(req, res) {
+  const {title, body, user_id} = req.body
+  const createdAt = Date.now()
+
+  const newDraft = new Draft({
+    user_id,
+    title,
+    body,
+
+  });
+  newDraft.save()
+  .then((draft) => {
+    console.log("draft saved", draft);
+    res.status(201).json(draft._id)
+  }).catch((error) => {
+    console.error("error saving draft", error)
+    res.status(500).json({error: "Failed to save draft", error})
+  })
+ })
+
 
 module.exports = router;

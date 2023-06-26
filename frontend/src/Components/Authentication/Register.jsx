@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import VerifyEmail from "./VerifyEmail";
 import { BACKEND_BASE_URL } from "../../API/Api";
 import ReCAPTCHA from "react-google-recaptcha"
-import { GOOGLE_CAPTCHA_SITE_KEY } from "../../API/Api";
 import { Flag } from "react-bootstrap-icons";
+import dotenv from 'dotenv';
 
 
 const Register = () => {
@@ -29,6 +29,7 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [allIntersetFromAPI, setAllIntersetFromAPI] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const GOOGLE_CAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY
   // Captcha Verification
   const captchaRef = useRef(null)
 

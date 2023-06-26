@@ -1,14 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { ARTICLE_SERVER_NODE_BASE_URL } from "../../API/Api";
-import "./NewArticle.css";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "react-quill/dist/quill.bubble.css";
-import AuthContext from "../../Contexts/AuthContext";
-import { modules, formats } from "./tools";
-import { useNavigate } from "react-router-dom";
-import calculateReadingTime from "../../Functions/readingTime";
+import {
+  axios,
+  ARTICLE_SERVER_NODE_BASE_URL,
+  ReactQuill,
+  modules,
+  formats,
+  useContext,
+  AuthContext,
+  useNavigate,
+  calculateReadingTime,
+  useState,
+  useEffect,
+  uploadImageToFirebase,
+  deleteImageFromFirebase,
+  storage
+
+} from "./index";
+import './NewArticle.css'
+// import storage from '../../Firebase/FirebaseConfig'
+
+
 
 const NewArticle = () => {
   const navigate = useNavigate();
@@ -27,12 +37,14 @@ const NewArticle = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [readingTime, setReadingTime] = useState()
+  const [uploadedImages, setUploadedImages] = useState([]);
+
 
   console.log("categories", categories);
   console.log("selected categories", selectedCategories);
-  console.log("preview img src", previewImage);
+  // console.log("preview img src", previewImage);
   console.log("hash tags", hashtags);
-  console.log('next button disabled', isNextButtonDisabled)
+  // console.log('next button disabled', isNextButtonDisabled)
 
   useEffect(() => {
     // Fetch categories
@@ -73,28 +85,76 @@ const NewArticle = () => {
     if (firstImage && firstImage.src) {
       const firstImageSrc = firstImage.src;
       setPreviewImage(firstImageSrc);
-      console.log("Preview image set:", firstImageSrc);
+      // console.log("Preview image set:", firstImageSrc);
     } else {
       setPreviewImage("");
-      console.log("No preview image found");
+      // console.log("No preview image found");
     }
      const readingTime  = calculateReadingTime(words.length);
      setReadingTime(readingTime)
 
-    console.log("Reading time:", readingTime, "minutes");
+  // Upload image to firebase
+  const containerDiv = document.createElement("div");
+  containerDiv.innerHTML = bodyHTML;
+  const images = containerDiv.querySelectorAll("img");
 
+  const uploadImages = async () => {
+    const newUploadedImages = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      const file = image.getAttribute("src");
+
+      try {
+        const fileName = `article_${Date.now()}`;
+        const storageRef = storage.ref(fileName);
+        await storageRef.put(file);
+        const downloadUrl = await storageRef.getDownloadURL();
+        console.log("Image uploaded successfully:", downloadUrl);
+        newUploadedImages.push(downloadUrl);
+      } catch (error) {
+        console.error(`Error uploading image ${i + 1}:`, error);
+      }
+    }
+
+    setUploadedImages(newUploadedImages);
   };
 
+  uploadImages();
+  };
+
+  
   const handleTitleChange = (e) => {
     const newContent = { ...content, title: e.target.value };
     setContent(newContent);
   };
-
+  
   const clearLocalStorage = () => {
     localStorage.removeItem("articleData");
     setContent({ title: "", body: "" });
   };
 
+  // Save to Draft
+  const handleSaveToDraft = async () => {
+    const updatedContent = {
+      ...content,
+      user_id: user_id,
+      name: name,
+    }
+    try{
+      const response = await axios.post(`${ARTICLE_SERVER_NODE_BASE_URL}newarticle/savetodraft`, updatedContent)
+      console.log("save to draft", response.data);
+      navigate("/")
+    }catch(error){
+      setErrorMessage("An error occurred while saving the article to draft");
+      console.error("Error saving to draft:", error);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
+  }
+
+  // Publish Article
   const handlePublish = async () => {
     const updatedContent = {
       ...content,
@@ -122,7 +182,7 @@ const NewArticle = () => {
       setSuccessMsg('')
       navigate(`/article/${articleId}`);
 
-      }, 2000);
+      }, 1000);
 
       // Clear the content
       setContent({ title: "", body: "" });
@@ -169,6 +229,8 @@ const NewArticle = () => {
               <button onClick={handlePublish}>Publish</button>
             )}
             <button onClick={clearLocalStorage}>Clear Draft</button>
+            <button onClick={handleSaveToDraft}>Save as Draft</button>
+
           </div>
           <div className="newarticle_title">
             <input

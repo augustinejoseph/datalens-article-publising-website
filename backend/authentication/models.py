@@ -43,7 +43,7 @@ class Allusers(AbstractUser):
     is_active = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
-
+    
     username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

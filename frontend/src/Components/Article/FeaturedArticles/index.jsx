@@ -1,7 +1,8 @@
-import "./FeaturedArticles.css";
-import Button from "../SmallComponents/Button";
-import { GET_FEATURED_ARTICLES } from "../../Queries/getArticlesGraphQL";
-import React from "react";
-import { useQuery, gql } from "@apollo/client";
-import { PersonCircle } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+export { GET_FEATURED_ARTICLES } from "../../../Queries/getArticlesGraphQL";
+
+export { default as Button } from "../../SmallComponents/Button";
+
+export { default as React } from "react";
+export { useQuery, gql } from "@apollo/client";
+export { PersonCircle } from "react-bootstrap-icons";
+export { Link } from "react-router-dom";

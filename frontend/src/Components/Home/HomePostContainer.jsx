@@ -23,7 +23,7 @@ const HomePostContainer = (props) => {
 
       <div className="homepost_container_thirdrow">
         <p>{summary && summary.length  >200 ?  `${summary.slice(0,200)}...` : summary}</p>
-        <img src={previewImage}/>
+        <img src={previewImage ? previewImage : "https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png"}/>
       </div>
 
       <div className="homepost_container_forthrow">

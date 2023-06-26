@@ -14,6 +14,7 @@ import Footer from "../../Footer/Footer";
 import DeleteConfirmationBox from "../../Others/Confirmation/DeleteConfirmation/DeleteConfirmationBox";
 import {deleteArticle} from './axios'
 import {TrashFill, PencilSquare, ShareFill, HandThumbsUp, Chat} from "react-bootstrap-icons";
+import FeaturedArticles from "../FeaturedArticles/FeaturedArticles";
 
 export {
   React,
@@ -37,5 +38,5 @@ export {
   PencilSquare,
   ShareFill,
   HandThumbsUp,
-  Chat
+  Chat,FeaturedArticles
 };

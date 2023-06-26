@@ -1,4 +1,4 @@
-import FeaturedArticles from "../FeaturedArticles";
+
 import {
   React,
   useState,
@@ -21,7 +21,8 @@ import {
   PencilSquare,
   ShareFill,
   HandThumbsUp,
-  Chat
+  Chat,
+  FeaturedArticles
   
 } from "./index";
 
@@ -93,7 +94,9 @@ const ArticlePage = () => {
           <span>{article.title}</span>
         </div>
         <div className="article_main_image">
-          <img src={article?.previewImage} alt="Preview" />
+          {article.previewImage && 
+          <img src={article.previewImage ? article?.previewImage : ""} alt="Preview" />
+}
         </div>
         <div className="article_author_container">
           <span className="article_author_name">{article.name}</span>

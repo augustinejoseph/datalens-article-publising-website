@@ -115,12 +115,31 @@
 // export default EditArticle;
 
 
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { ARTICLE_SERVER_NODE_BASE_URL, ReactQuill, calculateReadingTime } from "./index";
-import "../NewArticle/NewArticle.css";
+// import React, { useState, useEffect, useContext } from "react";
+// import axios from "axios";
+// import { useNavigate, useParams } from "react-router-dom";
+// import { ARTICLE_SERVER_NODE_BASE_URL, ReactQuill, calculateReadingTime } from "./index";
+// import "../NewArticle/NewArticle.css";
 
+
+import {
+    React,
+    useState,
+    useEffect,
+    useContext,
+    axios,
+    ARTICLE_SERVER_NODE_BASE_URL,
+    ReactQuill,
+    AuthContext,
+    modules,
+    formats,
+    useNavigate,
+    useParams,
+    calculateReadingTime,
+    Footer,
+    HomePostContainer,
+    PageNotFound
+  } from './index'
 const EditArticle = () => {
   const navigate = useNavigate();
   const { articleId } = useParams();
@@ -204,13 +223,15 @@ const EditArticle = () => {
             id="body"
             theme="bubble"
             value={content}
+            modules={modules}
+            formats={formats}
             onChange={handleContentChange}
             placeholder="Write your article..."
           />
         </div>
-        <div className="newarticle_readingTime">
+        {/* <div className="newarticle_readingTime">
           Estimated Reading Time: {readingTime} minutes
-        </div>
+        </div> */}
       </form>
     </div>
   );

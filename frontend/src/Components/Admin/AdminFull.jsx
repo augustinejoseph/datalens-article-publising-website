@@ -7,7 +7,6 @@ import AdminPanelMain from "./AdminPanelMain";
 
 const AdminFull = () => {
     const [selectedOption, setSelectedOption] = useState('');
-  
     const handleOptionClick = (option) => {
       setSelectedOption(option);
     };

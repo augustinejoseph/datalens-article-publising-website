@@ -3,7 +3,7 @@ import { useContext } from "react";
 import AuthContext from "../../Contexts/AuthContext";
 import "./Home.css";
 import Sidebar from '../Article/Sidebar'
-import MainFeed from "../Article/MainFeed";
+import MainFeed from "../Article/MainFeed/MainFeed";
 
 function Home() {
   const { user } = useContext(AuthContext);

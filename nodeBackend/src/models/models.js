@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
+// Category Schema
 const categorySchema = new mongoose.Schema({
   name: String,
 });
 
 const Category = mongoose.model('Category', categorySchema);
 
+// Article Schema
 const articleSchema = new mongoose.Schema({
   articleId : String,
   uuid : String,
@@ -29,7 +31,17 @@ const articleSchema = new mongoose.Schema({
   is_featured: Boolean
 
 });
-
 const Article = mongoose.model('Article', articleSchema);
 
-module.exports = {Article, Category};
+// Draft Schema
+const draftSchema = new mongoose.Schema({
+  title : String,
+  body : Object,
+  user_id : Number,
+  createdAt : Date,
+  updatedAt : Date,
+})
+const Draft = mongoose.model("Draft", draftSchema)
+
+
+module.exports = {Article, Category, Draft};

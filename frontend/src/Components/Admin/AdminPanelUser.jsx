@@ -5,7 +5,6 @@ import { BACKEND_BASE_URL } from "../../API/Api";
 
 
 const AdminPanelUser=()=>{
-
     const [allUsersList, setAllUsersList] = useState([]);
     const [update, setUpdata] = useState('')
   
