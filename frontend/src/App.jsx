@@ -1,11 +1,5 @@
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-  Link,
-} from "react-router-dom";
+import {BrowserRouter as Router, Route,  Routes,  Navigate,  Link} from "react-router-dom";
 import Login from "./Components/Authentication/Login.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import Home from "./Components/Home/Home.jsx";
@@ -25,6 +19,7 @@ import NewArticle from "./Components/NewArticle/NewArticle.jsx";
 import AdminPanelMain from "./Components/Admin/AdminPanelMain.jsx";
 import AdminFull from "./Components/Admin/AdminFull.jsx";
 import EditArticle from "./Components/EditArticle/EditArticle.jsx";
+import AuthorProfile from "./Components/AuthorProfile/AuthorProfile.jsx";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -36,13 +31,15 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" Component={Home} />
-          <Route path="*" Component={PageNotFound} />
+          <Route path="/*" Component={PageNotFound} />
           <Route path="/404" Component={PageNotFound} />
           <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
           <Route  path="/register" element={user ?<Navigate to = "/" /> : <Register />} />
           <Route path="/logout" Component={Logout} />
           <Route path="/verify-email" element={user ? <Navigate to="/" /> : <VerifyEmail />} />
           <Route path="/article/:id" Component={ArticlePage} />
+          <Route path="/user/:username" element={<AuthorProfile />} />
+
 
           {/* User Protected Routes  */}
           <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />

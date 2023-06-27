@@ -22,7 +22,8 @@ const typeDefs = gql`
 
   type Query {
     articles: [Article!]!
-    featuredArticles: [Article]!  # New field for featured articles
+    featuredArticles: [Article]!
+    articlesByAuthor(userId : ID!) : [Article]
   }
 `;
 

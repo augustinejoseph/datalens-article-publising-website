@@ -3,6 +3,7 @@ const router = express.Router();
 const {Article, Draft} = require('../models/models');
 const { v4: uuidv4 } = require('uuid');
 const slugify = require('slugify');
+const { default: mongoose } = require('mongoose');
 
 // Create a new Article
 router.post('/', function(req, res) {
@@ -57,7 +58,7 @@ router.post('/', function(req, res) {
     });
 });
 
-
+// Save to draft
 router.post('/savetodraft',function(req, res) {
   const {title, body, user_id} = req.body
   const createdAt = Date.now()
@@ -79,4 +80,32 @@ router.post('/savetodraft',function(req, res) {
  })
 
 
+//  Get all drafts of a single author
+router.get('/alldrafts/:user_id', async function(req, res) {
+  const user_id = req.params.user_id
+  console.log('user id in draft fetch req', user_id);
+  try{
+    const drafts = await Draft.find({user_id : user_id})
+    if(drafts){
+      res.status(200).json(drafts)
+      console.log('drafts found', drafts);
+    }else{
+      res.json({message: "No drafts Found..."})
+    }
+  }catch(error){
+    res.status(500).json({error: "Internal server error"})
+  }
+})
+
+// Delete a draft
+router.delete('/delete/:id', async  (req, res) => {
+  const draftId = req.params.id
+  try{
+    const response = await Draft.findByIdAndDelete({_id : draftId})
+    console.log('draft deleted backend', response);
+    res.status(200).json({response})
+  }catch(error){
+    res.status(500).json(error)
+  }
+})
 module.exports = router;

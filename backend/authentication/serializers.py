@@ -33,3 +33,11 @@ class AllUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allusers
         fields = '__all__'
+
+
+# Author Details
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Allusers
+        fields = ['id', 'email', 'first_name', 'last_name']
+

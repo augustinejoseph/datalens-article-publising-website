@@ -1,0 +1,22 @@
+.draft_container{
+
+margin: 3rem 0;
+}
+.draft_title span{
+    font-size: x-large;
+}
+.draft_buttons_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.draft_buttons_container button{
+    padding: 0 1rem ;
+    color: white;
+    background-color: red;
+    border-radius: 20rem;
+    margin: 1rem;
+}
+.draft_buttons_container button:first-child{
+    background-color: green;
+}

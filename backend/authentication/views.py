@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import UserSerializer, InterestSerializer, AllUsersSerializer
+from .serializers import UserSerializer, InterestSerializer, AllUsersSerializer, AuthorSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import Allusers, Interests, Userinterests
@@ -42,7 +42,6 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import render
 from authentication.models import Allusers
-
 
 
 class RegisterView(APIView):
@@ -107,6 +106,7 @@ class Loginview(APIView):
             raise AuthenticationFailed("Incorrect Password")
         access_token = AccessToken.for_user(user)
         access_token['name'] = user.first_name
+        access_token['user_name'] = user.user_name
         access_token['user_id'] = user.id
         access_token['email'] = user.email
         access_token['is_active'] = user.is_active
@@ -170,7 +170,6 @@ class EmailAvailability(APIView):
             return Response(False)
         except ObjectDoesNotExist:
             return Response(True)
-
     
 class AllInterests(APIView):
     def get(self, request):
@@ -178,10 +177,6 @@ class AllInterests(APIView):
         serializer = InterestSerializer(interests, many=True)
         print("inside all interests sending fn")
         return Response(serializer.data)
-
-
-# views.py
-
 
 def verify_email(request, uidb64, token):
     try:
@@ -197,13 +192,11 @@ def verify_email(request, uidb64, token):
     else:
         return redirect('email_verification_failed')
 
-
 def email_verification_success(request):
     return render(request, 'email_verification_success.html')
 
 def email_verification_failed(request):
     return render(request, 'email_verification_failed.html')
-
 
 # Admin Login
 class AdminLogin(APIView):
@@ -243,7 +236,12 @@ class BlockUser(APIView):
         user.save()
         return Response({"message" : "User is Blocked"})
     
-
-
-
-# Social Login
+# Author Details
+class AuthorDetails(APIView):
+    def get(self, request, user_name):
+        try:
+            user = Allusers.objects.get(user_name=user_name)
+            serializer = AuthorSerializer(user)
+            return Response(serializer.data)
+        except Allusers.DoesNotExist:
+            return Response({"error": "User  not found"}, status=404)

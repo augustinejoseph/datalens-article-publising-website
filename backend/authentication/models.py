@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.text import slugify
 
 class TemplateTable(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -43,7 +44,19 @@ class Allusers(AbstractUser):
     is_active = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
-    
+    user_name = models.CharField(max_length=250, unique=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            # Generate username from email and append a unique suffix
+            user_name = slugify(self.email.split('@')[0])
+            suffix = 1
+            while Allusers.objects.filter(user_name=user_name).exists():
+                user_name = f"{slugify(self.email.split('@')[0])}{suffix}"
+                suffix += 1
+            self.user_name = user_name
+        super().save(*args, **kwargs)
+
     username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

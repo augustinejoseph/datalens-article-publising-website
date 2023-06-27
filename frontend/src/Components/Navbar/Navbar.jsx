@@ -1,23 +1,30 @@
 import imageFull from "../../Constants/full_logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../../Contexts/AuthContext";
 import Logout from "../Authentication/Logout";
 import "./Navbar.css";
+import { Navigate } from "react-router-dom";
 
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const { user } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const currentUrl = location.pathname;
   console.log('user name',user?.name)
   console.log('user admin', user?.is_admin)
+  console.log("navbar username from auth", user?.user_name);
 
 
   const handleClick = () => {
     setShowModal(!showModal);
   };
+
+  const handleProfileClick =() => {
+    navigate("/user/"+user.user_name)
+  }
 
   return (
     <div className="nav_container">
@@ -29,7 +36,9 @@ const Navbar = () => {
           <div className="nav_userContainer" onClick={handleClick}>
             {!user.is_admin && user ? <Link to="/new-article">New Idea</Link> : ""}
             {!user.is_admin && user && currentUrl === '/new-article' ? "" : "" } 
-            {user.is_admin ? <Logout /> : user.name}
+            {user.is_admin ? (<Logout />) : (
+              <button onClick={handleProfileClick}>{user.name}</button>
+            )}
             {/* {user.is_admin ? " " : <Link to="/ account">{user?.name}</Link>} */}
             
             {/* {user.is_admin ? "Admin" : ""} */}
