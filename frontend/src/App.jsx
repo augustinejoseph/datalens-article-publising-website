@@ -9,21 +9,22 @@ import { useContext } from "react";
 import AuthContext from "./Contexts/AuthContext.jsx";
 import VerifyEmail from "./Components/Authentication/VerifyEmail.jsx";
 import AdminLogin from "./Components/Authentication/AdminLogin.jsx";
-import AdminDashboard from "./Components/Admin/AdminDashboard.jsx";
 import ArticlePage from "./Components/Article/SingleArticlePage/SingleArticlePage.jsx";
 import PageNotFound from "./Components/Others/PageNotFound.jsx";
 import UserProtectedRoute from "./Components/Authentication/UserProtectedRoute.jsx";
 import Account from "./Components/Account/Account.jsx";
 import AdminProtectedRoute from "./Components/Authentication/AdminProtectedRoute.jsx";
 import NewArticle from "./Components/NewArticle/NewArticle.jsx";
-import AdminPanelMain from "./Components/Admin/AdminPanelMain.jsx";
-import AdminFull from "./Components/Admin/AdminFull.jsx";
 import EditArticle from "./Components/EditArticle/EditArticle.jsx";
 import AuthorProfile from "./Components/AuthorProfile/AuthorProfile.jsx";
+import AdminPanelUser from "./Components/Admin/Users/AdminPanelUser.jsx";
+import AdminPanelLayout from "./Components/Admin/Layout/AdminPanelLayout.jsx";
+import AdminPanelCategory from "./Components/Admin/Category/AdminPanelCategory.jsx";
+import AdminPanelArticles from "./Components/Admin/Articles/AdminPanelArticles.jsx";
+import AdminDashboard from "./Components/Admin/Dashboard/AdminDashboard.jsx";
 
 function App() {
   const { user } = useContext(AuthContext);
-  // console.log(user, 'user form app.js')
 
   return (
     <div>
@@ -47,7 +48,16 @@ function App() {
           <Route path='edit-article/:articleId' element={<UserProtectedRoute user={user}> <EditArticle /></UserProtectedRoute>} />
 
           {/* Admin Protected Routes */}
-          <Route path="/admin-dashboard/*" element={<AdminProtectedRoute user={user}> <AdminFull /> </AdminProtectedRoute> } />
+          <Route path="/admin/users" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminPanelUser /></AdminPanelLayout></AdminProtectedRoute>} />
+          <Route path="/admin/articles" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminPanelArticles /></AdminPanelLayout></AdminProtectedRoute>} />
+          <Route path="/admin/categories" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminPanelCategory /></AdminPanelLayout></AdminProtectedRoute>} />
+          <Route path="/admin/dashboard" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminDashboard /></AdminPanelLayout></AdminProtectedRoute>} />
+          <Route path="/admin" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminDashboard /></AdminPanelLayout></AdminProtectedRoute>} />
+
+
+
+          {/* <Route path="/admin/users" element={<AdminProtectedRoute user={user}> <AdminPanelUser /> </AdminProtectedRoute> } /> */}
+
           <Route path="admin-login" Component={AdminLogin} />
         </Routes>
       </Router>

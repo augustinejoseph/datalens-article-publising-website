@@ -108,4 +108,30 @@ router.delete('/delete/:id', async  (req, res) => {
     res.status(500).json(error)
   }
 })
+
+// Get a draft
+router.get('/draft/:id', async (req, res) => {
+  const draftId = req.params.id
+  console.log(('draft id from editor', draftId));
+  try{
+    const response = await Draft.findById({_id :draftId})
+    res.status(200).json(response)
+  }catch(error){
+    res.status(500).json(error)
+  }
+})
 module.exports = router;
+
+// Update a draft
+router.put('/updatedraft/:id', async (req, res) => {
+  const draftId = req.params.id
+  const updatedContent = req.body
+  try{
+    const response = await Draft.findByIdAndUpdate(draftId, updatedContent, {new:true})
+    console.log('update successful draft server', response);
+    res.status(200).json(response)
+  }catch(error){
+    console.log('update draft serverside error', error);
+    res.status(500).json(error)
+  }
+})

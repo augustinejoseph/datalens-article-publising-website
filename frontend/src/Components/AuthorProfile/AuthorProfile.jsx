@@ -83,7 +83,7 @@ const AuthorProfile = () => {
     };
   
     fetchData();
-  }, []);
+  }, [activeTab]);
   
 
   return (

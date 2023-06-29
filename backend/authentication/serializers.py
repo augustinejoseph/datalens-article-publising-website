@@ -32,7 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AllUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allusers
-        fields = '__all__'
+        exclude = ['password', 'is_superuser']
 
 
 # Author Details

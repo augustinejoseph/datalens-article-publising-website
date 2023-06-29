@@ -11,7 +11,7 @@ const Draft = ({title, body, id}) => {
 
     // Edit Draft
     const handleEditDraft = () => {
-        navigate("/newarticle")
+        navigate("/new-article", {state: {id: id}})
     }
 
     // Delete Draft

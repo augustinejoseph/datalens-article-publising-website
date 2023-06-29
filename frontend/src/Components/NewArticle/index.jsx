@@ -10,4 +10,7 @@ export { default as calculateReadingTime } from "../../Functions/readingTime";
 export { useState, useEffect } from "react";
 export {storage} from '../../Firebase/FirebaseConfig'
 export { uploadImageToFirebase, deleteImageFromFirebase } from "./Functions";
+export { useLocation } from "react-router";
+export { ArrowLeftCircleFill } from 'react-bootstrap-icons';
+export { deleteDraft } from "../Draft";
 

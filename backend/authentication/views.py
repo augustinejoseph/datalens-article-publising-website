@@ -225,10 +225,10 @@ class AdminLogin(APIView):
     
 class AllUsersList(APIView):
     def get(self, request):
-        allUsers = Allusers.objects.all()
+        allUsers = Allusers.objects.exclude(is_superuser=True)
         serializer = AllUsersSerializer(allUsers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+ 
 class BlockUser(APIView):
     def patch(self, request, user_id):
         user = Allusers.objects.get(id=user_id)
