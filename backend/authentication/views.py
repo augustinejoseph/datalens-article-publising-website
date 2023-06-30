@@ -245,3 +245,12 @@ class AuthorDetails(APIView):
             return Response(serializer.data)
         except Allusers.DoesNotExist:
             return Response({"error": "User  not found"}, status=404)
+
+class AuthorDetailsById(APIView):
+    def get(self, request, user_id):
+        try:
+            user = Allusers.objects.get(id=user_id)
+            serializer = AuthorSerializer(user)
+            return Response(serializer.data)
+        except Allusers.DoesNotExist:
+            return Response({"error": "User  not found"}, status=404)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import HomeCategoryList from "../../Home/HomeCategoryList";
-import HomePostContainer from "../../Home/HomePostContainer";
+import HomePostContainer from "../../Home/HomePostContainer/HomePostContainer";
 import "./MainFeed.css";
 import axios from "axios";
 import { ARTICLE_SERVER_NODE_BASE_URL } from "../../../API/Api";

@@ -9,7 +9,7 @@ import AuthContext from "../../../Contexts/AuthContext";
 import { modules, formats } from "../../NewArticle/tools";
 import { useNavigate, useParams } from "react-router-dom";
 import calculateReadingTime from "../../../Functions/readingTime";
-import HomePostContainer from "../../Home/HomePostContainer";
+import { HomePostContainer } from "../MainFeed";
 import Footer from "../../Footer/Footer";
 import DeleteConfirmationBox from "../../Others/Confirmation/DeleteConfirmation/DeleteConfirmationBox";
 import {deleteArticle} from './axios'

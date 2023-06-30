@@ -22,14 +22,14 @@ import AdminPanelLayout from "./Components/Admin/Layout/AdminPanelLayout.jsx";
 import AdminPanelCategory from "./Components/Admin/Category/AdminPanelCategory.jsx";
 import AdminPanelArticles from "./Components/Admin/Articles/AdminPanelArticles.jsx";
 import AdminDashboard from "./Components/Admin/Dashboard/AdminDashboard.jsx";
-
+import NavigationBar from "./Components/NavigationBar/NavigationBar.jsx";
 function App() {
   const { user } = useContext(AuthContext);
 
   return (
     <div>
       <Router>
-        <Navbar />
+        <NavigationBar />
         <Routes>
           <Route path="/" Component={Home} />
           <Route path="/*" Component={PageNotFound} />

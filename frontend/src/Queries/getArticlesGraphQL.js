@@ -15,6 +15,7 @@ export const GET_ARTICLES = gql`
       readingTime
       articleId
       previewImage
+      user_id
     }
   }
 `;

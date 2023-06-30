@@ -1,14 +1,6 @@
-// import React, { useEffect, useState } from "react";
-// import HomeCategoryList from "../../Home/HomeCategoryList";
-// import HomePostContainer from "../../Home/HomePostContainer";
-// import "./MainFeed.css";
-// import axios from "axios";
-// import { ARTICLE_SERVER_NODE_BASE_URL } from "../../../API/Api";
-// import { useQuery, gql } from "@apollo/client";
-// import RoundLoading from "../../Shimmers/RoundLoading";
-// import LoadingMainFeed from "../../Shimmers/LoadingMainFeed";
-// import { GET_ARTICLES } from "../../../Queries/getArticlesGraphQL";
+import { Airplane } from "react-bootstrap-icons";
 
+import "./MainFeed.css";
 import {
   React,
   useEffect,
@@ -22,7 +14,8 @@ import {
   LoadingMainFeed,
   GET_ARTICLES,
   ARTICLE_SERVER_NODE_BASE_URL,
-} from "./index.jsx"
+  Footer,
+} from '../../index.jsx'
 
 const MainFeed = () => {
   const [categories, setCategories] = useState([]);
@@ -72,8 +65,12 @@ const MainFeed = () => {
           articleId={article.articleId}
           summary={article.summary}
           previewImage={article.previewImage}
+          user_id = {article.user_id}
         />
       ))}
+      <div className="mainfeed_footer">
+      <Footer />
+      </div>
     </div>
   );
 };

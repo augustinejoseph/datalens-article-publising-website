@@ -18,6 +18,7 @@ const typeDefs = gql`
     previewImage: String
     claps: Int
     is_featured: Boolean
+    user_id : Int
   }
 
   type Query {
