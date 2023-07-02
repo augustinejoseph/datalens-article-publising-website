@@ -12,12 +12,12 @@ import {
   GET_ARTICLES_BY_AUTHOR,
   ApolloClient,
   InMemoryCache,
+  HomePostContainer,
+  RoundLoading,
+  Draft,
   gql,
-} from "./index";
+} from "../index";
 import "./AuthorProfile.css";
-import RoundLoading from "../Shimmers/RoundLoading";
-import { HomePostContainer } from "../EditArticle";
-import Draft from "../Draft/Draft";
 
 const client = new ApolloClient({
   uri: `${ARTICLE_SERVER_NODE_BASE_URL}graphql`,

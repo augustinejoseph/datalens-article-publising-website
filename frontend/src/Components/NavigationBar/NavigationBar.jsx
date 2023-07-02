@@ -33,7 +33,7 @@ import {
   PersonLinesFill
 } from "../index";
 import { FRONTEND_DOMAIN_NAME } from "../Admin";
-const Links = [];
+const Links = ['Trending', 'Featured',];
 
 const NavLink = ({ children }) => (
   <Link
@@ -89,12 +89,13 @@ export default function NavigationBar() {
               ))}
             </HStack>
           </HStack>
+
           {/* Conditionally rendering for user */}
           {user ? (
             <Flex alignItems={"center"}>
               <Menu>
                 <HStack>
-                  <Link to="/login" onClick={() => navigate("/login")}>
+                  <Link to="/new-article" onClick={() => navigate("/new-article")}>
                     <HStack>
                       <PencilSquare size={20} />
                       <span style={{marginRight:"1rem"}}>Write</span>
@@ -136,7 +137,7 @@ export default function NavigationBar() {
                   <MenuDivider />
                   <MenuItem>
                    <BoxArrowLeft style={{marginRight:"1rem"}} size={20} />
-                    <span >< Logout /></span>
+                    <span > < Logout /> </span>
                     
                   </MenuItem>
                 </MenuList>

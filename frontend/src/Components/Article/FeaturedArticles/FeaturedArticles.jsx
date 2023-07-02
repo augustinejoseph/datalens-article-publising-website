@@ -1,12 +1,4 @@
-import { Button, GET_FEATURED_ARTICLES, useQuery, gql, React, PersonCircle, Link } from "./index.jsx";
-
-// import "./FeaturedArticles.css";
-// import Button from "../SmallComponents/Button";
-// import { GET_FEATURED_ARTICLES } from "../../Queries/getArticlesGraphQL";
-// import React from "react";
-// import { useQuery, gql } from "@apollo/client";
-// import { PersonCircle } from "react-bootstrap-icons";
-// import { Link } from "react-router-dom";
+import { Button, GET_FEATURED_ARTICLES, useQuery, gql, React, PersonCircle, Link } from "../../index.jsx";
 
 const FeaturedArticles = () => {
   const { loading, error, data } = useQuery(GET_FEATURED_ARTICLES);

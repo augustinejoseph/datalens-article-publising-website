@@ -6,3 +6,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root{
+    --border:solid 2px rgba(242, 242, 242, 1)
+}

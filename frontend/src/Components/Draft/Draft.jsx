@@ -1,7 +1,5 @@
-import {React, extractBodyText, useNavigate, deleteDraft, ARTICLE_SERVER_NODE_BASE_URL, axios, DeleteConfirmationBox} from './index'
+import {React, extractBodyText, useNavigate, deleteDraft, ARTICLE_SERVER_NODE_BASE_URL, axios, DeleteConfirmationBox} from '../index'
 import './Draft.css'
-import { useState } from 'react'
-
 
 const Draft = ({title, body, id}) => {
     const navigate = useNavigate()

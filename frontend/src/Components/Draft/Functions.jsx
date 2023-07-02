@@ -1,4 +1,4 @@
-import {axios, ARTICLE_SERVER_NODE_BASE_URL, useNavigate} from './index'
+import {axios, ARTICLE_SERVER_NODE_BASE_URL, useNavigate} from '../index'
 
 export function extractBodyText(body) {
     const navigate = useNavigate()

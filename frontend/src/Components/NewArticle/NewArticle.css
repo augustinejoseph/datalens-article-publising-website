@@ -30,7 +30,10 @@
   border:  1px solid grey;
   border-radius: 20px;
   padding: 10px;
-  min-height: 70vh;
+  height: 65vh;
+  overflow: scroll;
+  
+
   /* position: fixed;
   top: 220px;
   bottom: 100px;
@@ -51,7 +54,7 @@
 .newarticle_quill h4,
 .newarticle_quill h5,
 .newarticle_quill h6 {
-  margin-top: 20px; /* Adjust the margin as needed */
+  margin-top: 20px; 
 }
 
 .newarticle_actions{

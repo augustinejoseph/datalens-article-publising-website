@@ -15,7 +15,7 @@ import {
   GET_ARTICLES,
   ARTICLE_SERVER_NODE_BASE_URL,
   Footer,
-} from '../../index.jsx'
+} from '../../index'
 
 const MainFeed = () => {
   const [categories, setCategories] = useState([]);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../../AuthorProfile";
+import { BACKEND_BASE_URL } from "../../index";
 
 const blockedButtonStyle = {
     backgroundColor: "red",

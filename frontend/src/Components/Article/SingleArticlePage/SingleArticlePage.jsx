@@ -1,4 +1,4 @@
-
+import "./SingleArticlePage.css";
 import {
   React,
   useState,
@@ -20,11 +20,13 @@ import {
   TrashFill,
   PencilSquare,
   ShareFill,
-  HandThumbsUp,
+  // HandThumbsUpFill,
   Chat,
   FeaturedArticles
   
-} from "./index";
+} from "../../index";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 
 const ArticlePage = () => {
   const navigate = useNavigate();
@@ -34,7 +36,9 @@ const ArticlePage = () => {
   // console.log("single article params", id);
   const datetimeString = article.createdAt;
   const datetime = new Date(datetimeString);
-  const localizedDatetime = datetime.toLocaleDateString();
+  const options = { month: 'long', day: 'numeric' };
+  const localizedDatetime = datetime.toLocaleDateString(undefined, options);
+  
   const { user } = useContext(AuthContext);
   // const [articleId, setArticleId] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -93,11 +97,12 @@ const ArticlePage = () => {
         <div className="article_main_heading">
           <span>{article.title}</span>
         </div>
-        <div className="article_main_image">
+        {/* <div className="article_main_image">
           {article.previewImage && 
           <img src={article.previewImage ? article?.previewImage : ""} alt="Preview" />
 }
-        </div>
+        </div> */}
+
         <div className="article_author_container">
           <span className="article_author_name">{article.name}</span>
           <div className="article_reading_details">
@@ -108,7 +113,7 @@ const ArticlePage = () => {
 
         <div className="article_interaction">
           <div className="article_interaction_leftside">
-            <span > <HandThumbsUp /> </span>
+            {/* <span > <HandThumbsUpFill /> </span> */}
             <p>{article?.claps || 0}</p>
             <span > <Chat /> </span>
             <p>{article?.comments || 0}</p>

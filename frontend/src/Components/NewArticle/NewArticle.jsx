@@ -16,7 +16,7 @@ import {
   useLocation,
   ArrowLeftCircleFill,
   deleteDraft,
-} from "./index";
+} from "../index";
 import "./NewArticle.css";
 // import storage from '../../Firebase/FirebaseConfig'
 

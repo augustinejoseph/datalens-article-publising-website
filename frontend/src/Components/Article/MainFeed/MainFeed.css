@@ -1,6 +1,6 @@
 .mainfeed_container{
     /* background-color: aquamarine; */
-    border-right: 2px solid rgb(221, 204, 204);
+    border-right: var(--border);
     margin-left: 0px;
     min-width: 60vw
 }
