@@ -8,12 +8,16 @@ const { default: mongoose } = require('mongoose');
 // Create a new Article
 router.post('/', function(req, res) {
   const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage,  } = req.body;
+  if (!title || !body || !category) {
+    return res.status(400).json({ error: 'Please provide title, body, and category' });
+  }
   const createdAt = Date.now();
   const updatedAt = Date.now();
   const is_banned = false
   const is_premium = false
   const is_featured = false
   const claps = 0
+  const pageViews = 0
   const slug = slugify(title, {
     replacement: '-', 
     lower: true,   
@@ -21,7 +25,7 @@ router.post('/', function(req, res) {
   })
   const uuid = uuidv4()
   const articleId = `${slug}-${uuid}`;
-  console.log('backend recieveed reading time', readingTime)
+  // console.log('backend recieveed reading time', readingTime)
 
 
   const newArticle = new Article({
@@ -45,6 +49,7 @@ router.post('/', function(req, res) {
     summary,
     previewImage,
     is_featured,
+    pageViews,
   });
 
   newArticle.save()
@@ -61,8 +66,10 @@ router.post('/', function(req, res) {
 // Save to draft
 router.post('/savetodraft',function(req, res) {
   const {title, body, user_id} = req.body
+  if(!title, !body, !user_id){
+    return res.status(400).json({ error: 'Please provide title, body, and category' });
+  }
   const createdAt = Date.now()
-
   const newDraft = new Draft({
     user_id,
     title,

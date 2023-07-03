@@ -1,5 +1,3 @@
-import { Airplane } from "react-bootstrap-icons";
-
 import "./MainFeed.css";
 import {
   React,
@@ -28,7 +26,7 @@ const MainFeed = () => {
           `${ARTICLE_SERVER_NODE_BASE_URL}category`
         );
         setCategories(response.data);
-        console.log("categories form mongodb, for mainfeed", response.data);
+        // console.log("categories form mongodb, for mainfeed", response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }

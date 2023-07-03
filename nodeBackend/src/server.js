@@ -27,6 +27,7 @@ async function startServer() {
     console.log(`Request received: ${req.method} ${req.url}`);
     next();
   });
+  
   // Apply the ApolloServer middleware to the Express app
   server.applyMiddleware({ app });
 

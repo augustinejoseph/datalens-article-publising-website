@@ -5,7 +5,7 @@ export {default as AuthContext} from "../Contexts/AuthContext";
 export {default as Logout} from "./Authentication/Logout";
 export { Navigate } from "react-router-dom";
 export {default as React} from 'react';
-export { PersonFill,PersonCircle, ArrowLeftCircleFill, BoxArrowLeft,HandThumbsUpFill, PersonLinesFill,TrashFill, PencilSquare, ShareFill, HandThumbsUp, Chat } from 'react-bootstrap-icons';
+export {Whatsapp, PersonFill,PersonCircle, ArrowLeftCircleFill, BoxArrowLeft,HandThumbsUpFill, PersonLinesFill,TrashFill, PencilSquare, ShareFill, HandThumbsUp, ChatFill } from 'react-bootstrap-icons';
 export {default as axios} from 'axios';
 export {default as HomeCategoryList} from './Home/HomeCategoryList';
 export {default as  HomePostContainer } from './Home/HomePostContainer/HomePostContainer';
@@ -31,3 +31,4 @@ export {extractBodyText} from './Draft/Functions'
 export {default as Draft} from './Draft/Draft'
 export {default as Button} from './SmallComponents/Button'
 export {default as NewArticle} from './NewArticle/NewArticle'
+export {WhatsappShareButton} from 'react-share'

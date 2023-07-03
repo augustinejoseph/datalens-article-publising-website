@@ -1,4 +1,5 @@
 import "./SingleArticlePage.css";
+import { addClap } from './functions';
 import {
   React,
   useState,
@@ -20,10 +21,12 @@ import {
   TrashFill,
   PencilSquare,
   ShareFill,
-  // HandThumbsUpFill,
-  Chat,
-  FeaturedArticles
-  
+  HandThumbsUpFill,
+  ChatFill,
+  FeaturedArticles,
+  Whatsapp,
+  FRONTEND_DOMAIN_NAME,
+  WhatsappShareButton
 } from "../../index";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -33,17 +36,16 @@ const ArticlePage = () => {
   const [article, setArticle] = useState({});
   const [articleBody, setArticleBody] = useState({});
   const { id } = useParams();
-  // console.log("single article params", id);
+  const [clap , setClaps] = useState(0)
   const datetimeString = article.createdAt;
   const datetime = new Date(datetimeString);
-  const options = { month: 'long', day: 'numeric' };
+  const options = { month: "long", day: "numeric" };
   const localizedDatetime = datetime.toLocaleDateString(undefined, options);
-  
   const { user } = useContext(AuthContext);
   // const [articleId, setArticleId] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
-
-
+  const articleUrl = `${FRONTEND_DOMAIN_NAME}${id}`
+  console.log(("url share", articleUrl));
   useEffect(() => {
     const fetchArticle = async () => {
       try {
@@ -59,7 +61,7 @@ const ArticlePage = () => {
     };
 
     fetchArticle();
-  }, [id]);
+  }, [id, clap]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -77,13 +79,18 @@ const ArticlePage = () => {
     setShowConfirmation(true);
   };
 
+
+const handleUpdateClap = () => {
+  addClap(id, ARTICLE_SERVER_NODE_BASE_URL, axios, setClaps)
+}
+
   const handleConfirmDelete = async () => {
-    try{
-      deleteArticle(id)
+    try {
+      deleteArticle(id);
       setShowConfirmation(false);
-      navigate("/")
-    }catch(error){
-      console.error(error)
+      navigate("/");
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -113,31 +120,51 @@ const ArticlePage = () => {
 
         <div className="article_interaction">
           <div className="article_interaction_leftside">
-            {/* <span > <HandThumbsUpFill /> </span> */}
+            <span onClick={handleUpdateClap}>
+              {" "}
+              <HandThumbsUpFill />{" "}
+            </span>
             <p>{article?.claps || 0}</p>
-            <span > <Chat /> </span>
+            <span>
+              {" "}
+              <ChatFill />{" "}
+            </span>
             <p>{article?.comments || 0}</p>
           </div>
           <div className="article_interaction_rightside"></div>
           <div className="article_share_commend_icon">
             {user && article.user_id === user.user_id && (
               <>
-                <span onClick={handleEditArticle}>< PencilSquare /></span>
-                <span onClick={handleDeleteConfirmation}> < TrashFill/></span>
+                <span onClick={handleEditArticle}>
+                  <PencilSquare />
+                </span>
+                <span onClick={handleDeleteConfirmation}>
+                  {" "}
+                  <TrashFill />
+                </span>
               </>
             )}
-            <span>< ShareFill /></span>
+            <WhatsappShareButton url={articleUrl}>
+              <Whatsapp />
+            </WhatsappShareButton>{" "}
+            {/* <RWebShare 
+            data={{
+              title : {title},
+              url : {articleUrl}
+            }}
+            >
+              < ShareFill />
+            </ RWebShare > */}
           </div>
         </div>
 
         {showConfirmation && (
-        <DeleteConfirmationBox
-          message="Are you sure you want to delete this article?"
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCancelDelete}
-        />
-      )}
-
+          <DeleteConfirmationBox
+            message="Are you sure you want to delete this article?"
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+          />
+        )}
 
         <div className="article_content_start">
           <ReactQuill
@@ -152,7 +179,7 @@ const ArticlePage = () => {
         {/* Related */}
 
         <div className="article_related_articles">
-          < FeaturedArticles />
+          <FeaturedArticles />
         </div>
         <Footer />
       </div>

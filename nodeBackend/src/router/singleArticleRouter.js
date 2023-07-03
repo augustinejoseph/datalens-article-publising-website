@@ -7,7 +7,9 @@ router.get('/:id', async (req, res) => {
     // console.log('id from frontend which is recieved  in backed', id);
     try{
         const article = await Article.findOne({articleId:id})
-        console.log('article', article)
+        // console.log('article', article)
+        article.pageViews += 1
+        article.save()
         if (!article){
             return res.status(404).json({error:'Article not found'})
         }
@@ -55,3 +57,19 @@ router.delete('/:id', async (req, res) => {
 
   
 module.exports = router
+
+// add clap
+router.put('/add-clap/:id' , async (req, res) => {
+  const {id} = req.params
+  try{
+    const article = await Article.findOne({articleId : id })
+    console.log("clap article name", article);
+    article.claps += 1
+    article.save()
+    res.status(200).json({message : "Added a clap successfully"})
+    console.log("one clap added ");
+  }catch(error){
+    console.log(error)
+    res.status(500).json(error)
+  }
+})

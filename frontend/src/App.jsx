@@ -43,7 +43,8 @@ function App() {
 
 
           {/* User Protected Routes  */}
-          <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />
+          <Route path='/new-article' element={ <NewArticle /> } />
+          {/* <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} /> */}
           <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} />
           <Route path='edit-article/:articleId' element={<UserProtectedRoute user={user}> <EditArticle /></UserProtectedRoute>} />
 

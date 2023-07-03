@@ -1,3 +1,4 @@
+import { title } from "process";
 import {
   axios,
   ARTICLE_SERVER_NODE_BASE_URL,
@@ -23,8 +24,8 @@ import "./NewArticle.css";
 const NewArticle = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const user_id = user.user_id;
-  const name = user.name;
+  const user_id = user?.user_id;
+  const name = user?.name;
   const [content, setContent] = useState({});
   // const [content, setContent] = useState({ title: "", body: "" });
   const [summaryValue, setSummaryValue] = useState("");
@@ -39,17 +40,18 @@ const NewArticle = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [readingTime, setReadingTime] = useState();
   const [uploadedImages, setUploadedImages] = useState([]);
-
+  const [isPublishButtonDisabled, setIsPublishButtonDisabled] = useState(true);
+  console.log("publish button status", isPublishButtonDisabled);
   // Editing Draft
   const location = useLocation();
   const id = location?.state?.id;
   // console.log('draft id in editor', location?.state?.id);
-  console.log("full content in state", content);
+  // console.log("full content in state", content);
   // console.log("categories", categories);
   // console.log("selected categories", selectedCategories);
   // console.log("preview img src", previewImage);
   // console.log("hash tags", hashtags);
-  // console.log('next button disabled', isNextButtonDisabled)
+  console.log("next button disabled", isNextButtonDisabled);
 
   useEffect(() => {
     // Fetch categories
@@ -66,20 +68,6 @@ const NewArticle = () => {
 
     fetchCategories();
   }, []);
-
-  // useEffect(() => {
-  //   if(!draftId){
-  //   setNextButtonDisabled(!content.title || !content.body);
-  //   const articleData = JSON.stringify(content);
-  //   localStorage.setItem("articleData", articleData);
-  //   }else{
-  //     const fetchDraft = async () => {
-  //     const draftData = await axios.get(`${ARTICLE_SERVER_NODE_BASE_URL}/newarticle/draft/${draftId}`)
-  //     const {title , body} = draftData
-
-  //     }
-  //   }
-  // }, [content]);
 
   useEffect(() => {
     if (id) {
@@ -276,9 +264,21 @@ const NewArticle = () => {
       .filter((option) => option.selected)
       .map((option) => option.value);
     setSelectedCategories(selectedOptions);
+
+    const isCategorySelected = selectedOptions.length > 0;
+    setIsPublishButtonDisabled(
+      !isCategorySelected || !content.title || !content.body
+    );
   };
 
-  const handleHashtagChange = (e) => {};
+  const handleHashtagChange = (e) => {
+    const inputValue = e.target.value;
+    const words = inputValue.replace(/\s+/g, " ").split(" ");
+
+    setHashtags(words);
+  };
+
+  console.log(hashtags);
 
   return (
     <div>
@@ -293,6 +293,11 @@ const NewArticle = () => {
           <div className="newarticle_actions">
             {!isArticleWritingCompleted ? (
               <button
+                className={
+                  isNextButtonDisabled
+                    ? "newarticle_nextbutton_disabled"
+                    : "newarticle_nextbutton"
+                }
                 disabled={isNextButtonDisabled}
                 onClick={() => setArticleWritingCompleted(true)}
               >
@@ -311,15 +316,18 @@ const NewArticle = () => {
               onChange={handleTitleChange}
             />
           </div>
+          {/* <div className="newarticle_quill_container"> */}
+
           <ReactQuill
             className="newarticle_quill"
             placeholder="Start crafting a story..."
             modules={modules}
             formats={formats}
-            theme="bubble"
+            theme="snow"
             value={content.body || ""}
             onChange={handleContentChange}
           />
+          {/* </div> */}
         </div>
       ) : (
         <div className="articleCompleted_container">
@@ -331,7 +339,15 @@ const NewArticle = () => {
             >
               <ArrowLeftCircleFill />
             </button>
-            <button disabled={isNextButtonDisabled} onClick={handlePublish}>
+            <button
+              className={
+                isPublishButtonDisabled
+                  ? "articleCompleted_publish_disabled"
+                  : "articleCompleted_publish"
+              }
+              disabled={isPublishButtonDisabled}
+              onClick={handlePublish}
+            >
               Publish
             </button>
           </div>

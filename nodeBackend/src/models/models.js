@@ -28,7 +28,8 @@ const articleSchema = new mongoose.Schema({
   is_premium : Boolean,
   summary: String,
   previewImage:String,
-  is_featured: Boolean
+  is_featured: Boolean,
+  pageViews : Number
 
 });
 const Article = mongoose.model('Article', articleSchema);
