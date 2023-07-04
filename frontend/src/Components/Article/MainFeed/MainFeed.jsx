@@ -13,9 +13,11 @@ import {
   GET_ARTICLES,
   ARTICLE_SERVER_NODE_BASE_URL,
   Footer,
+  useNavigate,
 } from '../../index'
 
 const MainFeed = () => {
+  const navigate = useNavigate()
   const [categories, setCategories] = useState([]);
   const { loading, error, data } = useQuery(GET_ARTICLES);
 
@@ -41,7 +43,7 @@ const MainFeed = () => {
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    navigate("/error")
   }
 
   const articles = data.articles;

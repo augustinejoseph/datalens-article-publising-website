@@ -24,9 +24,9 @@ const Logout = () => {
   };
 
   return (
-    <button onClick={handleLogout} style={{ border: 'none', padding: '0', background: 'none', color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>
+    <span onClick={handleLogout} style={{ border: 'none', padding: '0', background: 'none', color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>
       Logout
-    </button>
+    </span>
   );
 };
 

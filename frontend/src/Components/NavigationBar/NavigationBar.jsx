@@ -35,20 +35,20 @@ import {
 import { FRONTEND_DOMAIN_NAME } from "../Admin";
 const Links = ['Trending', 'Featured',];
 
-const NavLink = ({ children }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={"#"}
-  >
-    {children}
-  </Link>
-);
+// const NavLink = ({ children }) => (
+//   <Link
+//     px={2}
+//     py={1}
+//     rounded={"md"}
+//     _hover={{
+//       textDecoration: "none",
+//       bg: useColorModeValue("gray.200", "gray.700"),
+//     }}
+//     href={"#"}
+//   >
+//     {children}
+//   </Link>
+// );
 
 export default function NavigationBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,9 +84,9 @@ export default function NavigationBar() {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links?.map((link) => (
+              {/* {Links?.map((link) => (
                 <NavLink key={link}>{link}</NavLink>
-              ))}
+              ))} */}
             </HStack>
           </HStack>
 
@@ -111,8 +111,7 @@ export default function NavigationBar() {
                   minW={0}
                 >
                   <PersonFill
-                    size={"sm"}
-                    style={{ maxWidth: "100%", height: "30px", color: "grey" , border:"1px solid grey" , borderRadius:"50px", padding: "1px" }}
+                    style={{ maxWidth: "100%", height: "30px", width: "30px", color: "grey" , border:"1px solid grey" , borderRadius:"50px", padding: "1px" }}
                   />
                 </MenuButton>
                 <MenuList>
@@ -147,7 +146,7 @@ export default function NavigationBar() {
             <HStack>
               <HStack>
                 <Link to="/login" onClick={() => navigate("/login")}>
-                  <NavLink>Login</NavLink>
+                  <span>Login</span>
                 </Link>
               </HStack>
             </HStack>

@@ -6,8 +6,6 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
-
-
 const AdminLogin = () => {
   const location = useLocation();
   const currentUrl = location.pathname;
@@ -46,7 +44,7 @@ const AdminLogin = () => {
         name : "Admin"
       };
       setUser(LoggedInUser);
-      navigate("/admin-dashboard")
+      navigate("/admin")
     } catch (error) {
         if (error.response && error.response.data) {
           setErrorMessage("Invalid email or password");

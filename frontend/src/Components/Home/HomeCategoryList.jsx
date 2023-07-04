@@ -1,8 +1,10 @@
 import React from "react";
 import "./HomeCategoryList.css";
 import Button from "../SmallComponents/Button";
+import { useNavigate } from "../index";
 
 const HomeCategoryList = ({ categories, onCategoryClick }) => {
+  const navigate = useNavigate()
   const style = {
     margin: "0px 0px 0px 30px",
     cursor: "pointer",
@@ -13,8 +15,8 @@ const HomeCategoryList = ({ categories, onCategoryClick }) => {
     whiteSpace: "nowrap",
   };
 
-  const handleCategoryClick = (categoryId) => {
-    onCategoryClick(categoryId);
+  const handleCategoryClick = (name) => {
+   navigate(`/category/${name}`)
   };
 
   return (
@@ -24,7 +26,7 @@ const HomeCategoryList = ({ categories, onCategoryClick }) => {
           key={category._id}
           style={style}
           className="homecategory_category"
-          onClick={() => handleCategoryClick(category._id)}
+          onClick={() => handleCategoryClick(category.name)}
         >
           {category.name}
         </span>

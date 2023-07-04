@@ -5,7 +5,7 @@ export {default as AuthContext} from "../Contexts/AuthContext";
 export {default as Logout} from "./Authentication/Logout";
 export { Navigate } from "react-router-dom";
 export {default as React} from 'react';
-export {Whatsapp, PersonFill,PersonCircle, ArrowLeftCircleFill, BoxArrowLeft,HandThumbsUpFill, PersonLinesFill,TrashFill, PencilSquare, ShareFill, HandThumbsUp, ChatFill } from 'react-bootstrap-icons';
+export {Whatsapp, CardChecklist, PersonFill,PersonCircle, ArrowLeftCircleFill, BoxArrowLeft,HandThumbsUpFill, PersonLinesFill,TrashFill, PencilSquare, ShareFill, HandThumbsUp, ChatFill } from 'react-bootstrap-icons';
 export {default as axios} from 'axios';
 export {default as HomeCategoryList} from './Home/HomeCategoryList';
 export {default as  HomePostContainer } from './Home/HomePostContainer/HomePostContainer';
@@ -14,7 +14,7 @@ export { FRONTEND_DOMAIN_NAME, ARTICLE_SERVER_NODE_BASE_URL,BACKEND_BASE_URL } f
 export { useQuery, gql } from "@apollo/client";
 export {default as RoundLoading} from "./Shimmers/RoundLoading";
 export {default as LoadingMainFeed} from "./Shimmers/LoadingMainFeed";
-export { GET_ARTICLES, GET_FEATURED_ARTICLES, GET_ARTICLES_BY_AUTHOR } from "../Queries/getArticlesGraphQL";
+export { GET_ARTICLES, GET_FEATURED_ARTICLES, GET_ARTICLES_BY_AUTHOR,GET_ARTICLES_BY_CATEGORY } from "../Queries/getArticlesGraphQL";
 export {ApolloClient, InMemoryCache } from '@apollo/client';
 export { useParams } from 'react-router-dom'
 export { default as  calculateReadingTime } from '../Functions/readingTime';
@@ -32,3 +32,5 @@ export {default as Draft} from './Draft/Draft'
 export {default as Button} from './SmallComponents/Button'
 export {default as NewArticle} from './NewArticle/NewArticle'
 export {WhatsappShareButton} from 'react-share'
+export {default as ErrorPage} from './Others/ErrorPage';
+export { default as SortedArticle} from './Article/SortedArticles/SortedArticle';

@@ -1,5 +1,5 @@
 import "./SingleArticlePage.css";
-import { addClap } from './functions';
+import { addClap } from "./functions";
 import {
   React,
   useState,
@@ -26,7 +26,8 @@ import {
   FeaturedArticles,
   Whatsapp,
   FRONTEND_DOMAIN_NAME,
-  WhatsappShareButton
+  WhatsappShareButton,
+  SortedArticle,
 } from "../../index";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -36,16 +37,19 @@ const ArticlePage = () => {
   const [article, setArticle] = useState({});
   const [articleBody, setArticleBody] = useState({});
   const { id } = useParams();
-  const [clap , setClaps] = useState(0)
+  const [clap, setClaps] = useState(0);
   const datetimeString = article.createdAt;
   const datetime = new Date(datetimeString);
   const options = { month: "long", day: "numeric" };
   const localizedDatetime = datetime.toLocaleDateString(undefined, options);
   const { user } = useContext(AuthContext);
+  const [categoryName, setCategoryName] = useState("");
+  const [hashtags, setHashtags] = useState([]);
   // const [articleId, setArticleId] = useState("");
+  console.log("single article body", article);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const articleUrl = `${FRONTEND_DOMAIN_NAME}${id}`
-  console.log(("url share", articleUrl));
+  const articleUrl = `${FRONTEND_DOMAIN_NAME}${id}`;
+  // console.log(categoryName);
   useEffect(() => {
     const fetchArticle = async () => {
       try {
@@ -55,6 +59,7 @@ const ArticlePage = () => {
 
         setArticle({ ...data });
         setArticleBody(data.body);
+        setHashtags(data.hashtags);
       } catch (error) {
         console.log("error in full article", error);
       }
@@ -71,6 +76,8 @@ const ArticlePage = () => {
     return () => clearTimeout(timer);
   }, [user]);
 
+  // setCategoryName(article.category[0].name)
+  console.log(categoryName);
   const handleEditArticle = () => {
     navigate(`/edit-article/${id}`);
   };
@@ -79,10 +86,9 @@ const ArticlePage = () => {
     setShowConfirmation(true);
   };
 
-
-const handleUpdateClap = () => {
-  addClap(id, ARTICLE_SERVER_NODE_BASE_URL, axios, setClaps)
-}
+  const handleUpdateClap = () => {
+    addClap(id, ARTICLE_SERVER_NODE_BASE_URL, axios, setClaps);
+  };
 
   const handleConfirmDelete = async () => {
     try {
@@ -111,7 +117,15 @@ const handleUpdateClap = () => {
         </div> */}
 
         <div className="article_author_container">
-          <span className="article_author_name">{article.name}</span>
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate(`/user/${article?.user_name}`);
+            }}
+            className="article_author_name"
+          >
+            {article.name}
+          </span>
           <div className="article_reading_details">
             <span>5 Min Read</span>
             <span>{localizedDatetime}</span>
@@ -176,10 +190,24 @@ const handleUpdateClap = () => {
             value={articleBody}
           />
         </div>
+        {hashtags ? (
+          <div className="article_hashtags_container">
+            {hashtags.map((hashtag) => (
+              <span
+                onClick={() => navigate(`/tag/${hashtag}`)}
+                className="article_hashtag"
+              >
+                {hashtag}
+              </span>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
         {/* Related */}
 
         <div className="article_related_articles">
-          <FeaturedArticles />
+          <HomePostContainer category={article.category} />
         </div>
         <Footer />
       </div>

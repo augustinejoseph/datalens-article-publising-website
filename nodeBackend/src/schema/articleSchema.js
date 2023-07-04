@@ -19,12 +19,14 @@ const typeDefs = gql`
     claps: Int
     is_featured: Boolean
     user_id : Int
+    user_name : String
   }
 
   type Query {
     articles: [Article!]!
     featuredArticles: [Article]!
     articlesByAuthor(userId : ID!) : [Article]
+    articlesByCategory(categoryName: String!) : [Article]
   }
 `;
 

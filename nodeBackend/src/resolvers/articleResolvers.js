@@ -21,6 +21,7 @@ const resolvers = {
         throw new Error('Error retrieving featured articles');
       }
     },
+
     // Articles by author
     articlesByAuthor: async (_, { userId }) => {
       try {
@@ -33,12 +34,28 @@ const resolvers = {
         // console.log('error articlesByAuthor', error);
         throw new Error("Error retrieving articles by author");
       }
+    },
+
+// Articles by category
+articlesByCategory: async (_, { categoryName }) => {
+  console.log('inside articlesbucategory resolver backend');
+  try {
+    console.log('Retrieving articles by category. Category Name:', categoryName);
+    const category = await Category.findOne({ name: categoryName });
+    if (!category) {
+      throw new Error(`Category '${categoryName}' not found`);
     }
-  
+    const articlesByCategory = await Article.find({ category: category._id }).sort({createdAt: -1});
+    console.log('Articles retrieved:');
+    return articlesByCategory;
+  } catch (error) {
+    console.log('Error retrieving articles by category:', error);
+    throw new Error('Error retrieving articles by category');
+  }
+},
+
+
   },
-
-
-
 
 
 

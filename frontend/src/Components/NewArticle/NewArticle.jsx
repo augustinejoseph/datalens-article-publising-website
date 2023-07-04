@@ -26,6 +26,7 @@ const NewArticle = () => {
   const { user } = useContext(AuthContext);
   const user_id = user?.user_id;
   const name = user?.name;
+  const user_name = user?.user_name
   const [content, setContent] = useState({});
   // const [content, setContent] = useState({ title: "", body: "" });
   const [summaryValue, setSummaryValue] = useState("");
@@ -51,6 +52,7 @@ const NewArticle = () => {
   // console.log("selected categories", selectedCategories);
   // console.log("preview img src", previewImage);
   // console.log("hash tags", hashtags);
+  console.log('user_name', user_name);
   console.log("next button disabled", isNextButtonDisabled);
 
   useEffect(() => {
@@ -212,6 +214,7 @@ const NewArticle = () => {
       category: selectedCategories,
       previewImage: previewImage,
       readingTime: readingTime,
+      user_name : user_name,
     };
 
     try {
@@ -407,6 +410,28 @@ const NewArticle = () => {
                 value={hashtags.join(" ")}
                 onChange={handleHashtagChange}
               />
+            </div>
+
+            <div className="articleCompleted_buttons_mobile">
+              <button
+                onClick={() => {
+                  setArticleWritingCompleted(false);
+                }}
+                className="articleCompleted_publish"
+              >
+                Back
+              </button>
+              <button
+                className={
+                  isPublishButtonDisabled
+                    ? "articleCompleted_publish_disabled"
+                    : "articleCompleted_publish"
+                }
+                disabled={isPublishButtonDisabled}
+                onClick={handlePublish}
+              >
+                Publish
+              </button>
             </div>
           </div>
         </div>

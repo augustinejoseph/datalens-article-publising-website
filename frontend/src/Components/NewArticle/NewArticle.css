@@ -11,19 +11,6 @@
   min-width:840px;
 }
 
-@media ( max-width: 1200px) {
-  .newarticle_container {
-    padding: 10px 10px;
-  }
-  .newarticle_title > input{
-    font-size: x-large;
-    border-radius: 20px;
-    border:  var(--border);
-    padding:  .5rem;
-    margin-bottom: 1rem;
-    min-width:94vw;
-  }
-}
 
 
 .newarticle_actions{
@@ -184,6 +171,9 @@
 
 }
 
+.articleCompleted_buttons_mobile{
+  display: none;
+}
 
 .articleCompleted_publishingDetails select {
   width: 100%;
@@ -253,3 +243,107 @@
 .articleCompleted_hashtag{
   border-radius: 20px;
 }
+
+
+@media ( max-width: 1200px) {
+  .newarticle_container {
+    padding: 10px 10px;
+  }
+  .newarticle_title > input{
+    font-size: x-large;
+    border-radius: 20px;
+    border:  var(--border);
+    padding:  .5rem;
+    margin-bottom: 1rem;
+    min-width:94vw;
+  }
+
+  .newarticle_errormessage{
+    text-align: center;
+    color: white;
+    background-color: red;
+    margin: 1rem 1rem;
+    border-radius: 20px;
+  
+  }
+  
+  .newarticle_successmessage{
+    text-align: center;
+    color: white;
+    background-color: green;
+    margin: 1rem 1rem;
+    border-radius: 20px;
+  
+  }
+  .articleCompleted_buttons_mobile{
+    display: none;
+  }
+  
+}
+
+@media (max-width : 900px) {
+
+  .articleCompleted_container{
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px 20px 10px;
+    align-items: center;
+    justify-content: center;
+    /* background-color: bisque; */
+  }
+
+  .articleCompleted_details_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+  }
+  .articleCompleted_preview{
+    padding: 0 1rem;
+    margin: 0 1rem;
+    align-items: center;
+  }
+
+  .articleCompleted_summary{
+    width:fit-content;
+    height: fit-content;
+    /* margin: 10px; */
+    /* padding: 5px; */
+    border: 1px solid grey;
+    border-radius: 10px;
+    overflow:scroll;
+    word-wrap: break-word; 
+    /* background-color: red; */
+  
+  }
+
+  .articleCompleted_publishingDetails{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: rgb(159, 128, 118); */
+    padding: 10px;
+  
+  }
+  .articleCompleted_authorname{
+    font-size: larger;
+    font-weight: 700;
+  
+  }
+  .articleCompleted_hashtag{
+    border: grey 1px solid;
+    margin: .5rem 0;
+  }
+
+  .articleCompleted_buttons{
+    display: none;
+  }
+
+  .articleCompleted_buttons_mobile{
+    display: block;
+    display: flex;
+    justify-content: space-between;
+  }
+
+}
+

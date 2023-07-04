@@ -29,7 +29,8 @@ const articleSchema = new mongoose.Schema({
   summary: String,
   previewImage:String,
   is_featured: Boolean,
-  pageViews : Number
+  pageViews : Number,
+  user_name : String,
 
 });
 const Article = mongoose.model('Article', articleSchema);

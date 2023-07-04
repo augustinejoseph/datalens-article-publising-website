@@ -23,6 +23,8 @@ import AdminPanelCategory from "./Components/Admin/Category/AdminPanelCategory.j
 import AdminPanelArticles from "./Components/Admin/Articles/AdminPanelArticles.jsx";
 import AdminDashboard from "./Components/Admin/Dashboard/AdminDashboard.jsx";
 import NavigationBar from "./Components/NavigationBar/NavigationBar.jsx";
+import { ErrorPage } from "./Components/index.jsx";
+import SortedArticle from "./Components/Article/SortedArticles/SortedArticle.jsx";
 function App() {
   const { user } = useContext(AuthContext);
 
@@ -33,6 +35,7 @@ function App() {
         <Routes>
           <Route path="/" Component={Home} />
           <Route path="/*" Component={PageNotFound} />
+          <Route path ="/error" element={<ErrorPage />} />
           <Route path="/404" Component={PageNotFound} />
           <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
           <Route  path="/register" element={user ?<Navigate to = "/" /> : <Register />} />
@@ -40,11 +43,12 @@ function App() {
           <Route path="/verify-email" element={user ? <Navigate to="/" /> : <VerifyEmail />} />
           <Route path="/article/:id" Component={ArticlePage} />
           <Route path="/user/:username" element={<AuthorProfile />} />
-
+          <Route path="/user/undefined" element={<ErrorPage />} />
+          <Route path="/category/:categoryName" element={<SortedArticle />} />
+          <Route path="/tag/:hashtagName" element={<SortedArticle />} />
 
           {/* User Protected Routes  */}
-          <Route path='/new-article' element={ <NewArticle /> } />
-          {/* <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} /> */}
+          <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />
           <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} />
           <Route path='edit-article/:articleId' element={<UserProtectedRoute user={user}> <EditArticle /></UserProtectedRoute>} />
 

@@ -112,3 +112,10 @@
   margin-top: 20px;
 
 }
+
+.article_hashtag{
+    padding: .4rem 1.5rem;
+    background-color: var(--button_background);
+    border-radius: 20px;
+    margin: 0 1rem;
+}

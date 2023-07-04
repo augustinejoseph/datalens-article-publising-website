@@ -7,7 +7,7 @@ const { default: mongoose } = require('mongoose');
 
 // Create a new Article
 router.post('/', function(req, res) {
-  const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage,  } = req.body;
+  const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage, user_name  } = req.body;
   if (!title || !body || !category) {
     return res.status(400).json({ error: 'Please provide title, body, and category' });
   }
@@ -50,6 +50,7 @@ router.post('/', function(req, res) {
     previewImage,
     is_featured,
     pageViews,
+    user_name,
   });
 
   newArticle.save()

@@ -30,18 +30,22 @@ const AuthorProfile = () => {
   const [author, setAuthor] = useState({});
   const [activeTab, setActiveTab] = useState("home");
   const [articles, setArticles] = useState([]);
-  const [drafts, setDrafts] = useState([])
-  const {user} = useContext(AuthContext)
-  const [userId, setUserId]=useState()
-  console.log('id from context', user?.user_id +'  id from server', author?.id);
-    console.log("drafts in state", drafts);
+  const [drafts, setDrafts] = useState([]);
+  const { user } = useContext(AuthContext);
+  const [userId, setUserId] = useState();
+  console.log(
+    "id from context",
+    user?.user_id + "  id from server",
+    author?.id
+  );
+  console.log("drafts in state", drafts);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
   useEffect(() => {
     setUserId(user?.user_id);
-    console.log('user id from inside useEffect', user?.user_id);
+    console.log("user id from inside useEffect", user?.user_id);
     const fetchData = async () => {
       try {
         // Sql Django Query for author data
@@ -51,15 +55,15 @@ const AuthorProfile = () => {
         console.log(response.data);
         const { id, user_name, first_name, last_name, email } = response.data;
         setAuthor({ id, user_name, first_name, last_name, email });
-  
+
         // Node Mongodb query for drafts of the author
-        if(author?.id === user?.user_id){
-        const draftsResponse = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/alldrafts/${id}`
-        );
-        console.log('all drafts form author', draftsResponse.data);
-        setDrafts(draftsResponse.data);
-         }
+        if (author?.id === user?.user_id) {
+          const draftsResponse = await axios.get(
+            `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/alldrafts/${id}`
+          );
+          console.log("all drafts form author", draftsResponse.data);
+          setDrafts(draftsResponse.data);
+        }
 
         // Node Mongodb Query for Article List
         const { data, loading, error } = await client.query({
@@ -81,10 +85,9 @@ const AuthorProfile = () => {
         console.error("Error fetching author details:", error);
       }
     };
-  
+
     fetchData();
   }, [activeTab]);
-  
 
   return (
     <div className="profile_container">
@@ -105,14 +108,14 @@ const AuthorProfile = () => {
           About
         </button>
 
-        {author?.id === user?.user_id &&
-        <button
-          className={activeTab === "drafts" ? "active" : ""}
-          onClick={() => handleTabClick("drafts")}
-        >
-          Drafts
-        </button>
-                }
+        {author?.id === user?.user_id && (
+          <button
+            className={activeTab === "drafts" ? "active" : ""}
+            onClick={() => handleTabClick("drafts")}
+          >
+            Drafts
+          </button>
+        )}
       </div>
       {/* Contents */}
       <div className="profile_tab-content">
@@ -139,21 +142,19 @@ const AuthorProfile = () => {
             <span>{author.email}</span>
           </div>
         )}
-        
-        
-        {activeTab === "drafts" && (
-  <div>
-    {drafts.map((draft) => (
-      <Draft
-        key={draft._id}
-        title={draft.title}
-        body={draft.body}
-        id = {draft._id}
-      />
-    ))}
-  </div>
-)}
 
+        {activeTab === "drafts" && (
+          <div>
+            {drafts.map((draft) => (
+              <Draft
+                key={draft._id}
+                title={draft.title}
+                body={draft.body}
+                id={draft._id}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

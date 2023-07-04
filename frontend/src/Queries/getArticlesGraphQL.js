@@ -16,6 +16,7 @@ export const GET_ARTICLES = gql`
       articleId
       previewImage
       user_id
+      user_name
     }
   }
 `;
@@ -56,6 +57,25 @@ export const GET_ARTICLES_BY_AUTHOR = gql`
       articleId
       previewImage
       is_featured
+    }
+  }
+`;
+
+
+// Articles by category
+export const GET_ARTICLES_BY_CATEGORY = gql`
+  query GetArticlesByCategory($categoryName: String!) {
+    articlesByCategory(categoryName: $categoryName) {
+      title
+      name
+      createdAt
+      summary
+      is_premium
+      readingTime
+      articleId
+      previewImage
+      is_featured
+      user_id
     }
   }
 `;
