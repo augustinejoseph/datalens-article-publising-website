@@ -47,7 +47,6 @@ const MainFeed = () => {
   }
 
   const articles = data.articles;
-  // console.log("data from graphql mainfeed", data);
 
   return (
     <div className="mainfeed_container">
@@ -66,6 +65,7 @@ const MainFeed = () => {
           summary={article.summary}
           previewImage={article.previewImage}
           user_id = {article.user_id}
+          user_name = {article.user_name}
         />
       ))}
       <div className="mainfeed_footer">

@@ -1,30 +1,36 @@
-
-import {BrowserRouter as Router, Route,  Routes,  Navigate,  Link} from "react-router-dom";
-import Login from "./Components/Authentication/Login.jsx";
-import Navbar from "./Components/Navbar/Navbar.jsx";
-import Home from "./Components/Home/Home.jsx";
-import Register from "./Components/Authentication/Register.jsx";
-import Logout from "./Components/Authentication/Logout.jsx";
-import { useContext } from "react";
-import AuthContext from "./Contexts/AuthContext.jsx";
-import VerifyEmail from "./Components/Authentication/VerifyEmail.jsx";
-import AdminLogin from "./Components/Authentication/AdminLogin.jsx";
-import ArticlePage from "./Components/Article/SingleArticlePage/SingleArticlePage.jsx";
-import PageNotFound from "./Components/Others/PageNotFound.jsx";
-import UserProtectedRoute from "./Components/Authentication/UserProtectedRoute.jsx";
-import Account from "./Components/Account/Account.jsx";
-import AdminProtectedRoute from "./Components/Authentication/AdminProtectedRoute.jsx";
-import NewArticle from "./Components/NewArticle/NewArticle.jsx";
-import EditArticle from "./Components/EditArticle/EditArticle.jsx";
-import AuthorProfile from "./Components/AuthorProfile/AuthorProfile.jsx";
-import AdminPanelUser from "./Components/Admin/Users/AdminPanelUser.jsx";
-import AdminPanelLayout from "./Components/Admin/Layout/AdminPanelLayout.jsx";
-import AdminPanelCategory from "./Components/Admin/Category/AdminPanelCategory.jsx";
-import AdminPanelArticles from "./Components/Admin/Articles/AdminPanelArticles.jsx";
-import AdminDashboard from "./Components/Admin/Dashboard/AdminDashboard.jsx";
-import NavigationBar from "./Components/NavigationBar/NavigationBar.jsx";
-import { ErrorPage } from "./Components/index.jsx";
-import SortedArticle from "./Components/Article/SortedArticles/SortedArticle.jsx";
+import {
+  Login,
+  Home,
+  Register,
+  Logout,
+  VerifyEmail,
+  AdminLogin,
+  ArticlePage,
+  PageNotFound,
+  UserProtectedRoute,
+  AdminProtectedRoute,
+  NewArticle,
+  EditArticle,
+  AuthorProfile,
+  AdminPanelUser,
+  AdminPanelLayout,
+  AdminPanelCategory,
+  AdminPanelArticles,
+  NavigationBar,
+  SortedArticle,
+  AuthContext,
+  useContext,
+  ErrorPage,
+  AdminDashboard,
+  AllFeatured,
+} from "./Components/index";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  Link,
+} from "react-router-dom";
 function App() {
   const { user } = useContext(AuthContext);
 
@@ -35,31 +41,105 @@ function App() {
         <Routes>
           <Route path="/" Component={Home} />
           <Route path="/*" Component={PageNotFound} />
-          <Route path ="/error" element={<ErrorPage />} />
+          <Route path="/error" element={<ErrorPage />} />
           <Route path="/404" Component={PageNotFound} />
-          <Route  path="/login" element={user ?<Navigate to = "/" /> : <Login />} />
-          <Route  path="/register" element={user ?<Navigate to = "/" /> : <Register />} />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={user ? <Navigate to="/" /> : <Register />}
+          />
           <Route path="/logout" Component={Logout} />
-          <Route path="/verify-email" element={user ? <Navigate to="/" /> : <VerifyEmail />} />
+          <Route
+            path="/verify-email"
+            element={user ? <Navigate to="/" /> : <VerifyEmail />}
+          />
           <Route path="/article/:id" Component={ArticlePage} />
           <Route path="/user/:username" element={<AuthorProfile />} />
           <Route path="/user/undefined" element={<ErrorPage />} />
+          <Route path="/user/null" element={<ErrorPage />} />
+          <Route path="/article/undefined" element={<ErrorPage />} />
+          <Route path="/article/null" element={<ErrorPage />} />
           <Route path="/category/:categoryName" element={<SortedArticle />} />
           <Route path="/tag/:hashtagName" element={<SortedArticle />} />
+          <Route path="/featured" Component={AllFeatured} />
+          <Route path="/trending" Component={AllFeatured} />
+          <Route path="/premium" Component={AllFeatured} />
 
           {/* User Protected Routes  */}
-          <Route path='/new-article' element={<UserProtectedRoute > <NewArticle /> </UserProtectedRoute>} />
-          <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} />
-          <Route path='edit-article/:articleId' element={<UserProtectedRoute user={user}> <EditArticle /></UserProtectedRoute>} />
+          <Route
+            path="/new-article"
+            element={
+              <UserProtectedRoute>
+                {" "}
+                <NewArticle />{" "}
+              </UserProtectedRoute>
+            }
+          />
+          {/* <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} /> */}
+          <Route
+            path="edit-article/:articleId"
+            element={
+              <UserProtectedRoute user={user}>
+                {" "}
+                <EditArticle />
+              </UserProtectedRoute>
+            }
+          />
 
           {/* Admin Protected Routes */}
-          <Route path="/admin/users" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminPanelUser /></AdminPanelLayout></AdminProtectedRoute>} />
-          <Route path="/admin/articles" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminPanelArticles /></AdminPanelLayout></AdminProtectedRoute>} />
-          <Route path="/admin/categories" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminPanelCategory /></AdminPanelLayout></AdminProtectedRoute>} />
-          <Route path="/admin/dashboard" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminDashboard /></AdminPanelLayout></AdminProtectedRoute>} />
-          <Route path="/admin" element={<AdminProtectedRoute user={user}><AdminPanelLayout><AdminDashboard /></AdminPanelLayout></AdminProtectedRoute>} />
-
-
+          <Route
+            path="/admin/users"
+            element={
+              <AdminProtectedRoute user={user}>
+                <AdminPanelLayout>
+                  <AdminPanelUser />
+                </AdminPanelLayout>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/articles"
+            element={
+              <AdminProtectedRoute user={user}>
+                <AdminPanelLayout>
+                  <AdminPanelArticles />
+                </AdminPanelLayout>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/categories"
+            element={
+              <AdminProtectedRoute user={user}>
+                <AdminPanelLayout>
+                  <AdminPanelCategory />
+                </AdminPanelLayout>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminProtectedRoute user={user}>
+                <AdminPanelLayout>
+                  <AdminDashboard />
+                </AdminPanelLayout>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute user={user}>
+                <AdminPanelLayout>
+                  <AdminDashboard />
+                </AdminPanelLayout>
+              </AdminProtectedRoute>
+            }
+          />
 
           {/* <Route path="/admin/users" element={<AdminProtectedRoute user={user}> <AdminPanelUser /> </AdminProtectedRoute> } /> */}
 

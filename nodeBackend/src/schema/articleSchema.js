@@ -25,8 +25,12 @@ const typeDefs = gql`
   type Query {
     articles: [Article!]!
     featuredArticles: [Article]!
+    trendingArticles: [Article] !
+    premiumArticles: [Article] !
     articlesByAuthor(userId : ID!) : [Article]
     articlesByCategory(categoryName: String!) : [Article]
+    articlesByHashtag(hashtagName : String!) : [Article]
+    
   }
 `;
 

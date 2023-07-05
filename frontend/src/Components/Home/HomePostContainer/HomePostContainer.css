@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     padding: 10px 30px 10px 30px ;
-    /* margin: 5px 0px 5px 0px; */
+    margin: 1.3rem 0;
 }
 
 .homepost_container_firstrow{
@@ -26,6 +26,8 @@
 .homepost_container_secondrow h2{ 
     font-size: x-large;
     padding-left: 20px;
+    text-decoration: solid;
+    font-weight: 600;
 }
 
 .homepost_container_thirdrow{

@@ -1,12 +1,8 @@
 import './Sidebar.css'
-import TrendingInSide from './TrendingInSide';
-import FeaturedArticles from './FeaturedArticles/FeaturedArticles';
-import SideAdvertisement from '../Advertisements/SideAdvertisement';
-import Footer from "../Footer/Footer"
+import {TrendingInSide, FeaturedArticles, SideAdvertisement, Footer} from '../index'
 const Sidebar = () => {
     return(
         <div>
-        <TrendingInSide />
         <TrendingInSide />
         <FeaturedArticles />
         <SideAdvertisement />

@@ -46,7 +46,6 @@ color: grey;
 .featured_article_secondrow{
     display: flex;
     flex-direction: row;
-    /* margin: 1rem; */
 }
 
 .featured_article_secondrow svg{

@@ -3,7 +3,11 @@ import "./HomePostContainer.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FRONTEND_DOMAIN_NAME } from "../../Admin";
 import { useState, axios, BACKEND_BASE_URL } from "../../index";
-import { fetchAuthorData, authorNameButton, categoryButtonStyle } from "./functions";
+import {
+  fetchAuthorData,
+  authorNameButton,
+  categoryButtonStyle,
+} from "./functions";
 const HomePostContainer = (props) => {
   const {
     title,
@@ -16,34 +20,26 @@ const HomePostContainer = (props) => {
     category,
     readingTime,
     previewImage,
+    user_name,
   } = props;
   const datetimeString = createdAt;
   const datetime = new Date(datetimeString);
   const localizedDatetime = datetime.toLocaleDateString();
-  const [author, setAuthor] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const navigate = useNavigate()
-  console.log("author", author);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
+  // console.log("author", author);
 
   const handleCategoryClick = (categoryName) => {
-    setSelectedCategory(categoryName)
-    navigate(`/category/${category.name}`)
-  }
+    setSelectedCategory(categoryName);
+    navigate(`/category/${category.name}`);
+  };
 
-  useEffect(() => {
-    fetchAuthorData(BACKEND_BASE_URL, user_id, setAuthor, axios);
-  }, []);
 
   return (
     <div className="homepost_container">
       <div className="homepost_container_firstrow">
-        <button
-          style={authorNameButton}
-        >
-          
-          <Link to={`${FRONTEND_DOMAIN_NAME}user/${author.user_name}`}>
-            {name}
-          </Link>
+        <button style={authorNameButton}>
+          <Link to={`${FRONTEND_DOMAIN_NAME}user/${user_name}`}>{name}</Link>
         </button>
 
         <span>{localizedDatetime}</span>
@@ -54,7 +50,7 @@ const HomePostContainer = (props) => {
         to={`/article/${articleId}`}
         className="homepost_container_secondrow"
       >
-        <h2 className="tooltip">
+        <h2 className="homepost_container_secondrow_title">
           {title && title.length > 60 ? `${title.slice(0, 70)}...` : title}
         </h2>
       </Link>
@@ -78,9 +74,16 @@ const HomePostContainer = (props) => {
       </Link>
 
       <div className="homepost_container_forthrow">
-        { category?.name ? 
-        <span onClick={() => handleCategoryClick(category?.name)} style={categoryButtonStyle}>{category?.name}</span>
-           : " "}
+        {category?.name ? (
+          <span
+            onClick={() => handleCategoryClick(category?.name)}
+            style={categoryButtonStyle}
+          >
+            {category?.name}
+          </span>
+        ) : (
+          " "
+        )}
         <span>{readingTime ? readingTime + "min read" : ""} </span>
         {/* <span>save</span> */}
         {/* <span>More</span> */}

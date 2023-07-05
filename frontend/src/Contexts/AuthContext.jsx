@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const access_token = Cookies.get("access_token")
     if (access_token) {
       const decoded_token =  jwt_decode(access_token)
-      const {name, email, is_active, is_banned, is_admin, user_id, user_name} = decoded_token
+      const {name, email, is_active, is_banned, is_admin, user_id, user_name, is_premium} = decoded_token
       const user = {
         name : name,
         email : email,
@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
         is_admin : is_admin,
         user_id : user_id,
         user_name : user_name,
+        is_premium : is_premium
       }
       setUser(user)
     }

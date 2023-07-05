@@ -15,10 +15,24 @@ const resolvers = {
     // Featured Articles
     featuredArticles: async () => {
       try {
-        const featuredArticles = await Article.find({ is_featured: true }).populate('category');
+        const featuredArticles = await Article.find({ is_featured: true }).populate('category').limit(10);
         return featuredArticles;
       } catch (error) {
         throw new Error('Error retrieving featured articles');
+      }
+    },
+
+    // Trending Articles
+    trendingArticles : async () => {
+      try{
+        const lastWeekDate = new Date()
+        lastWeekDate.setDate(lastWeekDate.getDate() -7)
+        const trendingArticles = await Article.find({createdAt : {$gte: lastWeekDate}}).populate('category')
+        .sort({claps: -1, pageViews: -1}).limit(10)
+        return trendingArticles
+      }catch(error){
+        console.log(error);
+        throw new Error("Error retrieving trending articles")
       }
     },
 
@@ -38,7 +52,7 @@ const resolvers = {
 
 // Articles by category
 articlesByCategory: async (_, { categoryName }) => {
-  console.log('inside articlesbucategory resolver backend');
+  console.log('inside articlesby category resolver backend');
   try {
     console.log('Retrieving articles by category. Category Name:', categoryName);
     const category = await Category.findOne({ name: categoryName });
@@ -53,6 +67,32 @@ articlesByCategory: async (_, { categoryName }) => {
     throw new Error('Error retrieving articles by category');
   }
 },
+
+// Articles by tag
+articlesByHashtag: async (_, { hashtagName }) => {
+  console.log('Inside articlesByHashtag resolver');
+  try {
+    console.log('Retrieving articles by hashtag. Hashtag Name:', hashtagName);
+    const articles = await Article.find({ "hashtags": hashtagName });
+    return articles;
+  } catch (error) {
+    console.log('Error retrieving articles by hashtag:', error);
+    throw new Error('Error retrieving articles by hashtag');
+  }
+},
+
+// Premium Articles
+premiumArticles: async () => {
+  try{
+    const premiumArticles = await Article.find({is_premium : true}).populate('category')
+    console.log();
+    return premiumArticles
+
+  }catch(error){
+    console.log("premium errro", error);
+    throw new Error("Error retrieving premium articles")
+  }
+}
 
 
   },

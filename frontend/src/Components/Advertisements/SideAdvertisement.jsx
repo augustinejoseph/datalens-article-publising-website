@@ -1,4 +1,5 @@
 import React from 'react'
+import './SideAdvertisement.css'
 
 const SideAdvertisement = () => {
   return (
@@ -8,4 +9,4 @@ const SideAdvertisement = () => {
   )
 }
 
-export default SideAdvertisement
+export default SideAdvertisement;

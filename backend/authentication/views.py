@@ -112,6 +112,7 @@ class Loginview(APIView):
         access_token['is_active'] = user.is_active
         access_token['is_banned'] = user.is_banned
         access_token['is_admin'] = user.is_superuser
+        access_token['is_premium'] = user.is_premium
         access_token = str(access_token)
         refresh_token = str(RefreshToken.for_user(user))
         return Response({

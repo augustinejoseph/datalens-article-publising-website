@@ -1,3 +1,5 @@
+import AdminLogin from './Authentication/AdminLogin';
+
 export {default as fullLogo} from '../Constants/full_logo.png'
 export { Link, useLocation, useNavigate } from "react-router-dom";
 export { useContext, useState, useEffect } from "react";
@@ -14,12 +16,12 @@ export { FRONTEND_DOMAIN_NAME, ARTICLE_SERVER_NODE_BASE_URL,BACKEND_BASE_URL } f
 export { useQuery, gql } from "@apollo/client";
 export {default as RoundLoading} from "./Shimmers/RoundLoading";
 export {default as LoadingMainFeed} from "./Shimmers/LoadingMainFeed";
-export { GET_ARTICLES, GET_FEATURED_ARTICLES, GET_ARTICLES_BY_AUTHOR,GET_ARTICLES_BY_CATEGORY } from "../Queries/getArticlesGraphQL";
+export { GET_ARTICLES, GET_FEATURED_ARTICLES, GET_ARTICLES_BY_AUTHOR,GET_ARTICLES_BY_CATEGORY, GET_ARTICLES_BY_HASHTAG, GET_TRENDING_ARTICLES, GET_PREMIUM_ARTICLES } from "../Queries/getArticlesGraphQL";
 export {ApolloClient, InMemoryCache } from '@apollo/client';
 export { useParams } from 'react-router-dom'
 export { default as  calculateReadingTime } from '../Functions/readingTime';
 export {default as ReactQuill} from "react-quill";
-export {default as FeaturedArticles} from "./Article/FeaturedArticles/FeaturedArticles";
+export {default as FeaturedArticles} from "./Article/FeaturedSidebar/FeaturedArticles";
 export {deleteArticle} from "../Components/Article/SingleArticlePage/axios";
 export { formats, modules, toolbarOptions} from './NewArticle/tools';
 export {default as DeleteConfirmationBox } from './Others/Confirmation/DeleteConfirmation/DeleteConfirmationBox';
@@ -29,8 +31,29 @@ export {storage } from '../Firebase/FirebaseConfig'
 export {default as PageNotFound} from './Others/PageNotFound'
 export {extractBodyText} from './Draft/Functions'
 export {default as Draft} from './Draft/Draft'
-export {default as Button} from './SmallComponents/Button'
 export {default as NewArticle} from './NewArticle/NewArticle'
 export {WhatsappShareButton} from 'react-share'
 export {default as ErrorPage} from './Others/ErrorPage';
 export { default as SortedArticle} from './Article/SortedArticles/SortedArticle';
+export {default as SideAdvertisement} from './Advertisements/SideAdvertisement';
+export {default as TrendingInSide} from './Article/TrendingSidebar/TrendingInSide';
+export {default as Button} from './SmallComponents/Button';
+export {default as AdminLogin} from './Authentication/AdminLogin';
+export {default as AdminPanelArticles} from './Admin/Articles/AdminPanelArticles';
+export {default as AdminPanelCategory} from './Admin/Category/AdminPanelCategory';
+export {default as AdminPanelLayout} from "./Admin/Layout/AdminPanelLayout.jsx";
+export {default as AdminPanelUser} from "./Admin/Users/AdminPanelUser.jsx";
+export {default as AdminProtectedRoute} from "./Authentication/AdminProtectedRoute.jsx";
+export {default as ArticlePage} from "./Article/SingleArticlePage/SingleArticlePage.jsx";
+export {default as AuthorProfile} from "./AuthorProfile/AuthorProfile.jsx";
+export {default as EditArticle} from "./EditArticle/EditArticle.jsx";
+export {default as Home} from "./Home/Home.jsx";
+export {default as Login} from "./Authentication/Login.jsx";
+export {default as  NavigationBar} from "./NavigationBar/NavigationBar.jsx";
+export {default as Register} from "./Authentication/Register.jsx";
+export {default as UserProtectedRoute} from "./Authentication/UserProtectedRoute.jsx";
+export {default as VerifyEmail} from "./Authentication/VerifyEmail.jsx";
+export {default as AdminDashboard} from "./Admin/Dashboard/AdminDashboard.jsx";
+export {default as AllFeatured} from './Article/AllFeatured/AllFeatured';
+
+// export {default as 

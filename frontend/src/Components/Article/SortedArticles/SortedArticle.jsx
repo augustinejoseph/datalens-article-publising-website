@@ -18,6 +18,7 @@ import {
   gql,
   CardChecklist,
   GET_ARTICLES_BY_CATEGORY,
+  GET_ARTICLES_BY_HASHTAG,
   GET_ARTICLES,
   Navigate,
   useNavigate,
@@ -32,31 +33,54 @@ const SortedArticle = () => {
     setActiveTab(tab);
   };
 
-  const {categoryName, tagName} = useParams();
-  const params = 'technology'
-  console.log("sorted articles category name", categoryName);
-  // console.log('category in sorted articles', params.categoryName);
-  const category = params.categoryName;
+  const { categoryName, hashtagName } = useParams();
+  const isCategory = !!categoryName;
+  console.log('--catego--',categoryName);
+  console.log('--hashtag---', hashtagName);
+
+  if (categoryName){
   const { loading, error, data } = useQuery(GET_ARTICLES_BY_CATEGORY, {
-    variables: { categoryName: category },
+    variables: { categoryName: categoryName },
   });
+  console.log(data);
   useEffect(() => {
     if (data) {
       setArticles(data.articlesByCategory);
     }
-  }, [data,category,activeTab]);
+  }, [data,categoryName,activeTab]);
   if (loading) {
     return <RoundLoading />;
   }
   if (error) {
-    navigate("/error");
+    console.log(error);
+    // navigate("/error");
   }
+}
 
+
+if(hashtagName){
+  const { loading, error, data } = useQuery(GET_ARTICLES_BY_HASHTAG, {
+   variables: {hashtagName : hashtagName },
+  });
+  console.log('sorted article tag data',data);
+  useEffect(() => {
+    if (data) {
+      setArticles(data.articlesByHashtag);
+    }
+  }, [data,hashtagName,activeTab]);
+  if (loading) {
+    return <RoundLoading />;
+  }
+  if (error) {
+    console.log("error in  hashtag frontend catch",error);
+    // navigate("/error");
+  }
+}
   return (
     <div className="sortedarticle_container">
       <div className="sortedarticle_name_container">
         <CardChecklist />
-        <span> {category}</span>
+        <span> {categoryName || hashtagName}</span>
       </div>
       <div className="sortedarticle_tab-navigation">
         <button
