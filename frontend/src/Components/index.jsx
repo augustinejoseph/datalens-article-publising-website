@@ -1,13 +1,11 @@
-import AdminLogin from './Authentication/AdminLogin';
-
 export {default as fullLogo} from '../Constants/full_logo.png'
-export { Link, useLocation, useNavigate } from "react-router-dom";
+export {default as premium} from '../Constants/premium.png'
+export { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 export { useContext, useState, useEffect } from "react";
 export {default as AuthContext} from "../Contexts/AuthContext";
-export {default as Logout} from "./Authentication/Logout";
-export { Navigate } from "react-router-dom";
-export {default as React} from 'react';
-export {Whatsapp, CardChecklist, PersonFill,PersonCircle, ArrowLeftCircleFill, BoxArrowLeft,HandThumbsUpFill, PersonLinesFill,TrashFill, PencilSquare, ShareFill, HandThumbsUp, ChatFill } from 'react-bootstrap-icons';
+export {default as Logout} from "./Authentication/Logout/Logout";
+export {default as React, useRef} from 'react';
+export {Whatsapp,Flag,X, CardChecklist, PersonFill,PersonCircle, ArrowLeftCircleFill, BoxArrowLeft,HandThumbsUpFill, PersonLinesFill,TrashFill, PencilSquare, ShareFill, HandThumbsUp, ChatFill } from 'react-bootstrap-icons';
 export {default as axios} from 'axios';
 export {default as HomeCategoryList} from './Home/HomeCategoryList';
 export {default as  HomePostContainer } from './Home/HomePostContainer/HomePostContainer';
@@ -38,22 +36,27 @@ export { default as SortedArticle} from './Article/SortedArticles/SortedArticle'
 export {default as SideAdvertisement} from './Advertisements/SideAdvertisement';
 export {default as TrendingInSide} from './Article/TrendingSidebar/TrendingInSide';
 export {default as Button} from './SmallComponents/Button';
-export {default as AdminLogin} from './Authentication/AdminLogin';
+export {default as AdminLogin} from './Authentication/AdminLogin/AdminLogin';
 export {default as AdminPanelArticles} from './Admin/Articles/AdminPanelArticles';
 export {default as AdminPanelCategory} from './Admin/Category/AdminPanelCategory';
 export {default as AdminPanelLayout} from "./Admin/Layout/AdminPanelLayout.jsx";
 export {default as AdminPanelUser} from "./Admin/Users/AdminPanelUser.jsx";
-export {default as AdminProtectedRoute} from "./Authentication/AdminProtectedRoute.jsx";
+export {default as AdminProtectedRoute} from "./Authentication/ProtectedRoutes/AdminProtectedRoute.jsx";
+export {default as PremiumProtectedRoute} from './Authentication/ProtectedRoutes/PremiumProtectedRoutes';
 export {default as ArticlePage} from "./Article/SingleArticlePage/SingleArticlePage.jsx";
 export {default as AuthorProfile} from "./AuthorProfile/AuthorProfile.jsx";
 export {default as EditArticle} from "./EditArticle/EditArticle.jsx";
 export {default as Home} from "./Home/Home.jsx";
-export {default as Login} from "./Authentication/Login.jsx";
+export {default as Login} from "./Authentication/Login/Login.jsx";
 export {default as  NavigationBar} from "./NavigationBar/NavigationBar.jsx";
-export {default as Register} from "./Authentication/Register.jsx";
-export {default as UserProtectedRoute} from "./Authentication/UserProtectedRoute.jsx";
-export {default as VerifyEmail} from "./Authentication/VerifyEmail.jsx";
+export {default as Register} from "./Authentication/Register/Register.jsx";
+export {default as UserProtectedRoute} from "./Authentication/ProtectedRoutes/UserProtectedRoute.jsx";
+export {default as VerifyEmail} from "./Authentication/Email/VerifyEmail.jsx";
 export {default as AdminDashboard} from "./Admin/Dashboard/AdminDashboard.jsx";
 export {default as AllFeatured} from './Article/AllFeatured/AllFeatured';
-
-// export {default as 
+export {default as SubscriptionPlans} from './SubscriptionPlans/SubscriptionPlans';
+export {ReCAPTCHA} from 'react-google-recaptcha';
+export {dotenv} from 'dotenv'
+export {default as MainFeed} from './Article/MainFeed/MainFeed';
+export {default as Sidebar} from './Article/SideBar/Sidebar';
+export {default as EmailVerifiedProtectedRoute} from './Authentication/ProtectedRoutes/EmailVerifiedProtectedRoute';

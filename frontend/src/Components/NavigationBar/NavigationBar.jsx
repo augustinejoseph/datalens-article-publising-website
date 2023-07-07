@@ -67,7 +67,7 @@ export default function NavigationBar() {
   const location = useLocation();
   const currentUrl = location.pathname;
   const navigate = useNavigate();
-  console.log("user",user);
+  console.log("user", user);
 
   return (
     <>
@@ -95,22 +95,20 @@ export default function NavigationBar() {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {/* {Links?.map((link) => (
-                <NavLink key={link.name} path={link.path}>
-                  {link.name}
-                </NavLink>
-              ))} */}
+    
 
               {Links?.map((link, index) => {
-                if (!link.membersOnly || (user && user.is_premium)) {
+                if (!link.membersOnly || user) {
                   return (
                     <NavLink key={link.name} path={link.path} onClose={onClose}>
-                      <Box
-                        // fontSize="xl"
-                        // fontWeight="bold"
-                        // pt={index === 0 ? 8 : 2}
-                      >
-                        {link.name}
+                      <Box>
+                        {link.membersOnly && !user.is_premium ? (
+                          <div onClick={() => navigate("/plans")}>
+                            Get Premium
+                          </div>
+                        ) : (
+                          <div>{link.name}</div>
+                        )}
                       </Box>
                     </NavLink>
                   );
@@ -203,8 +201,7 @@ export default function NavigationBar() {
             <Stack as={"nav"} spacing={4}>
               <Box pb={2} mt={4} borderTop="1px solid gray"></Box>{" "}
               {Links?.map((link, index) => {
-                // Render the link only if it's not a members-only link or if the user is premium
-                if (!link.membersOnly || (user && user.is_premium)) {
+                if (!link.membersOnly || user) {
                   return (
                     <NavLink key={link.name} path={link.path} onClose={onClose}>
                       <Box
@@ -212,12 +209,14 @@ export default function NavigationBar() {
                         fontWeight="bold"
                         pt={index === 0 ? 8 : 2}
                       >
-                        {link.name}
+                        {link.membersOnly && !(user && user.is_premium)
+                          ? "Get Premium"
+                          : link.name}
                       </Box>
                     </NavLink>
                   );
                 }
-                return null;
+                return null; 
               })}
             </Stack>
           </Box>

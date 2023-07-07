@@ -1,0 +1,17 @@
+.editarticle_submit_button {
+    padding: 2px 10px;
+    background-color: green;
+    border-radius: 20px;
+    margin-left: 10px;
+    color: white;
+    font-size: medium;
+    margin: 1rem 0.4rem;
+  }
+  .editarticle_actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  .editarticle_actions > button{
+    background-color: green;
+  }

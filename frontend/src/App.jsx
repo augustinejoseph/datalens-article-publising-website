@@ -23,6 +23,12 @@ import {
   ErrorPage,
   AdminDashboard,
   AllFeatured,
+  SubscriptionPlans,
+  useLocation,
+  useEffect,
+  useState,
+  PremiumProtectedRoute,
+  EmailVerifiedProtectedRoute
 } from "./Components/index";
 import {
   BrowserRouter as Router,
@@ -33,11 +39,19 @@ import {
 } from "react-router-dom";
 function App() {
   const { user } = useContext(AuthContext);
+  const [showNavigationBar, setShowNavigationBar] = useState(true);
 
+  useEffect(() => {
+    const { pathname } = window.location;
+    setShowNavigationBar(
+      !(pathname === "/plans" || pathname === "/login" || pathname === "/register")
+    );
+  }, []);
   return (
     <div>
       <Router>
-        <NavigationBar />
+        {showNavigationBar && <NavigationBar />}
+
         <Routes>
           <Route path="/" Component={Home} />
           <Route path="/*" Component={PageNotFound} />
@@ -54,7 +68,7 @@ function App() {
           <Route path="/logout" Component={Logout} />
           <Route
             path="/verify-email"
-            element={user ? <Navigate to="/" /> : <VerifyEmail />}
+            element={user && user.is_active ? " " : <VerifyEmail />}
           />
           <Route path="/article/:id" Component={ArticlePage} />
           <Route path="/user/:username" element={<AuthorProfile />} />
@@ -66,16 +80,27 @@ function App() {
           <Route path="/tag/:hashtagName" element={<SortedArticle />} />
           <Route path="/featured" Component={AllFeatured} />
           <Route path="/trending" Component={AllFeatured} />
-          <Route path="/premium" Component={AllFeatured} />
+          <Route path="/plans" element={<SubscriptionPlans />} />
+
+          {/* Premium Protected Route */}
+          <Route
+            path="/premium"
+            element={
+              <PremiumProtectedRoute>
+                <AllFeatured></AllFeatured>
+              </PremiumProtectedRoute>
+            }
+          />
 
           {/* User Protected Routes  */}
           <Route
             path="/new-article"
             element={
-              <UserProtectedRoute>
-                {" "}
-                <NewArticle />{" "}
-              </UserProtectedRoute>
+              // <UserProtectedRoute>
+                <EmailVerifiedProtectedRoute >
+                <NewArticle />
+                </EmailVerifiedProtectedRoute>
+              // </UserProtectedRoute>
             }
           />
           {/* <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} /> */}
@@ -83,7 +108,6 @@ function App() {
             path="edit-article/:articleId"
             element={
               <UserProtectedRoute user={user}>
-                {" "}
                 <EditArticle />
               </UserProtectedRoute>
             }

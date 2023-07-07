@@ -9,11 +9,7 @@
     }
   }
   
-  @media (max-width: 1024px) {
-    .article_container {
-      margin: 10px 20px;
-    }
-  }
+
   
 .article_inner_container{
     /* background-color: red; */
@@ -61,6 +57,7 @@
     padding: 10px 5px 10px 5px;
     margin: 15px 0px 15px 0px;
 }
+
 .article_interaction img{
     height: 30px;
 }
@@ -70,22 +67,42 @@
     flex-direction: row;
     color: gray;
 }
+.article_interaction_rightside{
+    display: flex;
+    flex-direction: row;
+    color: gray;
+}
 
 .article_interaction_leftside span{
     padding: 2px 8px 2px 20px;
     cursor: pointer;
+
+}
+.articel_interaction_button:hover{
+    color: black;
 }
 
-.article_share_commend_icon{
+.article_interaction_rightside{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-.article_share_commend_icon span{
-    padding: 2px 10px 2px 10px;
+
+.article_interaction_rightside {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1rem;
     cursor: pointer;
-}
+  }
+  
+  .article_interaction_rightside > span:not(:last-child) {
+    margin-right: 1rem; 
+  }
+  
+
 .article_content_start p{
     padding: 10px 0 10px 0;
     line-height: 30px;
@@ -119,3 +136,138 @@
     border-radius: 20px;
     margin: 0 1rem;
 }
+
+
+
+/* Comments */
+.article_comment_container {
+    /* Existing styles */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30%;
+    background-color: white;
+    height: 100vh;
+    padding: 5vh 3vw;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: transform 1s ease-in-out;
+    z-index: 100;
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  .article_comment_container::-webkit-scrollbar {
+    display: none;
+  }
+.modal-show {
+    transform: translateX(0);
+  }
+.article_comment_title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+.article_comment_title span{
+    font-size: larger;
+    font-weight: 700;
+    
+}
+
+.article_comment_user{
+    display: flex;
+    flex-direction: column;
+}
+.article_comment_inner_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.article_comment_inner_container span:not(:first-child){
+    padding-left: 1rem;
+}
+
+.article_comment_input_container{
+    border-radius: 15px;
+    min-height: 100px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;    padding: 1rem;
+}
+.article_comment_input_container textarea{
+    min-height: 100px;
+    padding: 1rem;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
+    /* border:  solid red; */
+    width: 100%;
+}
+.article_comment_input_container textarea::-webkit-scrollbar{
+    display: none;
+}
+.article_comment_button {
+    background-color : var(--submit_button);
+    border-radius: 20px;
+    padding: .1rem .6rem;
+    color: white;
+    margin-right: 1rem;
+}
+
+
+.article_comment_buttons_disabled{
+    background-color: var(--submit_button_disabled);
+    border-radius: 20px;
+    padding: .1rem .6rem;
+    color: white;
+    margin-right: 1rem;
+}
+
+.article_comment_allcomments_container{
+    padding: 1rem;
+    margin-top: 2rem;
+}
+.article_comment_firstcomment_name{
+    border-top: var(--border);
+    font-size: medium;
+    font-weight: 600;
+    /* margin-top: 1rem; */
+    padding-top: 1rem;
+}
+
+
+
+
+@media (max-width: 1024px) {
+    .article_container {
+      margin: 10px 20px;
+    }
+    .article_comment_container {
+        /* Existing styles */
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 40%;
+        background-color: white;
+        height: 100vh;
+        padding: 5vh 3vw;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        transition: transform 1s ease-in-out;
+        z-index: 100;
+        overflow-y: auto; /* Enable vertical scrolling */
+      }
+
+      @media (max-width: 630px) {
+        .article_comment_container {
+            /* Existing styles */
+            position: fixed;
+            top: 2rem;
+            right: auto;
+            width: 90%;
+            background-color: white;
+            border-radius: 20px;
+            height: 100vh;
+            padding: 5vh 3vw;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;            z-index: 100;
+            overflow-y: auto; /* Enable vertical scrolling */
+          }
+
+      }
+
+    
+  }

@@ -1,14 +1,14 @@
-import { useState, useRef } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router";
+// import { ,  } from "react";
+// import  from "axios";
+// import {  } from "react-router";
 import "./Register.css";
-import { Link } from "react-router-dom";
-import VerifyEmail from "./VerifyEmail";
-import { BACKEND_BASE_URL } from "../../API/Api";
+// import { Link } from "react-router-dom";
+// import VerifyEmail from "./VerifyEmail";
+// import { BACKEND_BASE_URL } from "../../API/Api";
 import ReCAPTCHA from "react-google-recaptcha"
-import { Flag } from "react-bootstrap-icons";
-import dotenv from 'dotenv';
-
+// import { Flag } from "react-bootstrap-icons";
+// import dotenv from 'dotenv';
+import {Flag,dotenv, VerifyEmail, BACKEND_BASE_URL, Link, useNavigate,axios,useState , useRef, fullLogo} from '../../index'
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ const Register = () => {
   const [allIntersetFromAPI, setAllIntersetFromAPI] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const GOOGLE_CAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY
-  // Captcha Verification
+  console.log(GOOGLE_CAPTCHA_SITE_KEY);
   const captchaRef = useRef(null)
 
 
@@ -66,7 +66,7 @@ const Register = () => {
       return;
     }
   
-    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com"]; // Add more valid domains as needed
+    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com","dronetz.com", "edulena.com"];
   
     const domain = email.split("@")[1];
     if (!validDomains.includes(domain)) {
@@ -194,6 +194,7 @@ const Register = () => {
       {/* Email Step 1 */}
       {!emailStepCompleted && (
         <div className="login-container">
+          <img onClick={() => navigate("/")} className="login_logo" src={fullLogo} />
           <h1 className="login-heading">Sign up with email</h1>
           <p className="login-paragraph">
             Enter the email address to create an account.

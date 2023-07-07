@@ -1,8 +1,13 @@
-import React, { useEffect } from "react";
 import "./HomePostContainer.css";
-import { Link, useNavigate } from "react-router-dom";
-import { FRONTEND_DOMAIN_NAME } from "../../Admin";
-import { useState, axios, BACKEND_BASE_URL } from "../../index";
+import {
+  useState,
+  axios,
+  BACKEND_BASE_URL,
+  premium,
+  FRONTEND_DOMAIN_NAME,
+  Link,
+  useNavigate,
+} from "../../index";
 import {
   fetchAuthorData,
   authorNameButton,
@@ -34,7 +39,6 @@ const HomePostContainer = (props) => {
     navigate(`/category/${category.name}`);
   };
 
-
   return (
     <div className="homepost_container">
       <div className="homepost_container_firstrow">
@@ -43,7 +47,14 @@ const HomePostContainer = (props) => {
         </button>
 
         <span>{localizedDatetime}</span>
-        <span>{is_premium}</span>
+        {is_premium ? (
+          <div onClick={() => navigate("/premium")} className="homepost_container_premium_icon_container">
+            <img className="homepost_container_premium_icon" src={premium} />
+            Premium
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <Link

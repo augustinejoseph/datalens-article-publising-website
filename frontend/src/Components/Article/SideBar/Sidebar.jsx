@@ -1,5 +1,5 @@
 import './Sidebar.css'
-import {TrendingInSide, FeaturedArticles, SideAdvertisement, Footer} from '../index'
+import {TrendingInSide, FeaturedArticles, SideAdvertisement, Footer} from '../../index'
 const Sidebar = () => {
     return(
         <div>

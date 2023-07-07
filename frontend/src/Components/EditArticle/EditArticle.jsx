@@ -16,6 +16,7 @@ import {
     HomePostContainer,
     PageNotFound
   } from '../index'
+  import './EditArticle.css'
 const EditArticle = () => {
   const navigate = useNavigate();
   const { articleId } = useParams();
@@ -80,9 +81,9 @@ const EditArticle = () => {
       {errorMessage && <p className="newarticle_errormessage" >{errorMessage}</p>}
       {successMsg && <p className="newarticle_successmessage">{successMsg}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="newarticle_actions">
-          <button type="submit">Make Changes</button>
-          <button onClick={() => navigate(`/article/${articleId}`)}>Cancel</button>
+        <div className="editarticle_actions">
+          <button className='editarticle_submit_button' type="submit">Make Changes</button>
+          <button className='editarticle_submit_button' onClick={() => navigate(`/article/${articleId}`)}>Cancel</button>
         </div>
         <div className="newarticle_title">
           <input

@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import AuthContext from '../../Contexts/AuthContext';
-import RoundLoading from '../Shimmers/RoundLoading';
+import AuthContext from '../../../Contexts/AuthContext';
+import RoundLoading from '../../Shimmers/RoundLoading';
 
 const UserProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);

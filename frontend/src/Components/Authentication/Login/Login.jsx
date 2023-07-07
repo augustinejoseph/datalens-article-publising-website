@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AuthContext from "../../Contexts/AuthContext";
+import AuthContext from "../../../Contexts/AuthContext";
 import { useContext } from "react";
 import jwt_decode from "jwt-decode";
 import "./Login.css";
-import { BACKEND_BASE_URL } from "../../API/Api";
+import { BACKEND_BASE_URL } from "../../../API/Api";
+import { fullLogo } from "../..";
 
 const Login = () => {
-  const originalLocation = sessionStorage.getItem('originalLocation');
-  console.log("redirevt locaion in login componen", originalLocation)
-  const [name, setName] = useState("")
+  const originalLocation = sessionStorage.getItem("originalLocation");
+  console.log("redirevt locaion in login componen", originalLocation);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailChecked, setEmailChecked] = useState(false)
+  const [emailChecked, setEmailChecked] = useState(false);
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState({})
+  const [loggedIn, setLoggedIn] = useState({});
   const { setUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
   // console.log("email check state status", emailChecked)
@@ -26,25 +27,24 @@ const Login = () => {
     e.preventDefault();
     setErrorMessage("");
     console.log(`${BACKEND_BASE_URL}users/email-check`);
-    const response = await axios.post(
-      `${BACKEND_BASE_URL}user/email-check`,
-      { email: email }
-    );
+    const response = await axios.post(`${BACKEND_BASE_URL}user/email-check`, {
+      email: email,
+    });
 
     // const response = await axios.post(
     //   "http://localhost:8000/user/email-check",
     //   { email: email }
     // );
-    
-    console.log("response from api",response);
+
+    console.log("response from api", response);
     if (response.data.status == true) {
       // console.log("email check success");
-      setEmailChecked(true)
-      setName(response.data.user.first_name)
+      setEmailChecked(true);
+      setName(response.data.user.first_name);
     } else {
       // console.log("else");
       setErrorMessage("Invalid email id");
-      setEmailChecked(false)
+      setEmailChecked(false);
     }
   };
 
@@ -56,10 +56,7 @@ const Login = () => {
       password: password,
     };
     try {
-      const { data } = await axios.post(
-        `${BACKEND_BASE_URL}user/login`,
-        user
-      );
+      const { data } = await axios.post(`${BACKEND_BASE_URL}user/login`, user);
 
       // Storing Access in cookie
       Cookies.set("access_token", data.access_token);
@@ -71,21 +68,19 @@ const Login = () => {
         email: tokenData.email,
         is_active: tokenData.is_active,
         is_banned: tokenData.is_banned,
-        is_admin : tokenData.is_admin,
-        user_id : tokenData.user_id,
-        is_premium : tokenData.is_premium,
-        
+        is_admin: tokenData.is_admin,
+        user_id: tokenData.user_id,
+        is_premium: tokenData.is_premium,
       };
-      
-      setUser(LoggedInUser);
-      if (!LoggedInUser.is_active){
-        navigate("/verify-email")
-      }else{
-        if(originalLocation){
-          sessionStorage.removeItem("originalLocation")
-          return <Navigate to={originalLocation} replace />;
-        }else{
 
+      setUser(LoggedInUser);
+      if (!LoggedInUser.is_active) {
+        navigate("/verify-email");
+      } else {
+        if (originalLocation) {
+          sessionStorage.removeItem("originalLocation");
+          return <Navigate to={originalLocation} replace />;
+        } else {
           return <Navigate to="/" replace />;
         }
       }
@@ -95,20 +90,17 @@ const Login = () => {
         setErrorMessage("Invalid email or password");
         console.log(error);
       } else {
-        
         setErrorMessage("An error occurred during authentication.");
-        console.log(error)
+        console.log(error);
       }
     }
   };
 
-  return emailChecked ?
-    (<>
+  return emailChecked ? (
+    <>
       <div className="login-container">
         <h1 className="login-heading">Password</h1>
-        <p className="login-paragraph">
-          Enter the password
-        </p>
+        <p className="login-paragraph">Enter the password</p>
         <span className="login-title">{name}</span>
         <div className="login-email">
           <input
@@ -124,7 +116,11 @@ const Login = () => {
           __________________________________
         </span>
         <div className="login-next-container">
-          {errorMessage && <div style={{ color: "red" , marginTop:"10px" }}>{errorMessage} </div>}
+          {errorMessage && (
+            <div style={{ color: "red", marginTop: "10px" }}>
+              {errorMessage}{" "}
+            </div>
+          )}
           <button onClick={submit} className="login-next-button">
             Login
           </button>
@@ -139,47 +135,49 @@ const Login = () => {
         </div>
       </div>
     </>
-    )
-  :
-  (
-  <>
-  <div className="login-container">
-    <h1 className="login-heading">Sign in with email
-</h1>
-    <p className="login-paragraph">
-      Enter the email address associated with your account.
-    </p>
-    <span className="login-title">Your Email</span>
-    <div className="login-email">
-      <input
-        className="login-email-input"
-        type="email"
-        placeholder="Enter email address"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-    </div>
-    <span className="login-email-underline">
-      __________________________________
-    </span>
-    <div className="login-next-container">
-      {errorMessage && <div style={{ color: "red" , marginTop:"10px"}}>{errorMessage} </div>}
-      <button onClick={handleEmailCheck} className="login-next-button">
-        Continue
-      </button>
-    </div>
-    <div className="login-register-container">
-      <Link className="login-register-button" to="/register">
-        Register
-      </Link>
-      <Link className="login-home-button" to="/">
-        Home
-      </Link>
-    </div>
-  </div>
-</>
-);
+  ) : (
+    <>
+      <div className="login-container">
+      <img onClick={() => navigate("/")} className="login_logo" src={fullLogo} />
+        <h1 className="login-heading">Sign in with email</h1>
+        <p className="login-paragraph">
+          Enter the email address associated with your account.
+        </p>
+        <span className="login-title">Your Email</span>
+        <div className="login-email">
+          <input
+            className="login-email-input"
+            type="email"
+            placeholder="Enter email address"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <span className="login-email-underline">
+          __________________________________
+        </span>
+        <div className="login-next-container">
+          {errorMessage && (
+            <div style={{ color: "red", marginTop: "10px" }}>
+              {errorMessage}{" "}
+            </div>
+          )}
+          <button onClick={handleEmailCheck} className="login-next-button">
+            Continue
+          </button>
+        </div>
+        <div className="login-register-container">
+          <Link className="login-register-button" to="/register">
+            Register
+          </Link>
+          <Link className="login-home-button" to="/">
+            Home
+          </Link>
+        </div>
+      </div>
+    </>
+  );
 };
 export default Login;
 

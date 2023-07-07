@@ -13,11 +13,14 @@ import {
   useEffect,
   uploadImageToFirebase,
   deleteImageFromFirebase,
-  storage,
+  // storage,
   useLocation,
   ArrowLeftCircleFill,
   deleteDraft,
 } from "../index";
+import { storage } from '../../Firebase/FirebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import "./NewArticle.css";
 // import storage from '../../Firebase/FirebaseConfig'
 
@@ -133,28 +136,31 @@ const NewArticle = () => {
 
     const uploadImages = async () => {
       const newUploadedImages = [];
-
+    
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
-        const file = image.getAttribute("src");
-
+        const file = image.getAttribute('src');
+    
         try {
           const fileName = `article_${Date.now()}`;
-          const storageRef = storage.ref(fileName);
-          await storageRef.put(file);
-          const downloadUrl = await storageRef.getDownloadURL();
-          console.log("Image uploaded successfully:", downloadUrl);
+          const storageRef = ref(storage,  `/user-profilePhoto` + fileName);
+          await uploadBytes(storageRef, file);
+          const downloadUrl = await getDownloadURL(storageRef);
+          console.log('Image uploaded successfully:', downloadUrl);
           newUploadedImages.push(downloadUrl);
         } catch (error) {
           console.error(`Error uploading image ${i + 1}:`, error);
         }
       }
-
+    
       setUploadedImages(newUploadedImages);
       setNextButtonDisabled(!content.title || !content.body);
     };
+    
 
     uploadImages();
+
+    
   };
 
   const handleTitleChange = (e) => {
@@ -298,7 +304,7 @@ const NewArticle = () => {
               <button
                 className={
                   isNextButtonDisabled
-                    ? "newarticle_nextbutton_disabled"
+                    ? "newarticle_nextbutton_disabled1"
                     : "newarticle_nextbutton"
                 }
                 disabled={isNextButtonDisabled}
@@ -364,7 +370,7 @@ const NewArticle = () => {
               />
               <span>Write a summary</span>
               <div className="articleCompleted_summary">
-                <input
+                <textarea
                   required
                   value={summaryValue}
                   onChange={(e) => setSummaryValue(e.target.value)}

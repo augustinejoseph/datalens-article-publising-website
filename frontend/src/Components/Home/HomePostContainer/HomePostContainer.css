@@ -11,11 +11,27 @@
 
 .homepost_container_firstrow{
     padding:5px 0 0 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .homepost_container_firstrow span{
     padding-left: 20px;
    
+
+}
+.homepost_container_premium_icon_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+.homepost_container_premium_icon{
+    height: 15px;
+    padding-left:1rem;
+    padding-right: .1rem;
+
 
 }
 

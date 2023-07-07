@@ -10,4 +10,6 @@
 :root{
     --border:solid 2px rgba(242, 242, 242, 1);
     --button_background: #f2f2f2;
+    --submit_button : green;
+    --submit_button_disabled : rgb(98, 160, 98);
 }

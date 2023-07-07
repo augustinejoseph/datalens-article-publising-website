@@ -8,7 +8,7 @@
   border:  var(--border);
   padding:  .5rem;
   margin-bottom: 1rem;
-  min-width:840px;
+  width: 100%;
 }
 
 
@@ -30,6 +30,7 @@
   font-size: medium;
   margin: 1rem .4rem;
 }
+
 .newarticle_nextbutton{
   padding: 2px 10px 2px 10px;
   background-color: green;
@@ -39,7 +40,7 @@
   font-size: medium;
   margin: 1rem .4rem;
 }
-.newarticle_nextbutton_disabled{
+.newarticle_nextbutton_disabled1{
   padding: 2px 10px 2px 10px;
   background-color: rgb(165, 210, 165);
   border-radius: 20px;
@@ -48,6 +49,7 @@
   font-size: medium;
   margin: 1rem .4rem;
 }
+
 .newarticle_actions > button:hover{
   opacity: 70%;
 }
@@ -153,20 +155,23 @@
   padding: 50px;
   display: flex;
   flex-direction: column;
+  text-align: center;
   /* margin: 10px; */
   /* background-color: green; */
 
 }
 
-.articleCompleted_summary{
-  width: 100%;
+
+.articleCompleted_summary textarea{
+  width: 350px;
+  min-height: 150px;
   height: fit-content;
   margin: 10px;
   padding: 5px;
   border: 1px solid grey;
   border-radius: 10px;
-  overflow: auto;
-  word-wrap: break-word; /* Use word-wrap to wrap the overflow content */
+  overflow:scroll;
+  word-wrap: break-word; 
   /* background-color: red; */
 
 }
@@ -255,7 +260,7 @@
     border:  var(--border);
     padding:  .5rem;
     margin-bottom: 1rem;
-    min-width:94vw;
+    /* min-width:97vw; */
   }
 
   .newarticle_errormessage{
@@ -282,6 +287,9 @@
 }
 
 @media (max-width : 900px) {
+  .article_title{
+    margin-right: 1rem;
+  }
 
   .articleCompleted_container{
     display: flex;
@@ -304,11 +312,12 @@
     align-items: center;
   }
 
-  .articleCompleted_summary{
-    width:fit-content;
+  .articleCompleted_summary textarea{
+    width: 350px;
+    min-height: 200px;
     height: fit-content;
-    /* margin: 10px; */
-    /* padding: 5px; */
+    margin: 10px;
+    padding: 5px;
     border: 1px solid grey;
     border-radius: 10px;
     overflow:scroll;
@@ -316,6 +325,21 @@
     /* background-color: red; */
   
   }
+  .articleCompleted_summary textarea::-webkit-scrollbar{
+    display: none;
+  }
+  /* .articleCompleted_summary{ */
+    /* width: 100%; */
+    /* height: fit-content; */
+    /* margin: 10px; */
+    /* padding: 5px; */
+    /* border: 1px solid grey; */
+    /* border-radius: 10px; */
+    /* overflow: auto; */
+    /* word-wrap: break-word; */
+    /* background-color: red; */
+  
+  /* } */
 
   .articleCompleted_publishingDetails{
     display: flex;

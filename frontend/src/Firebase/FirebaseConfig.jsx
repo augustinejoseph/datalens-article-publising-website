@@ -1,6 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
 
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import {getStorage} from 'firebase/storage'
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_apiKey,
   authDomain: import.meta.env.VITE_authDomain,
@@ -10,10 +11,9 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_appId,
   measurementId: import.meta.env.VITE_measurementId,
 };
-console.log("Environment variables:", import.meta.env);
-
+console.log('env files in firebase', firebaseConfig);
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
 
-export { storage };
+export const auth = getAuth(app);
+export const storage = getStorage(app)

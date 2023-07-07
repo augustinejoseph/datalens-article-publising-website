@@ -28,6 +28,9 @@ import {
   FRONTEND_DOMAIN_NAME,
   WhatsappShareButton,
   SortedArticle,
+  PersonCircle,
+  X,
+  Navigate,
 } from "../../index";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -45,11 +48,15 @@ const ArticlePage = () => {
   const { user } = useContext(AuthContext);
   const [categoryName, setCategoryName] = useState("");
   const [hashtags, setHashtags] = useState([]);
-  // const [articleId, setArticleId] = useState("");
-  console.log("single article body", article);
+  const [showComment, setShowComment] = useState(false);
+  const [commentsList, setCommentsList] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [commentButtonDisabled, setCommentButtonDisabled] = useState(true);
+  console.log("show comment boolean ", showComment);
+  console.log("comment list frmm db", commentsList);
+  console.log("comment button disabled", commentButtonDisabled);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const articleUrl = `${FRONTEND_DOMAIN_NAME}${id}`;
-  // console.log(categoryName);
   useEffect(() => {
     const fetchArticle = async () => {
       try {
@@ -60,6 +67,8 @@ const ArticlePage = () => {
         setArticle({ ...data });
         setArticleBody(data.body);
         setHashtags(data.hashtags);
+        setCommentsList(data.comments);
+        console.log(data);
       } catch (error) {
         console.log("error in full article", error);
       }
@@ -76,8 +85,6 @@ const ArticlePage = () => {
     return () => clearTimeout(timer);
   }, [user]);
 
-  // setCategoryName(article.category[0].name)
-  console.log(categoryName);
   const handleEditArticle = () => {
     navigate(`/edit-article/${id}`);
   };
@@ -104,17 +111,42 @@ const ArticlePage = () => {
     setShowConfirmation(false);
   };
 
+  const handleCommentChange = (e) => {
+    const value = e.target.value;
+    setNewComment(value);
+    setCommentButtonDisabled(value.trim() === ""); // Disable the button if the comment is empty or contains only whitespace
+  };
+
+  const handleCommentSubmit = async () => {
+    const data = {
+      user_id: user?.user_id,
+      comment: newComment,
+      articleId: id,
+      user_name: user?.user_name,
+      name: user?.name,
+    };
+    console.log("user data in comment for sending to db", data);
+    try {
+      const response = await axios.post(
+        `${ARTICLE_SERVER_NODE_BASE_URL}article/add-comment/${id}`,
+        data
+      );
+      if (response.data) {
+        setNewComment("");
+        setCommentsList((prevComments) => [...prevComments, response.data.comments[0]]);
+        console.log("comment successful");
+      }
+    } catch (error) {
+      console.log("comment submit error", error.response.data);
+    }
+  };
+
   return (
     <div className="article_container">
       <div className="article_inner_container">
         <div className="article_main_heading">
           <span>{article.title}</span>
         </div>
-        {/* <div className="article_main_image">
-          {article.previewImage && 
-          <img src={article.previewImage ? article?.previewImage : ""} alt="Preview" />
-}
-        </div> */}
 
         <div className="article_author_container">
           <span
@@ -134,41 +166,46 @@ const ArticlePage = () => {
 
         <div className="article_interaction">
           <div className="article_interaction_leftside">
-            <span onClick={handleUpdateClap}>
+            <span
+              className="articel_interaction_button"
+              onClick={handleUpdateClap}
+            >
               {" "}
               <HandThumbsUpFill />{" "}
             </span>
             <p>{article?.claps || 0}</p>
-            <span>
+            <span
+              onClick={() => setShowComment(!showComment)}
+              className="articel_interaction_button"
+            >
               {" "}
               <ChatFill />{" "}
             </span>
-            <p>{article?.comments || 0}</p>
+            <p>{article.commentsCount || 0}</p>
           </div>
-          <div className="article_interaction_rightside"></div>
-          <div className="article_share_commend_icon">
-            {user && article.user_id === user.user_id && (
+          <div className="article_interaction_rightside">
+            {user && article?.user_id === user?.user_id && (
               <>
-                <span onClick={handleEditArticle}>
+                <span
+                  className="articel_interaction_button"
+                  onClick={handleEditArticle}
+                >
                   <PencilSquare />
                 </span>
-                <span onClick={handleDeleteConfirmation}>
+                <span
+                  className="articel_interaction_button"
+                  onClick={handleDeleteConfirmation}
+                >
                   {" "}
                   <TrashFill />
                 </span>
               </>
             )}
-            <WhatsappShareButton url={articleUrl}>
-              <Whatsapp />
-            </WhatsappShareButton>{" "}
-            {/* <RWebShare 
-            data={{
-              title : {title},
-              url : {articleUrl}
-            }}
-            >
-              < ShareFill />
-            </ RWebShare > */}
+            <>
+              <WhatsappShareButton url={articleUrl}>
+                <Whatsapp className="articel_interaction_button" />
+              </WhatsappShareButton>
+            </>
           </div>
         </div>
 
@@ -211,6 +248,76 @@ const ArticlePage = () => {
         </div>
         <Footer />
       </div>
+
+      {/* Comment modal */}
+      {showComment && (
+        <div
+          className={`article_comment_container ${
+            showComment ? "modal-show" : ""
+          }`}
+        >
+          <div className="article_comment_title">
+            <span>Responses ({article.commentsCount})</span>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowComment(false)}
+            >
+              <X />
+            </span>
+          </div>
+
+          {user ? (
+            <div className="article_comment_input_container">
+              <div className="article_comment_inner_container">
+                <span>{/* <PersonCircle /> */}</span>
+                <span>{`Comment as ` + user.name}</span>
+              </div>
+              <textarea
+                value={newComment}
+                onChange={handleCommentChange}
+                placeholder="Enter your comment..."
+                type="text"
+              />
+              <div className="article_comment_buttons">
+                <button
+                  disabled={commentButtonDisabled}
+                  className={
+                    commentButtonDisabled
+                      ? "article_comment_buttons_disabled"
+                      : "article_comment_button"
+                  }
+                  onClick={handleCommentSubmit}
+                >
+                  submit
+                </button>
+                <button onClick={() => setNewComment("")}>cancel</button>
+              </div>
+            </div>
+          ) : (
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/login")}
+            >
+              Login to comment
+            </span>
+          )}
+
+          {commentsList.length > 0 &&
+            commentsList.reverse().map((commentItem) => (
+              
+              <div key={commentItem._id} className="article_comment_allcomments_container">
+                <div className="article_comment_firstcomment_name">
+                  {commentItem.name}
+                </div>
+                <div className="article_comment_firstcomment_comment">
+                  {commentItem.comment}
+                </div>
+              </div>
+            ))}
+
+
+        </div>
+      )}
     </div>
   );
 };

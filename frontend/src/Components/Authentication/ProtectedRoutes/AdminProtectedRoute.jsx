@@ -1,7 +1,4 @@
-import { useContext, useState, useEffect } from "react"
-import { Navigate, useLocation } from "react-router-dom"
-import AuthContext from "../../Contexts/AuthContext"
-import RoundLoading from "../Shimmers/RoundLoading";
+import {RoundLoading, AuthContext, Navigate, useLocation, useState, useEffect, useContext} from '../../index'
 
 const AdminProtectedRoute = ({children}) => {
     const {user} = useContext(AuthContext)

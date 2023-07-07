@@ -255,3 +255,34 @@ class AuthorDetailsById(APIView):
             return Response(serializer.data)
         except Allusers.DoesNotExist:
             return Response({"error": "User  not found"}, status=404)
+        
+
+# Resend verification email
+class ResendVerificationEmail(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        print('-------------------------resent email--------------', email)
+
+        user = Allusers.objects.get(email=email)
+        if user:
+            verification_token = default_token_generator.make_token(user)
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            verification_link = f"{settings.SITE_URL}/user/verify-email/{uidb64}/{verification_token}/"
+            email_subject = 'Email Verification'
+            email_message = render_to_string('email_verification.html', {
+                'verification_link': verification_link,
+            })
+            email = EmailMessage(
+                email_subject,
+                email_message,
+                settings.EMAIL_HOST_USER,
+                [user.email],
+            )
+            email.content_subtype = "html" 
+            email.send()
+
+            return Response({"success": True, "message": "Verification email resent."},
+                            status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "message": "User not found."},
+                            status=status.HTTP_404_NOT_FOUND)
