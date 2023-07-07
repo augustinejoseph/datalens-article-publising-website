@@ -31,6 +31,14 @@ const articleSchema = new mongoose.Schema({
   is_featured: Boolean,
   pageViews : Number,
   user_name : String,
+  commentsCount: { type: Number, default: 0 },
+  comments: [{
+    user_id: Number,
+    user_name: String,
+    comment: String,
+    name:String,
+    createdAt: Date
+  }],
 
 });
 const Article = mongoose.model('Article', articleSchema);
