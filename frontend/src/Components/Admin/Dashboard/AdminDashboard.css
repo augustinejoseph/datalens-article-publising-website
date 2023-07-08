@@ -4,3 +4,11 @@
 .admin_dash_overview{
     
 }
+/* @media (max-width: 1024px) {
+
+    .admin_table_container{
+        padding: 0;
+        margin: 0;
+    
+    }
+} */

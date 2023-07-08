@@ -1,3 +1,7 @@
+// import {Elements} from '@stripe/react-stripe-js';
+// import {loadStripe} from "@stripe/stripe-js/pure";
+// const STRIPE_KEY: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 import {
   Login,
   Home,
@@ -28,7 +32,8 @@ import {
   useEffect,
   useState,
   PremiumProtectedRoute,
-  EmailVerifiedProtectedRoute
+  EmailVerifiedProtectedRoute,
+  
 } from "./Components/index";
 import {
   BrowserRouter as Router,
@@ -37,6 +42,7 @@ import {
   Navigate,
   Link,
 } from "react-router-dom";
+
 function App() {
   const { user } = useContext(AuthContext);
   const [showNavigationBar, setShowNavigationBar] = useState(true);
@@ -170,6 +176,7 @@ function App() {
           <Route path="admin-login" Component={AdminLogin} />
         </Routes>
       </Router>
+     
     </div>
   );
 }

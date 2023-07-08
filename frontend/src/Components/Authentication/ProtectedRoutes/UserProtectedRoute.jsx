@@ -9,13 +9,11 @@ const UserProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Simulating an asynchronous operation to fetch the user
     setTimeout(() => {
       setIsLoading(false);
     }, 500);
   }, []);
 
-  // Render the content based on user presence
   if (isLoading) {
     return (
       <div
@@ -31,12 +29,10 @@ const UserProtectedRoute = ({ children }) => {
     );
   }
 
-  // Render the content based on user presence
   if (user) {
     return children;
   } else {
     sessionStorage.setItem("originalLocation", location.pathname);
-    // Navigate to login with the original location as the "from" state
     return (
       <Navigate
         to={{

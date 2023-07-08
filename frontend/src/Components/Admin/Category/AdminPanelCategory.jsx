@@ -1,21 +1,35 @@
 import "./AdminPanelCategory.css";
-import { DataGrid, React, useEffect, useState, axios, ARTICLE_SERVER_NODE_BASE_URL} from "../index";
-import {handleCategoryDelete, columns, fetchCategories, createCategory} from './functions'
+import {
+  DataGrid,
+  React,
+  useEffect,
+  useState,
+  axios,
+  ARTICLE_SERVER_NODE_BASE_URL,
+} from "../index";
+import {
+  handleCategoryDelete,
+  columns,
+  fetchCategories,
+  createCategory,
+} from "./functions";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminPanelCategory = () => {
+  const theme = createTheme();
   const [categories, setCategories] = useState([]);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const getRowId = (row, index) => row._id
+  const getRowId = (row, index) => row._id;
 
   useEffect(() => {
     fetchCategories(setCategories);
   }, []);
 
-const handleCreateCategory = async () => {
- await createCategory(newCategoryName, setCategories, categories)
- setNewCategoryName("")
-}
+  const handleCreateCategory = async () => {
+    await createCategory(newCategoryName, setCategories, categories);
+    setNewCategoryName("");
+  };
 
   return (
     <div className="admin_table_container">
@@ -47,19 +61,20 @@ const handleCreateCategory = async () => {
       </div>
 
       <div className="admin_actual_table">
-      <div style={{ height: 400, width: '70%' }}>
-        <DataGrid
-          rows={categories}
-          columns={columns(handleCategoryDelete, setCategories)}
-          getRowId={getRowId}
-          pagination
-          pageSize={5} 
-          pageSizeOptions={[5, 10, 20]} 
-          rowsPerPageOptions={[5, 10, 20]}
-        />
+        <ThemeProvider theme={theme}>
+          <div style={{ height: 400, width: "70%" }}>
+            <DataGrid
+              rows={categories}
+              columns={columns(handleCategoryDelete, setCategories)}
+              getRowId={getRowId}
+              pagination
+              pageSize={5}
+              pageSizeOptions={[5, 10, 20]}
+              rowsPerPageOptions={[5, 10, 20]}
+            />
+          </div>
+        </ThemeProvider>
       </div>
-      </div>
-
     </div>
   );
 };

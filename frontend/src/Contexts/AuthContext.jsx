@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const premiumTrial = Cookies.get('premium_trial')
     const access_token = Cookies.get("access_token")
     if (access_token) {
       const decoded_token =  jwt_decode(access_token)

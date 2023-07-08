@@ -1,10 +1,11 @@
 
-import { BACKEND_BASE_URL } from "../../../API/Api";
 import { columns, onBlockUser } from './functions';
-import { DataGrid, React, useEffect, useState, axios} from "../index";
-
+import { React, useEffect, useState, axios, BACKEND_BASE_URL} from "../index";
+import { DataGrid } from "@mui/x-data-grid";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminPanelUser = () => {
+  const theme = createTheme();
   const [allUsersList, setAllUsersList] = useState([]);
   const [update, setUpdate] = useState("");
   console.log(allUsersList);
@@ -51,7 +52,7 @@ const AdminPanelUser = () => {
           />
         </div>
       </div>
-
+      <ThemeProvider theme={theme}>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={allUsersList}
@@ -62,6 +63,8 @@ const AdminPanelUser = () => {
           rowsPerPageOptions={[5, 10, 20]}
         />
       </div>
+      </ThemeProvider>
+
     </div>
   );
 };

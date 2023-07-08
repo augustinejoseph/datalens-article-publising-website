@@ -34,7 +34,7 @@
     padding-right: 10px;
   }
   
-  @media (max-width: 756px) {
+  @media (max-width: 1024px) {
     .admin_sidebar_icon_with_label .label {
       display: none;
     }

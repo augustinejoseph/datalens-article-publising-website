@@ -5,8 +5,11 @@ import { columns, handleRowClick } from './functions';
 import { DataGrid, React, useEffect, useState, axios} from "../index";
 import './AdminPanelArticles.css'
 import { GET_ARTICLES } from '../../../Queries/getArticlesGraphQL';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 
 const AdminPanelArticles = () => {
+  const theme = createTheme();
   const [articleId, setArticleId] = useState("");
   const [articles, setArticles] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -89,6 +92,7 @@ const AdminPanelArticles = () => {
       </div>
        
       <div className="admin_actual_table">
+      <ThemeProvider theme={theme} >
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={articles}
@@ -102,6 +106,7 @@ const AdminPanelArticles = () => {
           // rowsPerPageOptions={[5, 10, 20]}
         />
       </div>
+      </ThemeProvider>
       </div>
 
     </div>
@@ -109,3 +114,5 @@ const AdminPanelArticles = () => {
 };
 
 export default AdminPanelArticles;
+
+
