@@ -1,43 +1,72 @@
-import './AiFAB.scss'
+// AiFAB.jsx
+
+import "./AiFAB.css";
 import { MdAdd } from "react-icons/md";
-import{FcBusinessman, FcFullTrash} from  "react-icons/fc";
+import { FcBusinessman, FcFullTrash } from "react-icons/fc";
 import cn from "classnames";
+import { React, useState, X, ArrowLeftCircleFill } from "../../index";
+import {makeArticleSummaryRequest} from './ChatGpt'
+const FAB = () => {
+  const articleUrl = window.location.href;
+  console.log(articleUrl);
+  const [openModal, setOpenModal] = useState(false);
+  const [optionsPressed, setOptionsPressed] = useState(false);
+  const handleShowAIModal = () => {
+    setOpenModal(!openModal);
+  };
 
-import {React, useState} from '../../index'
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setOptionsPressed(false);
+  };
 
-const AiFAB = ({articleUrl}) => {
+  const handleArticleSummaryPress = () => {
+    setOptionsPressed(true)
+    makeArticleSummaryRequest(articleUrl)
+    console.log('handle summart press in aifab');
 
-  const [open, setOpen] = useState(false);
-  const mouseEnter = () => setOpen(true);
-  const mouseLeave = () => setOpen(false);
-
-  const actions = [
-    { label: "AI Summary", icon: <FcBusinessman />, onClick: console.log },
-    { label: "AI Explain", icon: <FcFullTrash />, onClick: console.log },
-  ];
+  }
 
   return (
-    <ul
-      className="fab-container"
-      onMouseEnter={mouseEnter}
-      onMouseLeave={mouseLeave}
-    >
-      <li className="fab-button">
+    <>
+      <div onClick={handleShowAIModal} className="fab_container">
         <MdAdd />
-      </li>
-      {actions.map((action, index) => (
-        <li
-          style={{ transitionDelay: `${index * 25}ms` }}
-          className={cn("fab-action", { open })}
-          key={action.label}
-          onClick={action.onClick}
-        >
-          {action.icon}
-          <span className="tooltip">{action.label}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+      </div>
 
-export default AiFAB
+      {openModal && (
+        <div className="fab_ai_modal_full_container">
+          <div className="fav_ai_modal_content_container">
+            <div className="fav_modal_close_btn">
+              {optionsPressed && (
+                <span onClick={() => setOptionsPressed(false)}>
+                  <ArrowLeftCircleFill />
+                </span>
+              )}
+              <span onClick={handleCloseModal}>
+                <X />
+              </span>
+            </div>
+
+            {!optionsPressed && (
+              <div className="fav_modal_options_buttons_container">
+                <button onClick={handleArticleSummaryPress}>
+                  Give an AI Generated Summary
+                </button>
+                <button onClick={() => setOptionsPressed(true)}>
+                  Detailed explanation by AI
+                </button>
+              </div>
+            )}
+            {openModal && optionsPressed && (
+              <div className="fav_modal_explanation_shown">
+                explainaed fby chate
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default FAB;

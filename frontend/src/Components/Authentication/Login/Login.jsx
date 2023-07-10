@@ -7,7 +7,9 @@ import { useContext } from "react";
 import jwt_decode from "jwt-decode";
 import "./Login.css";
 import { BACKEND_BASE_URL } from "../../../API/Api";
-import { fullLogo } from "../..";
+import { fullLogo, toast, ToastContainer } from "../../index";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const originalLocation = sessionStorage.getItem("originalLocation");
@@ -87,6 +89,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       if (error.response || error.response) {
+        toast.error("Invalid Email ot Password")
         setErrorMessage("Invalid email or password");
         console.log(error);
       } else {

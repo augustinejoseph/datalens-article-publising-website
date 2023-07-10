@@ -1,0 +1,75 @@
+.fab_container{
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+  color: white;
+  background-color: rgb(42, 122, 122);
+  padding: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.fab_container:hover{
+  background-color: rgb(90, 166, 166);
+  cursor: pointer;
+}
+
+
+/* Modal */
+.fab_ai_modal_full_container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.fab_ai_modal_content {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.fav_ai_modal_content_container{
+  margin: 10vh 30vw;
+  background-color: white;
+  min-height: 90vh;
+  min-width: 90vw;
+  border-radius: 10px;
+
+}
+.fav_modal_close_btn {
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+.fav_modal_close_btn span {
+  cursor: pointer;
+  font-size: large;
+}
+
+.fav_modal_close_btn span:last-child {
+  margin-left: auto;
+}
+
+
+.fav_modal_options_buttons_container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+.fav_modal_options_buttons_container button{
+  background-color: green;
+  color: white;
+  border-radius: 20px;
+  padding: 1rem 2rem;
+  margin:1rem ;
+}

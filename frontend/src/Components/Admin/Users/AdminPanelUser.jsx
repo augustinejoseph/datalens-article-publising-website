@@ -1,26 +1,50 @@
 
 import { columns, onBlockUser } from './functions';
-import { React, useEffect, useState, axios, BACKEND_BASE_URL} from "../index";
+import { React, useEffect, useState, axios, BACKEND_BASE_URL, adminAxiosToDjangoServerInterceptor} from "../index";
 import { DataGrid } from "@mui/x-data-grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Cookies from 'js-cookie';
+
 
 const AdminPanelUser = () => {
   const theme = createTheme();
   const [allUsersList, setAllUsersList] = useState([]);
   const [update, setUpdate] = useState("");
   console.log(allUsersList);
+  const token = Cookies.get('access_token')
+
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get(`${BACKEND_BASE_URL}user/all-users`,
+  //         {headers: {
+  //           Authorization: `Bearer ${token}`,
+
+  //         }}
+  //       );
+  //       setAllUsersList(response.data);
+  //       console.log("all users list",allUsersList);
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
+
+  //   fetchUsers();
+  // }, [update]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${BACKEND_BASE_URL}user/all-users`);
+        const response = await adminAxiosToDjangoServerInterceptor.get(
+          `${BACKEND_BASE_URL}user/all-users`
+        );
         setAllUsersList(response.data);
-        console.log("all users list",allUsersList);
+        console.log('all users list', allUsersList);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error('Error fetching users:', error);
       }
     };
-
+  
     fetchUsers();
   }, [update]);
 

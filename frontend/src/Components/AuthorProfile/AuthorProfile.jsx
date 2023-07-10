@@ -45,14 +45,11 @@ const AuthorProfile = () => {
   };
   useEffect(() => {
     setUserId(user?.user_id);
-    console.log("user id from inside useEffect", user?.user_id);
     const fetchData = async () => {
       try {
-        // Sql Django Query for author data
         const response = await axios.get(
           `${BACKEND_BASE_URL}user/author-details/${username}`
         );
-        console.log(response.data);
         const { id, user_name, first_name, last_name, email } = response.data;
         setAuthor({ id, user_name, first_name, last_name, email });
 
@@ -61,7 +58,6 @@ const AuthorProfile = () => {
           const draftsResponse = await axios.get(
             `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/alldrafts/${id}`
           );
-          console.log("all drafts form author", draftsResponse.data);
           setDrafts(draftsResponse.data);
         }
 
@@ -71,10 +67,8 @@ const AuthorProfile = () => {
           variables: { userId: id },
         });
         if (error) {
-          console.log("error in article author", error);
         }
         if (data) {
-          console.log("data from article author", data);
           setArticles(data.articlesByAuthor);
         }
         if (loading) {
@@ -82,12 +76,11 @@ const AuthorProfile = () => {
           return <RoundLoading />;
         }
       } catch (error) {
-        console.error("Error fetching author details:", error);
       }
     };
 
     fetchData();
-  }, [activeTab, author]);
+  }, [activeTab]);
 
   return (
     <div className="profile_container">
@@ -126,8 +119,6 @@ const AuthorProfile = () => {
                 key={article.articleId}
                 title={article.title}
                 category={article.category[0]}
-                // name={article.name}
-                // createdAt={article.createdAt}
                 is_premium={article.is_premium}
                 readingTime={article.readingTime}
                 articleId={article.articleId}

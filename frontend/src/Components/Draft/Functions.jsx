@@ -1,4 +1,4 @@
-import {axios, ARTICLE_SERVER_NODE_BASE_URL, useNavigate} from '../index'
+import {axios, ARTICLE_SERVER_NODE_BASE_URL, useNavigate,adminAxiosToDjangoServerInterceptor} from '../index'
 
 export function extractBodyText(body) {
     const navigate = useNavigate()
@@ -20,7 +20,7 @@ export function extractBodyText(body) {
 //   Delete draft
 export const deleteDraft = async (id) => {
     try{
-        const response = await axios.delete(`${ARTICLE_SERVER_NODE_BASE_URL}newarticle/delete/${id}`)
+        const response = await adminAxiosToDjangoServerInterceptor.delete(`${ARTICLE_SERVER_NODE_BASE_URL}delete-draft/${id}`)
         console.log('draft deleted', response);
         setSuccessMessage("Draft deleted successfully")
     }catch(error){

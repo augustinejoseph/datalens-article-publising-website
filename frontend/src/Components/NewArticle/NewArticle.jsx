@@ -13,6 +13,7 @@ import {
   useEffect,
   uploadImageToFirebase,
   deleteImageFromFirebase,
+  adminAxiosToDjangoServerInterceptor,
   // storage,
   useLocation,
   ArrowLeftCircleFill,
@@ -63,7 +64,7 @@ const NewArticle = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}category`
+          `${ARTICLE_SERVER_NODE_BASE_URL}all-categories`
         );
         setCategories(response.data);
       } catch (error) {
@@ -182,7 +183,7 @@ const NewArticle = () => {
     };
     try {
       if (id) {
-        const response = await axios.put(
+        const response = await adminAxiosToDjangoServerInterceptor.put(
           `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/updatedraft/${id}`,
           updatedContent
         );
@@ -226,7 +227,7 @@ const NewArticle = () => {
     try {
       if (id) {
         deleteDraft(id);
-        const response = await axios.post(
+        const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}newarticle`,
           updatedContent
         );
@@ -244,7 +245,7 @@ const NewArticle = () => {
         // Clear the content
         setContent({ title: "", body: "" });
       } else {
-        const response = await axios.post(
+        const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}newarticle`,
           updatedContent
         );

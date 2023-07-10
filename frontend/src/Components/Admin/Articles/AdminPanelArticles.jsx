@@ -21,7 +21,7 @@ const AdminPanelArticles = () => {
   const handleBanToggle = async (articleId, isBanned) => {
     try {
       const response = await axios.put(
-        `${ARTICLE_SERVER_NODE_BASE_URL}article-management/ban/${articleId}`,
+        `${ARTICLE_SERVER_NODE_BASE_URL}admin/article/ban/${articleId}`,
         { is_banned: !isBanned }
       );
 

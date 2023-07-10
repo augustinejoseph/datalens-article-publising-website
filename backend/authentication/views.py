@@ -42,7 +42,21 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import render
 from authentication.models import Allusers
+import jwt
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from datetime import datetime, timedelta
+from django.views.decorators.csrf import csrf_exempt
 
+# Env files
+import environ
+env = environ.Env()
+environ.Env.read_env()
 
 class RegisterView(APIView):
     def post(self, request):
@@ -55,7 +69,7 @@ class RegisterView(APIView):
                 current_site = get_current_site(request)
                 verification_token = default_token_generator.make_token(user)
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-                verification_link = f"{settings.SITE_URL}/user/verify-email/{uidb64}/{verification_token}/"
+                verification_link = f"{settings.DJANGO_SITE_URL}/user/verify-email/{uidb64}/{verification_token}/"
                 email_subject = 'Email Verification'
                 email_message = render_to_string('email_verification.html', {
                     'verification_link': verification_link,
@@ -93,10 +107,8 @@ class Loginview(APIView):
     def post(self, request):
         email = request.data["email"]
         password = request.data["password"]
-        # print("Received from React", email, password)
         
-        
-        user = Allusers.objects.get(email = email)
+        user = Allusers.objects.get(email=email)
         if user.is_banned:
             raise AuthenticationFailed("Banned user")
 
@@ -104,21 +116,28 @@ class Loginview(APIView):
             raise AuthenticationFailed("Invalid email or password")
         if not user.check_password(password):
             raise AuthenticationFailed("Incorrect Password")
-        access_token = AccessToken.for_user(user)
-        access_token['name'] = user.first_name
-        access_token['user_name'] = user.user_name
-        access_token['user_id'] = user.id
-        access_token['email'] = user.email
-        access_token['is_active'] = user.is_active
-        access_token['is_banned'] = user.is_banned
-        access_token['is_admin'] = user.is_superuser
-        access_token['is_premium'] = user.is_premium
-        access_token = str(access_token)
+        
+        # Create a dictionary payload for the access token
+        payload = {
+            'user_id': user.id,
+            'name': user.first_name,
+            'user_name': user.user_name,
+            'email': user.email,
+            'is_active': user.is_active,
+            'is_banned': user.is_banned,
+            'is_admin': user.is_superuser,
+            'is_premium': user.is_premium,
+            'exp': datetime.utcnow() + timedelta(minutes=15),
+        }
+        
+        # Generate the access token
+        access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
         refresh_token = str(RefreshToken.for_user(user))
         return Response({
             "access_token" : access_token,
             "refresh_token" : refresh_token
         })
+
     
 class LogoutView(APIView):
     def post(self, request):
@@ -134,7 +153,6 @@ class LogoutView(APIView):
 class EmailCheckView(APIView):
     def post(self, request):
         email = request.data.get("email")
-        print('recieved emil', email)
         if email:
             try:
                 user = Allusers.objects.get(email=email)
@@ -165,7 +183,6 @@ class EmailCheckView(APIView):
 class EmailAvailability(APIView):
     def post(self, request):
         email = request.data.get("email")
-        # print('recieved email', email)
         try:
             user = Allusers.objects.get(email = email)
             return Response(False)
@@ -176,7 +193,6 @@ class AllInterests(APIView):
     def get(self, request):
         interests = Interests.objects.all()
         serializer = InterestSerializer(interests, many=True)
-        print("inside all interests sending fn")
         return Response(serializer.data)
 
 def verify_email(request, uidb64, token):
@@ -223,14 +239,20 @@ class AdminLogin(APIView):
             "access_token" : access_token,
             "refresh_token" : refresh_token
         })
-    
+
+
 class AllUsersList(APIView):
+    authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         allUsers = Allusers.objects.exclude(is_superuser=True)
         serializer = AllUsersSerializer(allUsers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
  
 class BlockUser(APIView):
+    authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
+    @csrf_exempt
     def patch(self, request, user_id):
         user = Allusers.objects.get(id=user_id)
         user.is_banned = not user.is_banned
@@ -256,18 +278,16 @@ class AuthorDetailsById(APIView):
         except Allusers.DoesNotExist:
             return Response({"error": "User  not found"}, status=404)
         
-
 # Resend verification email
 class ResendVerificationEmail(APIView):
     def post(self, request):
         email = request.data.get('email')
-        print('-------------------------resent email--------------', email)
 
         user = Allusers.objects.get(email=email)
         if user:
             verification_token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            verification_link = f"{settings.SITE_URL}/user/verify-email/{uidb64}/{verification_token}/"
+            verification_link = f"{settings.DJANGO_SITE_URL}/user/verify-email/{uidb64}/{verification_token}/"
             email_subject = 'Email Verification'
             email_message = render_to_string('email_verification.html', {
                 'verification_link': verification_link,

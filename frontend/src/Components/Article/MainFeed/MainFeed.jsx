@@ -25,7 +25,7 @@ const MainFeed = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}category`
+          `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
         );
         setCategories(response.data);
         // console.log("categories form mongodb, for mainfeed", response.data);

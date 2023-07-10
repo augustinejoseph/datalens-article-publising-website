@@ -1,13 +1,6 @@
-// import { ,  } from "react";
-// import  from "axios";
-// import {  } from "react-router";
+
 import "./Register.css";
-// import { Link } from "react-router-dom";
-// import VerifyEmail from "./VerifyEmail";
-// import { BACKEND_BASE_URL } from "../../API/Api";
 import ReCAPTCHA from "react-google-recaptcha"
-// import { Flag } from "react-bootstrap-icons";
-// import dotenv from 'dotenv';
 import {Flag,dotenv, VerifyEmail, BACKEND_BASE_URL, Link, useNavigate,axios,useState , useRef, fullLogo} from '../../index'
 
 const Register = () => {
@@ -33,27 +26,12 @@ const Register = () => {
   console.log(GOOGLE_CAPTCHA_SITE_KEY);
   const captchaRef = useRef(null)
 
-
-  // console.log("email in state", email);
-  // console.log("password is state", password);
-  // console.log("firstname is state", first_name);
-  // console.log("lasename is state", last_name);
-  // console.log("email step completed?", emailStepCompleted);
-  // console.log("is password valid", isPasswordValid);
-  // console.log("is password step completed", isPasswordStepCompleted);
-  // console.log("is user details  completed", isUserDetailsStepCompleted);
-  // console.log("is interest step completed", isInterestStepsCompleted)
-  // console.log("is email verification completed", isEmailVerifCompleted);
-  // console.log("all interests from api", allIntersetFromAPI);
-  // console.log("list of selected interests", selectedInterests);
-
   const getAllInterestsListFromServer = async () => {
     const response = await axios.get(
       `${BACKEND_BASE_URL}user/all-interests`,
       
     );
     setAllIntersetFromAPI(response.data);
-    // console.log("api for all interests", response)
   };
 
   // Email page
@@ -66,7 +44,7 @@ const Register = () => {
       return;
     }
   
-    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com","dronetz.com", "edulena.com"];
+    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com","nasskar.com","dronetz.com", "edulena.com"];
   
     const domain = email.split("@")[1];
     if (!validDomains.includes(domain)) {

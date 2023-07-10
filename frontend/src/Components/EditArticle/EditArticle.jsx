@@ -14,7 +14,8 @@ import {
     calculateReadingTime,
     Footer,
     HomePostContainer,
-    PageNotFound
+    PageNotFound,
+    adminAxiosToDjangoServerInterceptor
   } from '../index'
   import './EditArticle.css'
 const EditArticle = () => {
@@ -29,7 +30,7 @@ const EditArticle = () => {
   useEffect(() => {
     const fetchArticleData = async () => {
       try {
-        const response = await axios.get(`${ARTICLE_SERVER_NODE_BASE_URL}article/${articleId}`);
+        const response = await adminAxiosToDjangoServerInterceptor.get(`${ARTICLE_SERVER_NODE_BASE_URL}article/${articleId}`);
         setTitle(response.data.title);
         setContent(response.data.body);
       } catch (error) {
@@ -57,7 +58,7 @@ const EditArticle = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(
+      const response = await adminAxiosToDjangoServerInterceptor.put(
         `${ARTICLE_SERVER_NODE_BASE_URL}article/${articleId}`,
         { title, body: content }
       );
