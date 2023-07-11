@@ -1,4 +1,4 @@
-import {Trash2Fill, axios, ARTICLE_SERVER_NODE_BASE_URL} from '../index'
+import {Trash2Fill, axios, ARTICLE_SERVER_NODE_BASE_URL, adminAxiosToDjangoServerInterceptor} from '../index'
 
 const deleteButton = {
     backgroundColor: "red",
@@ -47,7 +47,7 @@ export const columns = (handleCategoryDelete) => [
 export  const fetchCategories = async (setCategories) => {
     try {
       const response = await axios.get(
-        `${ARTICLE_SERVER_NODE_BASE_URL}category`
+        `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
       );
       setCategories(response.data);
     } catch (error) {
@@ -71,8 +71,8 @@ export const createCategory = async (newCategoryName, setCategories, categories)
     }
   
     try {
-      const response = await axios.post(
-        `${ARTICLE_SERVER_NODE_BASE_URL}category`,
+      const response = await adminAxiosToDjangoServerInterceptor.post(
+        `${ARTICLE_SERVER_NODE_BASE_URL}admin/category`,
         {
           name: lowercaseName,
         }

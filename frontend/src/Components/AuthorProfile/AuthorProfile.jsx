@@ -16,6 +16,7 @@ import {
   RoundLoading,
   Draft,
   gql,
+  adminAxiosToDjangoServerInterceptor
 } from "../index";
 import "./AuthorProfile.css";
 
@@ -33,16 +34,11 @@ const AuthorProfile = () => {
   const [drafts, setDrafts] = useState([]);
   const { user } = useContext(AuthContext);
   const [userId, setUserId] = useState();
-  console.log(
-    "id from context",
-    user?.user_id + "  id from server",
-    author?.id
-  );
-  console.log("drafts in state", drafts);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
   useEffect(() => {
     setUserId(user?.user_id);
     const fetchData = async () => {
@@ -54,21 +50,23 @@ const AuthorProfile = () => {
         setAuthor({ id, user_name, first_name, last_name, email });
 
         // Node Mongodb query for drafts of the author
-        if (author?.id === user?.user_id) {
-          const draftsResponse = await axios.get(
-            `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/alldrafts/${id}`
+        if (author && user && (author?.id === user?.user_id)) {
+          const draftsResponse = await adminAxiosToDjangoServerInterceptor.get(
+            `${ARTICLE_SERVER_NODE_BASE_URL}user/all-drafts/${id}`
           );
           setDrafts(draftsResponse.data);
         }
-
+        console.log('username in author profile', username);
         // Node Mongodb Query for Article List
         const { data, loading, error } = await client.query({
           query: GET_ARTICLES_BY_AUTHOR,
-          variables: { userId: id },
+          variables: { userName: username }
         });
         if (error) {
+          console.log('aricles by author error', error);
         }
         if (data) {
+          console.log('aricles by author', data);
           setArticles(data.articlesByAuthor);
         }
         if (loading) {
@@ -80,7 +78,7 @@ const AuthorProfile = () => {
     };
 
     fetchData();
-  }, [activeTab]);
+  }, [activeTab,]);
 
   return (
     <div className="profile_container">

@@ -8,7 +8,7 @@ const { default: mongoose } = require('mongoose');
 
 
 // Update an article
-router.put('update-article/:id', async (req, res) => {
+router.put('/update-article/:id', async (req, res) => {
     const { id } = req.params;
     const { title, body } = req.body;
     try {
@@ -79,9 +79,10 @@ router.post('/add-comment/:id', async (req, res) => {
   });
 
   // Create a new Article
-router.post('/', function(req, res) {
+router.post('/new-article', function(req, res) {
     const { title, body,summary, description, images, name, category, hashtags, readingTime, comments, user_id, previewImage, user_name  } = req.body;
-    if (!title || !body || !category || !name || !user_id || user_name) {
+    console.log("all new article data in api body", req.body);
+    if (!title || !body || !category || !name || !user_id || !user_name) {
       return res.status(400).json({ error: 'Please provide title, body, and category' });
     }
     const createdAt = Date.now();
@@ -129,7 +130,7 @@ router.post('/', function(req, res) {
     newArticle.save()
       .then((article) => {
         console.log('Article saved:', article);
-        res.status(201).json(article.articleId);
+        res.status(200).json(article.articleId);
       })
       .catch((error) => {
         console.error('Error saving article:', error);

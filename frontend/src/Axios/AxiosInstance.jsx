@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { BACKEND_BASE_URL } from '../Components/index';
+import { BACKEND_BASE_URL, useNavigate, useState } from '../Components/index';
 import jwtDecode from 'jwt-decode';
 
 export const adminAxiosToDjangoServerInterceptor = axios.create();
@@ -11,7 +11,9 @@ adminAxiosToDjangoServerInterceptor.interceptors.request.use(
   async (config) => {
     const accessToken = Cookies.get('access_token');
     const refreshToken = Cookies.get('refresh_token');
-
+    const decoded_token = jwtDecode(accessToken)
+    const admin = decoded_token.is_admin
+    console.log('is admin in interceptor', admin);
     if (!accessToken || isTokenExpired(accessToken)) {
       if (refreshToken) {
         try {
@@ -32,6 +34,15 @@ adminAxiosToDjangoServerInterceptor.interceptors.request.use(
           config.headers.Authorization = `Bearer ${newAccessToken}`;
         } catch (error) {
           console.error('Error refreshing access token:', error);
+          Cookies.remove('access_token')
+          Cookies.remove('refresh_token')
+          const navigate = useNavigate()
+          if(admin){
+            console.log('insides refresh error navigate to login');
+            navigate("/adminloign")
+          }else{
+            navigate("/login")
+          }
         }
       } else {
         console.error('Refresh token is not available');

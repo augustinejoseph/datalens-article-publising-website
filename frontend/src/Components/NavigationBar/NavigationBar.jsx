@@ -163,7 +163,7 @@ export default function NavigationBar() {
                       style={{ marginRight: "1rem" }}
                       size={20}
                     />
-                    {user?.name}
+                    {user?.name || "ADMIN"}
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem

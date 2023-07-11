@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CustomToastContainer = ({ status, message, isError }) => {
+const CustomToastContainer = ({ status, message }) => {
   const toastOptions = {
     position: 'top-right',
     autoClose: 5000,
@@ -13,15 +13,13 @@ const CustomToastContainer = ({ status, message, isError }) => {
     progress: undefined
   };
 
-  React.useEffect(() => {
-    if (status && message) {
-      if (isError) {
-        toast.error(message, toastOptions);
-      } else {
-        toast.success(message, toastOptions);
-      }
+  useEffect(() => {
+    if (status === 'success' && message) {
+      toast.success(message, toastOptions);
+    } else if (status === 'error' && message) {
+      toast.error(message, toastOptions);
     }
-  }, [status, message, isError]);
+  }, [status, message]);
 
   return <ToastContainer />;
 };

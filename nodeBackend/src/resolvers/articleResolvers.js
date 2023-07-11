@@ -38,11 +38,11 @@ const resolvers = {
     },
 
     // Articles by author
-    articlesByAuthor: async (_, { userId }) => {
+    articlesByAuthor: async (_, { userName }) => {
       try {
-        // console.log("resolver user id", userId);
+        // console.log("resolver user name", userName);
         // console.log('resolver articlesByAuthor try block');
-        const articlesByAuthor = await Article.find({ user_id: userId }).populate('category');
+        const articlesByAuthor = await Article.find({ user_name: userName }).populate('category');
         // console.log('returned articles', articlesByAuthor);
         return articlesByAuthor;
       } catch (error) {

@@ -27,7 +27,7 @@ const typeDefs = gql`
     featuredArticles: [Article]!
     trendingArticles: [Article] !
     premiumArticles: [Article] !
-    articlesByAuthor(userId : ID!) : [Article]
+    articlesByAuthor(userName : String!) : [Article]
     articlesByCategory(categoryName: String!) : [Article]
     articlesByHashtag(hashtagName : String!) : [Article]
     

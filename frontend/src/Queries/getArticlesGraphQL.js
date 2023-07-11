@@ -24,8 +24,8 @@ export const GET_ARTICLES = gql`
 
 // Articles by author
 export const GET_ARTICLES_BY_AUTHOR = gql`
-  query GetArticlesByAuthor($userId: ID!) {
-    articlesByAuthor(userId: $userId) {
+  query GetArticlesByAuthor($userName: String!) {
+    articlesByAuthor(userName: $userName) {
       title
       category {
         name

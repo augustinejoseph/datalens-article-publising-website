@@ -18,6 +18,8 @@ import {
   useLocation,
   ArrowLeftCircleFill,
   deleteDraft,
+  CustomToastContainer,
+
 } from "../index";
 import { storage } from '../../Firebase/FirebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -64,7 +66,7 @@ const NewArticle = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}all-categories`
+          `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
         );
         setCategories(response.data);
       } catch (error) {
@@ -79,8 +81,8 @@ const NewArticle = () => {
     if (id) {
       const fetchDraft = async () => {
         try {
-          const response = await axios.get(
-            `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/draft/${id}`
+          const response = await adminAxiosToDjangoServerInterceptor.get(
+            `${ARTICLE_SERVER_NODE_BASE_URL}user/draft/${id}`
           );
           console.log("draft feched in editor", response.data);
           const { title, body } = response.data;
@@ -184,7 +186,7 @@ const NewArticle = () => {
     try {
       if (id) {
         const response = await adminAxiosToDjangoServerInterceptor.put(
-          `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/updatedraft/${id}`,
+          `${ARTICLE_SERVER_NODE_BASE_URL}user/update-draft/${id}`,
           updatedContent
         );
         console.log("draft updated successfully", response);
@@ -194,8 +196,8 @@ const NewArticle = () => {
         }, 2000);
         navigate(`/user/${user?.user_name}` || "/");
       } else {
-        const response = await axios.post(
-          `${ARTICLE_SERVER_NODE_BASE_URL}newarticle/savetodraft`,
+        const response = await adminAxiosToDjangoServerInterceptor.post(
+          `${ARTICLE_SERVER_NODE_BASE_URL}user/save-to-draft`,
           updatedContent
         );
         console.log("save to draft", response.data);
@@ -223,6 +225,7 @@ const NewArticle = () => {
       readingTime: readingTime,
       user_name : user_name,
     };
+    console.log('new article contents', updatedContent);
 
     try {
       if (id) {
@@ -234,11 +237,13 @@ const NewArticle = () => {
 
         console.log("Article saved:", response.data);
         const articleId = response.data;
-        setSuccessMsg("Article Saved Successfully");
+        <CustomToastContainer statusCode={response.status} message="Article Published Successfully" />;
+
+        // setSuccessMsg("Article Saved Successfully");
         // setRedirectUrl(articleId)
-        console.log("redirect url after article create", articleId);
+        // console.log("redirect url after article create", articleId);
         setTimeout(() => {
-          setSuccessMsg("");
+          // setSuccessMsg("");
           navigate(`/article/${articleId}`);
         }, 1000);
 
@@ -246,11 +251,12 @@ const NewArticle = () => {
         setContent({ title: "", body: "" });
       } else {
         const response = await adminAxiosToDjangoServerInterceptor.post(
-          `${ARTICLE_SERVER_NODE_BASE_URL}newarticle`,
+          `${ARTICLE_SERVER_NODE_BASE_URL}user/new-article`,
           updatedContent
         );
 
         console.log("Article saved:", response.data);
+        <CustomToastContainer status={response.status} message="Article Published Successfully" />;
         const articleId = response.data;
         setSuccessMsg("Article Saved Successfully");
         console.log("redirect url after article create", articleId);

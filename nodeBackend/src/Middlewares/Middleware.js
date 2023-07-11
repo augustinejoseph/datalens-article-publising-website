@@ -6,10 +6,10 @@ function userTokenMiddlewareForJWT(req, res, next) {
   console.log(JWT_SECRET_KEY);
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-    console.log('authheader', authHeader , '---- and --- token', token);
+    // console.log('authheader', authHeader , '---- and --- token', token);
 
     if (token == null){
-      console.log('empty token in node middleware');
+      // console.log('empty token in node middleware');
       return res.sendStatus(401);
     }
 
@@ -18,7 +18,7 @@ jwt.verify(token, JWT_SECRET_KEY, (err, user) => {
       console.log(err);
       return res.sendStatus(403);
     }
-    console.log('user in middleware jwt in nodejs', user);
+    // console.log('user in middleware jwt in nodejs', user);
     req.user = user;
     next();
   });

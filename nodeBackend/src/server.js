@@ -11,6 +11,7 @@ const adminArticleManagementRouter = require('./router/adminArticleManagementRou
 const { JWT_SECRET_KEY } = require('./config/config');
 const {userTokenMiddlewareForJWT, adminTokenMiddlewareForJWT} = require('./Middlewares/Middleware')
 
+console.log(process.env.SECRET_KEY,"jjjj");
 const app = express();
 app.use(cors());
 app.use(express.json());

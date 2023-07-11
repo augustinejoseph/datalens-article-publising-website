@@ -47,6 +47,7 @@ class CustomTokenRefreshView(APIView):
             jti = str(uuid.uuid4())
             payload = {
                 'user_id': user.id,
+                'user_name': user.user_name,
                 'name': user.first_name,
                 'email': user.email,
                 'is_active': user.is_active,

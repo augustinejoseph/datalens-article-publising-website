@@ -41,7 +41,7 @@ const AdminPanelUser = () => {
         setAllUsersList(response.data);
         console.log('all users list', allUsersList);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        // console.error('Error fetching users:', error);
       }
     };
   
