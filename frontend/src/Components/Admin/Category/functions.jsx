@@ -69,6 +69,7 @@ export const createCategory = async (
   setCategories,
   categories,
   setNewCategoryName,
+  showToast
   
 ) => {
   try {

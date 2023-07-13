@@ -5,4 +5,4 @@ frontend/src/API/Api.jsx
 nodeBackend/node_modules
 frontend/.env
 nodeBackend/src/.env
-nodeBackend/src/config/
+# nodeBackend/src/config/

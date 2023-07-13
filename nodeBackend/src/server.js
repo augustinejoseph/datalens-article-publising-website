@@ -8,7 +8,6 @@ const { ApolloServer } = require('apollo-server-express');
 const resolvers = require('./resolvers/articleResolvers');
 const typeDefs = require('./schema/articleSchema');
 const {userTokenMiddlewareForJWT, adminTokenMiddlewareForJWT} = require('./Middlewares/Middleware')
-
 const app = express();
 app.use(cors());
 app.use(express.json());

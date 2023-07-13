@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 const { JWT_SECRET_KEY } = require('../config/config');
 
 function userTokenMiddlewareForJWT(req, res, next) {

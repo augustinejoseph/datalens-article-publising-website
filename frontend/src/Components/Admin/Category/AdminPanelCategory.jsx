@@ -18,7 +18,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminPanelCategory = () => {
-  // const showToast = useToast()
+  const showToast = useToast()
   const theme = createTheme();
   const [categories, setCategories] = useState([]);
   const [newCategoryName, setNewCategoryName] = useState("");
