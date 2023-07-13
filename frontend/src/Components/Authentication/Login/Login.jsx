@@ -1,13 +1,8 @@
-import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
-import AuthContext from "../../../Contexts/AuthContext";
 import { useContext } from "react";
 import jwt_decode from "jwt-decode";
 import "./Login.css";
 import { BACKEND_BASE_URL } from "../../../API/Api";
-import { fullLogo, toast, ToastContainer } from "../../index";
+import {useState,AuthContext, React, fullLogo,  useToast,Cookies,axios,Link, Navigate, useNavigate } from "../../index";
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -22,32 +17,34 @@ const Login = () => {
   const [loggedIn, setLoggedIn] = useState({});
   const { setUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
-  // console.log("email check state status", emailChecked)
+  const showToast = useToast()
 
   // Email check
   const handleEmailCheck = async (e) => {
+    try{
     e.preventDefault();
     setErrorMessage("");
-    console.log(`${BACKEND_BASE_URL}users/email-check`);
     const response = await axios.post(`${BACKEND_BASE_URL}user/email-check`, {
       email: email,
     });
 
-    // const response = await axios.post(
-    //   "http://localhost:8000/user/email-check",
-    //   { email: email }
-    // );
-
     console.log("response from api", response);
     if (response.data.status == true) {
-      // console.log("email check success");
       setEmailChecked(true);
       setName(response.data.user.first_name);
     } else {
-      // console.log("else");
-      setErrorMessage("Invalid email id");
+      showToast("Invalid email Id", 404)
       setEmailChecked(false);
     }
+  }catch(error){
+    console.log('login email check error', error);
+    
+    if (error.response && error.response.status) {
+      showToast("Internal Server Error", error.response.status);
+    } else {
+      showToast("Internal Server Error");
+    }
+  }
   };
 
   // Login Function
@@ -76,6 +73,7 @@ const Login = () => {
       };
 
       setUser(LoggedInUser);
+      showToast('Logged in successfully', data.status)
       if (!LoggedInUser.is_active) {
         navigate("/verify-email");
       } else {
@@ -87,10 +85,11 @@ const Login = () => {
         }
       }
       navigate("/");
+      console.log('login data', data);
     } catch (error) {
       if (error.response || error.response) {
-        toast.error("Invalid Email ot Password")
-        setErrorMessage("Invalid email or password");
+        showToast("Wrong  Password")
+        setErrorMessage("Wrong password");
         console.log(error);
       } else {
         setErrorMessage("An error occurred during authentication.");

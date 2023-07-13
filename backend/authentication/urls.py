@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import Loginview, RegisterView, LogoutView, EmailCheckView, EmailAvailability, AllInterests, verify_email, email_verification_success, email_verification_failed, AdminLogin, AllUsersList, BlockUser,AuthorDetails, AuthorDetailsById, ResendVerificationEmail
+from .views import Loginview, RegisterView, LogoutView, EmailCheckView, EmailAvailability, AllInterests, verify_email, email_verification_success, email_verification_failed, AdminLogin, AllUsersList, BlockUser,AuthorDetails, AuthorDetailsById, ResendVerificationEmail, UserInterests
 
 urlpatterns = [
     # Normal User
@@ -25,4 +25,6 @@ urlpatterns = [
     
     path('author-details-by-id/<int:user_id>', AuthorDetailsById.as_view(), name="author_details_by_id"),
 
+    # User interests
+    path('user-interests/<int:user_id>' , UserInterests.as_view() , name ="user_interests")
 ]

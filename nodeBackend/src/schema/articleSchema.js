@@ -30,6 +30,7 @@ const typeDefs = gql`
     articlesByAuthor(userName : String!) : [Article]
     articlesByCategory(categoryName: String!) : [Article]
     articlesByHashtag(hashtagName : String!) : [Article]
+    articlesByUserInterest(userId : ID!) : [Article]
     
   }
 `;

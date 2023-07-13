@@ -9,6 +9,8 @@ from rest_framework import status
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
+
 # Email
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
@@ -43,6 +45,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import render
 from authentication.models import Allusers
 import jwt
+from django.core.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -58,13 +61,15 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
+
 class RegisterView(APIView):
     def post(self, request):
-        with transaction.atomic():
-            serializer = UserSerializer(data=request.data)
-            if serializer.is_valid(raise_exception=True):
+        try:
+            with transaction.atomic():
+                serializer = UserSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
                 user = serializer.save()
-                
+
                 # Send verification email
                 current_site = get_current_site(request)
                 verification_token = default_token_generator.make_token(user)
@@ -85,59 +90,71 @@ class RegisterView(APIView):
                 # Send the email
                 email.send()
 
-                # send_mail(email_subject, email_message, settings.EMAIL_HOST_USER, [user.email])
-
-                return Response({"success": True, "message": "Registration Successful. Verify Email"},
+                return Response({"success": True, "message": "Registration Successful. Verify Email", "status": 200},
                                 status=status.HTTP_201_CREATED)
-            else:
-                errors = {}
-                for field, field_errors in serializer.errors.items():
-                    # Customize the error messages based on the field
-                    if field == 'email' and 'unique' in field_errors:
-                        errors[field] = "Email already exists."
-                    elif field == 'password':
-                        errors[field] = "Invalid password."
-                    else:
-                        errors[field] = field_errors[0]  # Use the first error message
 
-                return Response({"success": False, "errors": errors}, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError as e:
+            errors = {}
+            for field, field_errors in e.error_dict.items():
+                # Customize the error messages based on the field
+                if field == 'email' and 'unique' in field_errors:
+                    errors[field] = "Email already exists."
+                elif field == 'password':
+                    errors[field] = "Invalid password."
+                else:
+                    errors[field] = field_errors[0]  # Use the first error message
 
+            return Response({"success": False, "errors": errors, "status": 400}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"success": False, "message": "Internal Server Error", "status": 500},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class Loginview(APIView):
     def post(self, request):
-        email = request.data["email"]
-        password = request.data["password"]
-        
-        user = Allusers.objects.get(email=email)
-        if user.is_banned:
-            raise AuthenticationFailed("Banned user")
+        try:
+            email = request.data["email"]
+            password = request.data["password"]
 
-        if user is None:
+            user = Allusers.objects.get(email=email)
+            if user.is_banned:
+                raise AuthenticationFailed("Banned user")
+
+            if user is None:
+                raise AuthenticationFailed("Invalid email or password")
+            if not user.check_password(password):
+                raise AuthenticationFailed("Incorrect Password")
+
+            # Create a dictionary payload for the access token
+            payload = {
+                'user_id': user.id,
+                'name': user.first_name,
+                'user_name': user.user_name,
+                'email': user.email,
+                'is_active': user.is_active,
+                'is_banned': user.is_banned,
+                'is_admin': user.is_superuser,
+                'is_premium': user.is_premium,
+                'exp': datetime.utcnow() + timedelta(minutes=15),
+            }
+
+            # Generate the access token
+            access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
+            refresh_token = str(RefreshToken.for_user(user))
+            return Response({
+                "access_token" : access_token,
+                "refresh_token" : refresh_token,
+                "status" :200
+            })
+
+        except Allusers.DoesNotExist:
             raise AuthenticationFailed("Invalid email or password")
-        if not user.check_password(password):
-            raise AuthenticationFailed("Incorrect Password")
-        
-        # Create a dictionary payload for the access token
-        payload = {
-            'user_id': user.id,
-            'name': user.first_name,
-            'user_name': user.user_name,
-            'email': user.email,
-            'is_active': user.is_active,
-            'is_banned': user.is_banned,
-            'is_admin': user.is_superuser,
-            'is_premium': user.is_premium,
-            'exp': datetime.utcnow() + timedelta(minutes=15),
-        }
-        
-        # Generate the access token
-        access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
-        refresh_token = str(RefreshToken.for_user(user))
-        return Response({
-            "access_token" : access_token,
-            "refresh_token" : refresh_token
-        })
 
+        except AuthenticationFailed as e:
+            raise e
+
+        except Exception as e:
+            raise AuthenticationFailed("An error occurred during login")
     
 class LogoutView(APIView):
     def post(self, request):
@@ -253,7 +270,7 @@ class AllUsersList(APIView):
 class BlockUser(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
     @csrf_exempt
-    def patch(self, request, user_id):
+    def put(self, request, user_id):
         user = Allusers.objects.get(id=user_id)
         user.is_banned = not user.is_banned
         user.save()
@@ -306,3 +323,18 @@ class ResendVerificationEmail(APIView):
         else:
             return Response({"success": False, "message": "User not found."},
                             status=status.HTTP_404_NOT_FOUND)
+        
+
+class UserInterests(APIView):
+    def get(self, request, user_id):
+        try:
+            user_interests = Userinterests.objects.filter(user_id=user_id)
+            print("user interests from  table", user_interests)
+        except ObjectDoesNotExist:
+            print("user not exist------------")
+            return Response({'error': 'User interests not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            print("user exception------------",e)
+
+            return Response({'error': "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

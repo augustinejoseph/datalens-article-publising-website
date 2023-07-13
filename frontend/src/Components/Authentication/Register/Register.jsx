@@ -1,9 +1,10 @@
 
 import "./Register.css";
 import ReCAPTCHA from "react-google-recaptcha"
-import {Flag,dotenv, VerifyEmail, BACKEND_BASE_URL, Link, useNavigate,axios,useState , useRef, fullLogo} from '../../index'
+import {Flag,dotenv, VerifyEmail, BACKEND_BASE_URL, Link, useNavigate,axios,useState , useRef, fullLogo, useToast} from '../../index'
 
 const Register = () => {
+  const showToast = useToast()
   const [email, setEmail] = useState("");
   const [emailStepCompleted, setEmailStepCompleted] = useState(false);
   const [isPasswordStepCompleted, setIsPasswordStepCompleted] = useState(false);
@@ -23,7 +24,6 @@ const Register = () => {
   const [allIntersetFromAPI, setAllIntersetFromAPI] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const GOOGLE_CAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY
-  console.log(GOOGLE_CAPTCHA_SITE_KEY);
   const captchaRef = useRef(null)
 
   const getAllInterestsListFromServer = async () => {
@@ -44,7 +44,7 @@ const Register = () => {
       return;
     }
   
-    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com","nasskar.com","dronetz.com", "edulena.com"];
+    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com", "nasskar.com", "dronetz.com", "edulena.com"];
   
     const domain = email.split("@")[1];
     if (!validDomains.includes(domain)) {
@@ -52,15 +52,21 @@ const Register = () => {
       return;
     }
   
-    const response = await axios.post(
-      `${BACKEND_BASE_URL}user/email-availability`,
-      { email: email }
-    );
-    console.log(response.data);
-    if (response.data == true) {
-      setEmailStepCompleted(true);
-    } else {
-      setErrorMessage("Account already exists.");
+  
+    try {
+      const response = await axios.post(
+        `${BACKEND_BASE_URL}user/email-availability`,
+        { email: email }
+      );
+      console.log(response.data);
+      if (response.data === true) {
+        setEmailStepCompleted(true);
+      } else {
+        setErrorMessage("Account already exists.");
+      }
+    } catch (error) {
+      console.log(error);
+      showToast("Internal Server Error");
     }
   };
 
@@ -151,13 +157,17 @@ const Register = () => {
       if (data.success) {
         console.log("success msg form final summit", data.success);
         setSuccessMsg(data.message);
+        showToast(data.message, data.status)
         setIsUserDetailsStepCompleted(true);
         navigate("/verify-email");
+        console.log("data from registere", data);
       } else {
+        showToast(data.error, 500)
         console.log("error from data after final submit", data.error);
         setErrorMsg(data.errors);
       }
     } catch (error) {
+      showToast("Internal server error", 500)
       console.error("Error: ", error);
       setErrorMsg({ general: "An error occurred. Please try again." });
     }

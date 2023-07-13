@@ -55,7 +55,7 @@ export const onBlockUser = async (userId) => {
     const formattedUserId = String(userId);
     console.log(formattedUserId, "user id in block fn for user");
   
-    const response = await axios.patch(
+    const response = await axios.put(
       `${BACKEND_BASE_URL}user/block-user/${userId}`
     );
     console.log("block user ", response);

@@ -15,10 +15,12 @@ import {
     Footer,
     HomePostContainer,
     PageNotFound,
-    adminAxiosToDjangoServerInterceptor
+    adminAxiosToDjangoServerInterceptor,
+    useToast,
   } from '../index'
   import './EditArticle.css'
 const EditArticle = () => {
+  const showToast = useToast()
   const navigate = useNavigate();
   const { articleId } = useParams();
   const [title, setTitle] = useState("");
@@ -34,6 +36,8 @@ const EditArticle = () => {
         setTitle(response.data.title);
         setContent(response.data.body);
       } catch (error) {
+        showToast("Error in fetching article", 500)
+        navigate('/')
         console.error("Error fetching article data:", error);
       }
     };
@@ -62,18 +66,9 @@ const EditArticle = () => {
         `${ARTICLE_SERVER_NODE_BASE_URL}user/update-article/${articleId}`,
         { title, body: content }
       );
-      console.log("Article updated:", response.data);
-      setSuccessMsg("Article updated successfully.");
-      setTimeout(() => {
-        setSuccessMsg("");
-        navigate(`/article/${articleId}`);
-      }, 2000);
+      showToast(response.data.message, response.status)
     } catch (error) {
-      setErrorMessage("An error occurred while updating the article.");
-      console.error("Error updating article:", error);
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
+      showToast("Error while updating", 500)
     }
   };
 

@@ -14,12 +14,19 @@ import {
   ARTICLE_SERVER_NODE_BASE_URL,
   Footer,
   useNavigate,
+  Banner,
+  useContext,
+  AuthContext,
+  GET_ARTICLES_BY_USER_INTEREST,
+  useToast,
 } from '../../index'
 
 const MainFeed = () => {
+  const showToast = useToast()
+  const {user} = useContext(AuthContext)
   const navigate = useNavigate()
   const [categories, setCategories] = useState([]);
-  const { loading, error, data } = useQuery(GET_ARTICLES);
+  const shouldUserBasedQuery = user && user?.user_id
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -28,7 +35,6 @@ const MainFeed = () => {
           `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
         );
         setCategories(response.data);
-        // console.log("categories form mongodb, for mainfeed", response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -36,22 +42,27 @@ const MainFeed = () => {
 
     fetchCategories();
 
-    // All Preview Articles
   }, []);
+
+  const {loading, error, data} = useQuery(shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES) 
+
   if (loading) {
     return <LoadingMainFeed />;
   }
 
   if (error) {
+    showToast("Internal server error", 500)
     navigate("/error")
   }
 
-  const articles = data.articles;
+  const articles = data?.articles;
 
   return (
     <div className="mainfeed_container">
       <HomeCategoryList 
       categories={categories} />
+
+
       {articles.map((article) => (
         <HomePostContainer
           key={article.articleId}

@@ -78,7 +78,7 @@ const AuthorProfile = () => {
     };
 
     fetchData();
-  }, [activeTab,]);
+  }, [activeTab]);
 
   return (
     <div className="profile_container">

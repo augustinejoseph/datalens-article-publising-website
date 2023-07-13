@@ -19,6 +19,7 @@ import {
   ArrowLeftCircleFill,
   deleteDraft,
   CustomToastContainer,
+  useToast,
 
 } from "../index";
 import { storage } from '../../Firebase/FirebaseConfig';
@@ -28,6 +29,7 @@ import "./NewArticle.css";
 // import storage from '../../Firebase/FirebaseConfig'
 
 const NewArticle = () => {
+  const showToast = useToast()
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const user_id = user?.user_id;
@@ -176,7 +178,7 @@ const NewArticle = () => {
     setContent({ title: "", body: "" });
   };
 
-  // Save to Draft
+  // Save to Draft and update draft
   const handleSaveToDraft = async () => {
     const updatedContent = {
       ...content,
@@ -185,25 +187,29 @@ const NewArticle = () => {
     };
     try {
       if (id) {
-        const response = await adminAxiosToDjangoServerInterceptor.put(
-          `${ARTICLE_SERVER_NODE_BASE_URL}user/update-draft/${id}`,
-          updatedContent
-        );
-        console.log("draft updated successfully", response);
-        setSuccessMsg("Draft updated Successfully");
-        setTimeout(() => {
-          setSuccessMsg("");
-        }, 2000);
-        navigate(`/user/${user?.user_name}` || "/");
+        try {
+          const response = await adminAxiosToDjangoServerInterceptor.put(
+            `${ARTICLE_SERVER_NODE_BASE_URL}user/update-draft/${id}`,
+            updatedContent
+          );
+          console.log("draft updated successfully", response);
+          showToast(response.data.message, response.status);
+          navigate(`/user/${user?.user_name}` || "/");
+        } catch (error) {
+          showToast("Failed to update draft", 500);
+          console.log("Error updating draft", error);
+        }
       } else {
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}user/save-to-draft`,
           updatedContent
         );
+        showToast(response.data.message, response.status)
         console.log("save to draft", response.data);
         navigate(`/user/${user?.user_name}` || "/");
       }
     } catch (error) {
+      showToast(response.data.message, response.status)
       setErrorMessage("An error occurred while saving the article to draft");
       console.error("Error saving to draft:", error);
       setTimeout(() => {
@@ -212,7 +218,7 @@ const NewArticle = () => {
     }
   };
 
-  // Publish Article
+  // Publish Article and edit article republish
   const handlePublish = async () => {
     const updatedContent = {
       ...content,
@@ -234,32 +240,21 @@ const NewArticle = () => {
           `${ARTICLE_SERVER_NODE_BASE_URL}newarticle`,
           updatedContent
         );
-
+        showToast(response.data.message, response.status)
         console.log("Article saved:", response.data);
-        const articleId = response.data;
-        <CustomToastContainer statusCode={response.status} message="Article Published Successfully" />;
-
-        // setSuccessMsg("Article Saved Successfully");
-        // setRedirectUrl(articleId)
-        // console.log("redirect url after article create", articleId);
+        const articleId = response.data.articleId;
         setTimeout(() => {
-          // setSuccessMsg("");
           navigate(`/article/${articleId}`);
         }, 1000);
 
-        // Clear the content
         setContent({ title: "", body: "" });
       } else {
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}user/new-article`,
           updatedContent
         );
-
-        console.log("Article saved:", response.data);
-        <CustomToastContainer status={response.status} message="Article Published Successfully" />;
-        const articleId = response.data;
-        setSuccessMsg("Article Saved Successfully");
-        console.log("redirect url after article create", articleId);
+        const articleId = response.data.articleId;
+        showToast(response.data.message, response.status)
         setTimeout(() => {
           setSuccessMsg("");
           navigate(`/article/${articleId}`);
@@ -267,11 +262,10 @@ const NewArticle = () => {
         setContent({ title: "", body: "" });
       }
     } catch (error) {
-      setErrorMessage("An error occurred while publishing the article.");
-      console.error("Error saving article:", error);
+      showToast(response.data.message, response.status)
       setTimeout(() => {
         setErrorMessage("");
-      }, 3000);
+      }, 1000);
     }
   };
 

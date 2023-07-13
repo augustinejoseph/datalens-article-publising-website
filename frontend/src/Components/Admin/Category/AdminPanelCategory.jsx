@@ -6,16 +6,19 @@ import {
   useState,
   axios,
   ARTICLE_SERVER_NODE_BASE_URL,
+  useToast,
 } from "../index";
 import {
   handleCategoryDelete,
   columns,
   fetchCategories,
   createCategory,
+  
 } from "./functions";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminPanelCategory = () => {
+  // const showToast = useToast()
   const theme = createTheme();
   const [categories, setCategories] = useState([]);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -27,7 +30,7 @@ const AdminPanelCategory = () => {
   }, []);
 
   const handleCreateCategory = async () => {
-    await createCategory(newCategoryName, setCategories, categories);
+    await createCategory(newCategoryName, setCategories, categories, setNewCategoryName, showToast);
     setNewCategoryName("");
   };
 
@@ -66,7 +69,7 @@ const AdminPanelCategory = () => {
             <DataGrid
               rows={categories}
               columns={columns(handleCategoryDelete, setCategories)}
-              getRowId={getRowId}
+              getRowId={(row) => row._id}
               pagination
               pageSize={5}
               pageSizeOptions={[5, 10, 20]}

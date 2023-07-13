@@ -39,7 +39,7 @@ function adminTokenMiddlewareForJWT(req, res, next) {
       return res.sendStatus(403);
     }
 
-    if (!user || !user.isAdmin) {
+    if (!user || !user.is_admin) {
       return res.sendStatus(403);
     }
 

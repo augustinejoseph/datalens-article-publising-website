@@ -1,6 +1,5 @@
 
 import datetime
-from datetime import timedelta
 import environ
 env = environ.Env()
 environ.Env.read_env()
@@ -15,6 +14,8 @@ url = up.urlparse(os.environ["DATABASE_URL"])
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env('SECRET_KEY')
+if SECRET_KEY is None:
+    raise Exception("SECRET_KEY environment variable is not set.")
 
 DEBUG = env('DEBUG').lower() == 'true'
 ALLOWED_HOSTS = ["*"]
@@ -156,32 +157,9 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 # For email verification
-DJANGO_SITE_URL = 'http://localhost:8000'
+DJANGO_SITE_URL = env('DJANGO_SERVER')
 
-
-CORS_ALLOWED_ORIGINS = [
-    # env('FRONTEND_SITE_URL'),
-    'https://checkout.stripe.com',
-    'http://localhost:8000',
-    'http://localhost:5173',
-]
-
-# CORS_ORIGIN_WHITELIST = [
-#     'https://checkout.stripe.com',
-#     'http://localhost:8000',
-#     'http://localhost:5173',
-# ]
-
-
-# CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_CREDENTIALS = True
-
-SECRET_KEY = os.getenv('SECRET_KEY')
-if SECRET_KEY is None:
-    raise Exception("SECRET_KEY environment variable is not set.")
-
-# ...
 
 SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
@@ -192,9 +170,9 @@ JWT_AUTH = {
     'JWT_ALGORITHM': 'HS256',
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=5),
     'JWT_ISSUER': None,
 
     'JWT_ALLOW_REFRESH': True,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(minutes=2000),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }

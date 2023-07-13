@@ -1,7 +1,7 @@
 export {default as fullLogo} from '../Constants/full_logo.png'
 export {default as premium} from '../Constants/premium.png'
 export { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
-export { useContext, useState, useEffect } from "react";
+export { useContext, useState, useEffect, createContext } from "react";
 export {default as AuthContext} from "../Contexts/AuthContext";
 export {default as Logout} from "./Authentication/Logout/Logout";
 export {default as React, useRef} from 'react';
@@ -14,7 +14,7 @@ export { FRONTEND_DOMAIN_NAME, ARTICLE_SERVER_NODE_BASE_URL,BACKEND_BASE_URL } f
 export { useQuery, gql } from "@apollo/client";
 export {default as RoundLoading} from "./Shimmers/RoundLoading";
 export {default as LoadingMainFeed} from "./Shimmers/LoadingMainFeed";
-export { GET_ARTICLES, GET_FEATURED_ARTICLES, GET_ARTICLES_BY_AUTHOR,GET_ARTICLES_BY_CATEGORY, GET_ARTICLES_BY_HASHTAG, GET_TRENDING_ARTICLES, GET_PREMIUM_ARTICLES } from "../Queries/getArticlesGraphQL";
+export { GET_ARTICLES, GET_FEATURED_ARTICLES, GET_ARTICLES_BY_AUTHOR,GET_ARTICLES_BY_CATEGORY, GET_ARTICLES_BY_HASHTAG, GET_TRENDING_ARTICLES, GET_PREMIUM_ARTICLES, GET_ARTICLES_BY_USER_INTEREST } from "../Queries/getArticlesGraphQL";
 export {ApolloClient, InMemoryCache } from '@apollo/client';
 export { useParams } from 'react-router-dom'
 export { default as  calculateReadingTime } from '../Functions/readingTime';
@@ -61,8 +61,9 @@ export {default as MainFeed} from './Article/MainFeed/MainFeed';
 export {default as Sidebar} from './Article/SideBar/Sidebar';
 export {default as EmailVerifiedProtectedRoute} from './Authentication/ProtectedRoutes/EmailVerifiedProtectedRoute';
 export {default as AiFAB} from './Article/AiFAB/AiFAB';
-export {toast, ToastContainer } from 'react-toastify';
 export { adminAxiosToDjangoServerInterceptor } from './Admin';
 export {TokenRefresh} from '../TokenRefresh/TokenRefresh'
 export {default as Cookies} from "js-cookie";
 export {default as CustomToastContainer} from './Toast/Toast';
+export { useToast } from '../Contexts/ToastContext';
+export { default as Banner} from './Banner/Banner';

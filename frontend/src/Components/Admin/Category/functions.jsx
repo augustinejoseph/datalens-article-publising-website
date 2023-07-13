@@ -1,4 +1,4 @@
-import {Trash2Fill, axios, ARTICLE_SERVER_NODE_BASE_URL, adminAxiosToDjangoServerInterceptor} from '../index'
+import {Trash2Fill, axios, ARTICLE_SERVER_NODE_BASE_URL, adminAxiosToDjangoServerInterceptor, useToast} from '../index'
 
 const deleteButton = {
     backgroundColor: "red",
@@ -12,7 +12,7 @@ const deleteButton = {
 
 export const columns = (handleCategoryDelete) => [
     // { field: "serialNumber", headerName: "No." },
-    { field: "_id", headerName: "ID", width: 300 },
+    { field: "id", headerName: "ID", width: 300 },
   { field: "name", headerName: "Category", width: 270 },
   {
     field: "actions",
@@ -23,7 +23,8 @@ export const columns = (handleCategoryDelete) => [
       const categoryId = params.row._id;
 
       const handleCategoryDeleteConfirmation = () => {
-        handleCategoryDelete(categoryId);
+        const showToast = useToast()
+        handleCategoryDelete(categoryId, showToast);
       };
         return <button style={deleteButton} onClick={handleCategoryDeleteConfirmation}><Trash2Fill />Delete</button>
       
@@ -34,53 +35,64 @@ export const columns = (handleCategoryDelete) => [
   // Delete a category
  export const handleCategoryDelete = async (categoryId) => {
     try {
-      await axios.delete(
-        `${ARTICLE_SERVER_NODE_BASE_URL}category/${categoryId}`
+      const response = await adminAxiosToDjangoServerInterceptor.delete(
+        `${ARTICLE_SERVER_NODE_BASE_URL}admin/category/${categoryId}`
       );
+        // showToast(response.data.message, response.status)
+
     } catch (error) {
+      showToast(error.data.message, error.status)
       console.error("Error deleting category:", error);
     }
   };
 
 
 //   Get all categories
-export  const fetchCategories = async (setCategories) => {
-    try {
-      const response = await axios.get(
-        `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
-      );
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
+export const fetchCategories = async (setCategories) => {
+  try {
+    const response = await axios.get(`${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`);
+    const categories = response.data.map((category) => ({
+      ...category,
+      id: category._id, 
+    }));
+    setCategories(categories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+};
 
 
 
-// Create Category
-export const createCategory = async (newCategoryName, setCategories, categories) => {
-    const lowercaseName = newCategoryName.toLowerCase();
+// New Category
+export const createCategory = async (
+  newCategoryName,
+  setCategories,
+  categories,
+  setNewCategoryName,
   
-    const existingCategory = categories.find(
-      (category) => category.name.toLowerCase() === lowercaseName
-    );
-  
-    if (existingCategory) {
-      alert("Category already exists");
-      return;
-    }
-  
-    try {
-      const response = await adminAxiosToDjangoServerInterceptor.post(
-        `${ARTICLE_SERVER_NODE_BASE_URL}admin/category`,
-        {
-          name: lowercaseName,
-        }
-      );
-      setCategories((prevCategories) => [...prevCategories, response.data]);
-      setNewCategoryName("");
-    } catch (error) {
+) => {
+  try {
+    const response = await adminAxiosToDjangoServerInterceptor.post(`${ARTICLE_SERVER_NODE_BASE_URL}admin/category`, {
+      name: newCategoryName,
+    });
+
+    const newCategory = {
+      ...response.data,
+      id: response.data._id,
+    };
+
+    setCategories([...categories, newCategory]);
+    setNewCategoryName("");
+    showToast("Category created successfully", "success");
+  } catch (error) {
+    if (error.response) {
+      const { message, status } = error.response.data;
+      showToast(message, "error", status);
+    } else if (error.request) {
+      showToast("Server not responding", "error");
+    } else {
       console.error("Error creating category:", error);
     }
-  };
-  
+  }
+};
+

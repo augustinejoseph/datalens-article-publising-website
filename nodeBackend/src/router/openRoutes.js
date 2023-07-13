@@ -11,7 +11,7 @@ router.get('/all-categories', async (req, res) => {
       res.json(categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
-      res.status(500).json({ error: 'Failed to fetch categories' });
+      res.status(500).json({ message: 'Failed to fetch categories' });
     }
   });
 
@@ -21,12 +21,12 @@ router.get('/single-category/:id', async (req, res) => {
     try {
       const category = await Category.findById(req.params.id);
       if (!category) {
-        return res.status(404).json({ error: 'Category not found' });
+        return res.status(404).json({ message: 'Category not found' });
       }
       res.json(category);
     } catch (error) {
       console.error('Error fetching category:', error);
-      res.status(500).json({ error: 'Failed to fetch category' });
+      res.status(500).json({ message: 'Failed to fetch category' });
     }
   });
   
@@ -36,15 +36,15 @@ router.get('/single-category/:id', async (req, res) => {
     const {id} = req.params;
     try{
         const article = await Article.findOne({articleId:id}).populate('category')
+        if (!article){
+            return res.status(404).json({message:'Article not found'})
+        }
         article.pageViews += 1
         article.save()
-        if (!article){
-            return res.status(404).json({error:'Article not found'})
-        }
         res.json(article)
     }catch(error){
         console.log(error, 'error in single article')
-        res.status(500).json({error: "Failed to Fetch Articles"})
+        res.status(500).json({message: "Failed to Fetch Articles"})
     }
 })
 
@@ -58,11 +58,11 @@ router.put('/add-clap/:id' , async (req, res) => {
       console.log("clap article name", article);
       article.claps += 1
       article.save()
-      res.status(200).json({message : "Added a clap successfully"})
+      res.status(200).json({message : "Added a clap"})
       console.log("one clap added ");
     }catch(error){
       console.log(error)
-      res.status(500).json(error)
+      res.status(500).json({message: "Internal Server error"})
     }
   })
   

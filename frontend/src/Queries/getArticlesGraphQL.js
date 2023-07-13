@@ -1,5 +1,26 @@
 import { gql } from "@apollo/client";
 
+// Get articles by users preference
+export const GET_ARTICLES_BY_USER_INTEREST = gql`
+  query GetArticlesByUserInterest($userId : ID!) {
+    articlesByUserInterest(userId : $userId) {
+      title
+      category {
+        name
+      }
+      name
+      createdAt
+      summary
+      is_premium
+      readingTime
+      articleId
+      previewImage
+      user_id
+      user_name
+    }
+  }
+`;
+
 // Main feed preview only
 export const GET_ARTICLES = gql`
   query GetArticles {

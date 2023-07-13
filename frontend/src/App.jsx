@@ -45,18 +45,11 @@ import {
 
 function App() {
   const { user } = useContext(AuthContext);
-  const [showNavigationBar, setShowNavigationBar] = useState(true);
 
-  useEffect(() => {
-    const { pathname } = window.location;
-    setShowNavigationBar(
-      !(pathname === "/plans" || pathname === "/login" || pathname === "/register")
-    );
-  }, []);
   return (
     <div>
       <Router>
-        {showNavigationBar && <NavigationBar />}
+        <NavigationBar />
 
         <Routes>
           <Route path="/" Component={Home} />

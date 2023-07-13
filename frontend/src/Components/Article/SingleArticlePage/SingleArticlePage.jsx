@@ -33,6 +33,7 @@ import {
   Navigate,
   AiFAB,
   adminAxiosToDjangoServerInterceptor,
+  useToast,
 } from "../../index";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -59,26 +60,34 @@ const ArticlePage = () => {
   console.log("comment button disabled", commentButtonDisabled);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const articleUrl = `${FRONTEND_DOMAIN_NAME}${id}`;
+  const showToast = useToast()
   useEffect(() => {
-
     const fetchArticle = async () => {
       try {
         const { data } = await axios.get(
           `${ARTICLE_SERVER_NODE_BASE_URL}open/article/${id}`
         );
-
+        if (!data) {
+          showToast("Article not found", 404);
+          navigate("/404"); // Redirect to home page
+          return;
+        }
+  
         setArticle({ ...data });
         setArticleBody(data.body);
         setHashtags(data.hashtags);
         setCommentsList(data.comments);
-        console.log(data);
+        console.log('full article data-------------------------', data);
       } catch (error) {
-        console.log("error in full article", error);
+        showToast("Error in fetching article", 500);
+        navigate('/404')
+        console.log("error in full article-----------------------------", error);
       }
     };
-
+  
     fetchArticle();
   }, [id, clap, newComment]);
+  
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -134,12 +143,14 @@ const ArticlePage = () => {
         `${ARTICLE_SERVER_NODE_BASE_URL}user/add-comment/${id}`,
         data
       );
-      if (response.data) {
+      showToast(response.data.message, response.status)
+      console.log('response from commnet', response);
+      if (response.data && response.data.comments && response.data.comments.length > 0) {
         setNewComment("");
         setCommentsList((prevComments) => [...prevComments, response.data.comments[0]]);
-        console.log("comment successful");
       }
     } catch (error) {
+      showToast("Failed to add comment", 500)
       console.log("comment submit error", error);
     }
   };

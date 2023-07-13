@@ -1,10 +1,10 @@
-import {React, extractBodyText, useNavigate, deleteDraft, ARTICLE_SERVER_NODE_BASE_URL, axios, DeleteConfirmationBox, useState, adminAxiosToDjangoServerInterceptor} from '../index'
+import {React,useToast, extractBodyText, useNavigate, deleteDraft, ARTICLE_SERVER_NODE_BASE_URL, axios, DeleteConfirmationBox, useState, adminAxiosToDjangoServerInterceptor} from '../index'
 import './Draft.css'
 
 const Draft = ({title, body, id}) => {
+    const showToast = useToast()
     const navigate = useNavigate()
     const [showConfirmation, setShowConfirmation] = useState(false)
-    console.log("props received in Draft component", { title, body, id });
     const bodyText = extractBodyText(body)
 
     // Edit Draft
@@ -18,7 +18,7 @@ const Draft = ({title, body, id}) => {
         
     }
     const handleConfirmDelete = () => {
-        deleteDraft(id)
+        deleteDraft(id, showToast)
         setShowConfirmation(false)
 
     }
