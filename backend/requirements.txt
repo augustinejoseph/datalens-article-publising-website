@@ -6,7 +6,5 @@ djangorestframework==3.14.0
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==5.2.2
 
-Pillow==7.0.0
-
 PyJWT==1.7.1
 stripe==5.4.0
