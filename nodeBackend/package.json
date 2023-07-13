@@ -4,7 +4,9 @@
   "description": "Node server to manage articles written",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev" : "nodemon index.js",
+    "build" : "npm i",
+    "start" : "node index.js"
   },
   "author": "Augustine Joseph",
   "license": "ISC",
