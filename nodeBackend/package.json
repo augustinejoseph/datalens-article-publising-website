@@ -4,9 +4,9 @@
   "description": "Node server to manage articles written",
   "main": "index.js",
   "scripts": {
-    "dev" : "nodemon index.js",
-    "build" : "npm i",
-    "start" : "node index.js"
+    "dev": "nodemon index.js",
+    "build": "npm i",
+    "start": "node index.js"
   },
   "author": "Augustine Joseph",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "graphql": "^15.8.0",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.3.0",
+    "nodemon": "^3.0.1",
     "slugify": "^1.6.6"
   }
 }
