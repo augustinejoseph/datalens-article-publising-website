@@ -6,9 +6,11 @@ import { AuthProvider } from "./Contexts/AuthContext.jsx";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { ToastProvider } from './Contexts/ToastContext.jsx';
+import { ARTICLE_SERVER_NODE_BASE_URL } from "./API/Api.jsx";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql", 
+  // uri: "http://localhost:4000/graphql",
+  uri: `${ARTICLE_SERVER_NODE_BASE_URL}/graphql`,
   cache: new InMemoryCache(),
 });
 
