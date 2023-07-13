@@ -18,7 +18,7 @@ adminAxiosToDjangoServerInterceptor.interceptors.request.use(
       if (refreshToken) {
         try {
           console.log('inside try in refresh token');
-          const response = await axios.post(`${BACKEND_BASE_URL}token/refresh/`, {
+          const response = await axios.post(`${BACKEND_BASE_URL}/token/refresh/`, {
             refresh_token: refreshToken,
           });
           console.log('refrshing token respones ', response);

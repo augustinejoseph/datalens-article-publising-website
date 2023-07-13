@@ -28,7 +28,7 @@ const AdminPanelArticles = () => {
   const handleBanToggle = async (id, isBanned) => {
     try {
       const response = await adminAxiosToDjangoServerInterceptor.put(
-        `${ARTICLE_SERVER_NODE_BASE_URL}admin/article/ban/${id}`,
+        `${ARTICLE_SERVER_NODE_BASE_URL}/admin/article/ban/${id}`,
         { is_banned: !isBanned }
       );
 

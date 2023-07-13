@@ -25,7 +25,7 @@ export const GET_ARTICLES = gql`
 `;
 
 const unblockButtonStyle = {
-  ackgroundColor: "green",
+  backgroundColor: "green",
   padding : ".3rem 1rem",
   borderRadius : "10px",
   color : "white",

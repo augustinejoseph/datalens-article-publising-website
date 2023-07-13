@@ -11,7 +11,7 @@ const VerifyEmail = (props) => {
 
   const handleEmailResend = async () => {
     try{
-      const response = await axios.post(`${BACKEND_BASE_URL}user/resend-verification-mail`, {email :userEmail})
+      const response = await axios.post(`${BACKEND_BASE_URL}/user/resend-verification-mail`, {email :userEmail})
     }catch(error){
       console.log(error);
       navigate('/login')

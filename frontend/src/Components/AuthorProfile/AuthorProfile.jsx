@@ -21,7 +21,7 @@ import {
 import "./AuthorProfile.css";
 
 const client = new ApolloClient({
-  uri: `${ARTICLE_SERVER_NODE_BASE_URL}graphql`,
+  uri: `${ARTICLE_SERVER_NODE_BASE_URL}/graphql`,
   cache: new InMemoryCache(),
   credentials: "same-origin",
 });
@@ -44,7 +44,7 @@ const AuthorProfile = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${BACKEND_BASE_URL}user/author-details/${username}`
+          `${BACKEND_BASE_URL}/user/author-details/${username}`
         );
         const { id, user_name, first_name, last_name, email } = response.data;
         setAuthor({ id, user_name, first_name, last_name, email });
@@ -52,7 +52,7 @@ const AuthorProfile = () => {
         // Node Mongodb query for drafts of the author
         if (author && user && (author?.id === user?.user_id)) {
           const draftsResponse = await adminAxiosToDjangoServerInterceptor.get(
-            `${ARTICLE_SERVER_NODE_BASE_URL}user/all-drafts/${id}`
+            `${ARTICLE_SERVER_NODE_BASE_URL}/user/all-drafts/${id}`
           );
           setDrafts(draftsResponse.data);
         }

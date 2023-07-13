@@ -68,7 +68,7 @@ const NewArticle = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`
         );
         setCategories(response.data);
       } catch (error) {
@@ -84,7 +84,7 @@ const NewArticle = () => {
       const fetchDraft = async () => {
         try {
           const response = await adminAxiosToDjangoServerInterceptor.get(
-            `${ARTICLE_SERVER_NODE_BASE_URL}user/draft/${id}`
+            `${ARTICLE_SERVER_NODE_BASE_URL}/user/draft/${id}`
           );
           console.log("draft feched in editor", response.data);
           const { title, body } = response.data;
@@ -112,6 +112,7 @@ const NewArticle = () => {
   const handleContentChange = (value, delta, source, editor) => {
     const newContent = { ...content, body: editor.getContents() };
     setContent(newContent);
+    setNextButtonDisabled(!content.title || !content.body);
 
     const text = editor.getText();
     const words = text.trim().split(/\s+/);
@@ -159,7 +160,6 @@ const NewArticle = () => {
       }
     
       setUploadedImages(newUploadedImages);
-      setNextButtonDisabled(!content.title || !content.body);
     };
     
 
@@ -189,7 +189,7 @@ const NewArticle = () => {
       if (id) {
         try {
           const response = await adminAxiosToDjangoServerInterceptor.put(
-            `${ARTICLE_SERVER_NODE_BASE_URL}user/update-draft/${id}`,
+            `${ARTICLE_SERVER_NODE_BASE_URL}/user/update-draft/${id}`,
             updatedContent
           );
           console.log("draft updated successfully", response);
@@ -201,7 +201,7 @@ const NewArticle = () => {
         }
       } else {
         const response = await adminAxiosToDjangoServerInterceptor.post(
-          `${ARTICLE_SERVER_NODE_BASE_URL}user/save-to-draft`,
+          `${ARTICLE_SERVER_NODE_BASE_URL}/user/save-to-draft`,
           updatedContent
         );
         showToast(response.data.message, response.status)
@@ -237,7 +237,7 @@ const NewArticle = () => {
       if (id) {
         deleteDraft(id);
         const response = await adminAxiosToDjangoServerInterceptor.post(
-          `${ARTICLE_SERVER_NODE_BASE_URL}newarticle`,
+          `${ARTICLE_SERVER_NODE_BASE_URL}/newarticle`,
           updatedContent
         );
         showToast(response.data.message, response.status)
@@ -250,7 +250,7 @@ const NewArticle = () => {
         setContent({ title: "", body: "" });
       } else {
         const response = await adminAxiosToDjangoServerInterceptor.post(
-          `${ARTICLE_SERVER_NODE_BASE_URL}user/new-article`,
+          `${ARTICLE_SERVER_NODE_BASE_URL}/user/new-article`,
           updatedContent
         );
         const articleId = response.data.articleId;

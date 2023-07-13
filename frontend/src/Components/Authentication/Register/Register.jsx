@@ -28,7 +28,7 @@ const Register = () => {
 
   const getAllInterestsListFromServer = async () => {
     const response = await axios.get(
-      `${BACKEND_BASE_URL}user/all-interests`,
+      `${BACKEND_BASE_URL}/user/all-interests`,
       
     );
     setAllIntersetFromAPI(response.data);
@@ -55,7 +55,7 @@ const Register = () => {
   
     try {
       const response = await axios.post(
-        `${BACKEND_BASE_URL}user/email-availability`,
+        `${BACKEND_BASE_URL}/user/email-availability`,
         { email: email }
       );
       console.log(response.data);
@@ -151,7 +151,7 @@ const Register = () => {
     };
     try {
       const { data } = await axios.post(
-        `${BACKEND_BASE_URL}user/register`,
+        `${BACKEND_BASE_URL}/user/register`,
         user
       );
       if (data.success) {

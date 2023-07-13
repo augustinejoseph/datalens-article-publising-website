@@ -17,7 +17,7 @@ const SubscriptionPlans = () => {
     try {
       const stripe = await stripePromise;
       
-      const response = await fetch(`${BACKEND_BASE_URL}payments/create-checkout-session`, {
+      const response = await fetch(`${BACKEND_BASE_URL}/payments/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

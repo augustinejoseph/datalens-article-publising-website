@@ -46,7 +46,7 @@ const HomePostContainer = (props) => {
 
       <div className="homepost_container_firstrow">
         <button style={authorNameButton}>
-          <Link to={`${FRONTEND_DOMAIN_NAME}user/${user_name}`}>{name}</Link>
+          <Link to={`${FRONTEND_DOMAIN_NAME}/user/${user_name}`}>{name}</Link>
         </button>
 
         <span>{localizedDatetime}</span>

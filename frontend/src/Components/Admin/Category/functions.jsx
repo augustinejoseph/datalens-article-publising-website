@@ -36,7 +36,7 @@ export const columns = (handleCategoryDelete) => [
  export const handleCategoryDelete = async (categoryId) => {
     try {
       const response = await adminAxiosToDjangoServerInterceptor.delete(
-        `${ARTICLE_SERVER_NODE_BASE_URL}admin/category/${categoryId}`
+        `${ARTICLE_SERVER_NODE_BASE_URL}/admin/category/${categoryId}`
       );
         // showToast(response.data.message, response.status)
 
@@ -50,11 +50,12 @@ export const columns = (handleCategoryDelete) => [
 //   Get all categories
 export const fetchCategories = async (setCategories) => {
   try {
-    const response = await axios.get(`${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`);
+    const response = await axios.get(`${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`);
     const categories = response.data.map((category) => ({
       ...category,
       id: category._id, 
     }));
+    console.log(response);
     setCategories(categories);
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -73,7 +74,7 @@ export const createCategory = async (
   
 ) => {
   try {
-    const response = await adminAxiosToDjangoServerInterceptor.post(`${ARTICLE_SERVER_NODE_BASE_URL}admin/category`, {
+    const response = await adminAxiosToDjangoServerInterceptor.post(`${ARTICLE_SERVER_NODE_BASE_URL}/admin/category`, {
       name: newCategoryName,
     });
 

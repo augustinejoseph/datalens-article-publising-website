@@ -59,13 +59,14 @@ const ArticlePage = () => {
   console.log("comment list frmm db", commentsList);
   console.log("comment button disabled", commentButtonDisabled);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const articleUrl = `${FRONTEND_DOMAIN_NAME}${id}`;
+  const articleUrl = `${FRONTEND_DOMAIN_NAME}/${id}`;
   const showToast = useToast()
+
   useEffect(() => {
     const fetchArticle = async () => {
       try {
         const { data } = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}open/article/${id}`
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${id}`
         );
         if (!data) {
           showToast("Article not found", 404);
@@ -112,6 +113,7 @@ const ArticlePage = () => {
   const handleConfirmDelete = async () => {
     try {
       deleteArticle(id);
+      showToast("Article deleted successfully", 200)
       setShowConfirmation(false);
       navigate("/");
     } catch (error) {
@@ -140,7 +142,7 @@ const ArticlePage = () => {
     console.log("user data in comment for sending to db", data);
     try {
       const response = await adminAxiosToDjangoServerInterceptor.post(
-        `${ARTICLE_SERVER_NODE_BASE_URL}user/add-comment/${id}`,
+        `${ARTICLE_SERVER_NODE_BASE_URL}/user/add-comment/${id}`,
         data
       );
       showToast(response.data.message, response.status)

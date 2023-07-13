@@ -36,7 +36,7 @@ const AdminPanelUser = () => {
     const fetchUsers = async () => {
       try {
         const response = await adminAxiosToDjangoServerInterceptor.get(
-          `${BACKEND_BASE_URL}user/all-users`
+          `${BACKEND_BASE_URL}/user/all-users`
         );
         setAllUsersList(response.data);
         console.log('all users list', allUsersList);

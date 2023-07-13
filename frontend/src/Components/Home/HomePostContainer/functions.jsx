@@ -2,7 +2,7 @@
   export const fetchAuthorData = async (BACKEND_BASE_URL,user_id, setAuthor, axios) => {
     try {
       const response = await axios.get(
-        `${BACKEND_BASE_URL}user/author-details-by-id/${user_id}`
+        `${BACKEND_BASE_URL}/user/author-details-by-id/${user_id}`
       );
       console.log(response.data);
       const { id, user_name, first_name, last_name, email } = response.data;

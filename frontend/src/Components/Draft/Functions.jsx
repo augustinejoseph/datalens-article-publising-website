@@ -20,7 +20,7 @@ export function extractBodyText(body) {
 //   Delete draft
 export const deleteDraft = async (id, showToast) => {
     try{
-        const response = await adminAxiosToDjangoServerInterceptor.delete(`${ARTICLE_SERVER_NODE_BASE_URL}user/delete-draft/${id}`)
+        const response = await adminAxiosToDjangoServerInterceptor.delete(`${ARTICLE_SERVER_NODE_BASE_URL}/user/delete-draft/${id}`)
         showToast(response.data.message, response.status)
     }catch(error){
       showToast(response.data.message, response.status)

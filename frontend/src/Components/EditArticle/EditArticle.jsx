@@ -32,7 +32,7 @@ const EditArticle = () => {
   useEffect(() => {
     const fetchArticleData = async () => {
       try {
-        const response = await adminAxiosToDjangoServerInterceptor.get(`${ARTICLE_SERVER_NODE_BASE_URL}open/article/${articleId}`);
+        const response = await adminAxiosToDjangoServerInterceptor.get(`${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${articleId}`);
         setTitle(response.data.title);
         setContent(response.data.body);
       } catch (error) {
@@ -63,7 +63,7 @@ const EditArticle = () => {
 
     try {
       const response = await adminAxiosToDjangoServerInterceptor.put(
-        `${ARTICLE_SERVER_NODE_BASE_URL}user/update-article/${articleId}`,
+        `${ARTICLE_SERVER_NODE_BASE_URL}/user/update-article/${articleId}`,
         { title, body: content }
       );
       showToast(response.data.message, response.status)

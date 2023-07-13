@@ -24,7 +24,7 @@ const Login = () => {
     try{
     e.preventDefault();
     setErrorMessage("");
-    const response = await axios.post(`${BACKEND_BASE_URL}user/email-check`, {
+    const response = await axios.post(`${BACKEND_BASE_URL}/user/email-check`, {
       email: email,
     });
 
@@ -55,7 +55,7 @@ const Login = () => {
       password: password,
     };
     try {
-      const { data } = await axios.post(`${BACKEND_BASE_URL}user/login`, user);
+      const { data } = await axios.post(`${BACKEND_BASE_URL}/user/login`, user);
 
       // Storing Access in cookie
       Cookies.set("access_token", data.access_token);

@@ -5,7 +5,7 @@ import { ARTICLE_SERVER_NODE_BASE_URL, adminAxiosToDjangoServerInterceptor } fro
 export const deleteArticle = async (id) => {
 
     try{
-        const response = await adminAxiosToDjangoServerInterceptor.delete(`${ARTICLE_SERVER_NODE_BASE_URL}user/delete-article/${id}`)
+        const response = await adminAxiosToDjangoServerInterceptor.delete(`${ARTICLE_SERVER_NODE_BASE_URL}/user/delete-article/${id}`)
         return response.data
     }catch(error){
         console.error(error)

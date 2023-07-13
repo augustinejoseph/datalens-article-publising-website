@@ -32,7 +32,7 @@ const MainFeed = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}open/all-categories`
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`
         );
         setCategories(response.data);
       } catch (error) {
@@ -44,7 +44,9 @@ const MainFeed = () => {
 
   }, []);
 
-  const {loading, error, data} = useQuery(shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES) 
+  const {loading, error, data} = useQuery(GET_ARTICLES) 
+
+  // const {loading, error, data} = useQuery(shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES) 
 
   if (loading) {
     return <LoadingMainFeed />;
