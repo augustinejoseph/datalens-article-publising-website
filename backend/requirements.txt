@@ -1,10 +1,20 @@
-
 Django==4.2.2
 django-cors-headers==4.0.0
 django-environ==0.10.0
 djangorestframework==3.14.0
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==5.2.2
-
 PyJWT==1.7.1
 stripe==5.4.0
+
+
+
+
+# Django==4.2.2
+# django-cors-headers==4.0.0
+# django-environ==0.10.0
+# djangorestframework==3.14.0
+# djangorestframework-jwt==1.11.0
+# djangorestframework-simplejwt==5.2.2
+# PyJWT==1.7.1
+# stripe==5.4.0
