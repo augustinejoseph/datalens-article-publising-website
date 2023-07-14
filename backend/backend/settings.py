@@ -159,7 +159,6 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 # For email verification
 DJANGO_SITE_URL = env('DJANGO_SERVER')
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
@@ -176,3 +175,18 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
