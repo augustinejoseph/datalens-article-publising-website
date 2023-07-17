@@ -33,7 +33,8 @@ import {
   useState,
   PremiumProtectedRoute,
   EmailVerifiedProtectedRoute,
-  
+  PaymentFailed,
+  PaymentSuccess  
 } from "./Components/index";
 import {
   BrowserRouter as Router,
@@ -80,6 +81,8 @@ function App() {
           <Route path="/featured" Component={AllFeatured} />
           <Route path="/trending" Component={AllFeatured} />
           <Route path="/plans" element={<SubscriptionPlans />} />
+          <Route path="/payment/failed" element={<PaymentFailed />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
 
           {/* Premium Protected Route */}
           <Route
@@ -103,10 +106,7 @@ function App() {
             }
           />
           {/* <Route path="/account/*" element={<UserProtectedRoute user={user}> <Account /></UserProtectedRoute>} /> */}
-          <Route
-            path="edit-article/:articleId"
-            element={
-              <UserProtectedRoute user={user}>
+          <Route path="edit-article/:articleId" element={ <UserProtectedRoute user={user}>
                 <EditArticle />
               </UserProtectedRoute>
             }

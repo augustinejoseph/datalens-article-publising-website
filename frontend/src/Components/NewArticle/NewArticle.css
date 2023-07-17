@@ -23,12 +23,15 @@
 
 .newarticle_actions > button:not(:first-child) {
   padding: 2px 10px 2px 10px;
-  background-color: green;
+  /* background-color: green; */
   border-radius: 20px;
   margin-left: 10px;
   color: white;
   font-size: medium;
   margin: 1rem .4rem;
+}
+.newarticle_clear_draft_button{
+  background-color: green;
 }
 
 .newarticle_nextbutton{

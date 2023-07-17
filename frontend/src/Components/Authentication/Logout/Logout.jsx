@@ -9,14 +9,11 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      // Remove tokens from storage
       Cookies.remove('access_token');
       Cookies.remove('refresh_token');
 
-      // Clear user data from context or state
       setUser(null);
 
-      // Redirect to login page
       navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);

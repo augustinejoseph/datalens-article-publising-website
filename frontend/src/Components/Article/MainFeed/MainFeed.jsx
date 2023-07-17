@@ -7,9 +7,7 @@ import {
   HomePostContainer,
   axios,
   useQuery,
-  gql,
-  RoundLoading,
-  LoadingMainFeed,
+  LoadingModal,
   GET_ARTICLES,
   ARTICLE_SERVER_NODE_BASE_URL,
   Footer,
@@ -19,14 +17,18 @@ import {
   AuthContext,
   GET_ARTICLES_BY_USER_INTEREST,
   useToast,
+  EmptyMessage,
 } from '../../index'
 
 const MainFeed = () => {
   const showToast = useToast()
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const navigate = useNavigate()
   const [categories, setCategories] = useState([]);
   const shouldUserBasedQuery = user && user?.user_id
+  console.log(shouldUserBasedQuery, 'user based query for article');
+  const [loading, setLoading] = useState(true); 
+  const [initialLoad, setInitialLoad] = useState(true); 
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -35,37 +37,55 @@ const MainFeed = () => {
           `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`
         );
         setCategories(response.data);
+        setLoading(false); 
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setLoading(false);
       }
     };
 
     fetchCategories();
-
   }, []);
 
-  const {loading, error, data} = useQuery(GET_ARTICLES) 
+  const { loading: articlesLoading, error, data } = useQuery(shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES, {
+    variables: shouldUserBasedQuery ? { userId: user?.user_id } : undefined,
+  });
 
-  // const {loading, error, data} = useQuery(shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES) 
+  useEffect(() => {
+    setLoading(articlesLoading); 
+    if (initialLoad && !articlesLoading) {
+      setInitialLoad(false); 
+    }
+  }, [articlesLoading, initialLoad]);
 
-  if (loading) {
-    return <LoadingMainFeed />;
+  useEffect(() => {
+    if (initialLoad) {
+      setLoading(true);
+    }
+  }, [initialLoad]);
+
+  if (loading && initialLoad) {
+    
+    return <LoadingModal />; 
   }
 
   if (error) {
+    console.log(error);
     showToast("Internal server error", 500)
     navigate("/error")
   }
 
-  const articles = data?.articles;
-
+  const articles = (shouldUserBasedQuery ? data?.articlesByUserInterest ?? [] : data?.articles);
+  console.log('received articles', data?.articlesByUserInterest);
+  
   return (
     <div className="mainfeed_container">
       <HomeCategoryList 
-      categories={categories} />
-
-
-      {articles.map((article) => (
+        categories={categories} 
+      />
+{articles?.length ===0 ?
+  <EmptyMessage place="Interests" link={`user/${user?.user_name}`} action="Add"  /> :
+      articles?.map((article) => (
         <HomePostContainer
           key={article.articleId}
           title={article.title}
@@ -77,12 +97,13 @@ const MainFeed = () => {
           articleId={article.articleId}
           summary={article.summary}
           previewImage={article.previewImage}
-          user_id = {article.user_id}
-          user_name = {article.user_name}
+          user_id={article.user_id}
+          user_name={article.user_name}
         />
-      ))}
+      ))
+    }
       <div className="mainfeed_footer">
-      <Footer />
+        <Footer />
       </div>
     </div>
   );

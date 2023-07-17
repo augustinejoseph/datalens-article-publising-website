@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import Loginview, RegisterView, LogoutView, EmailCheckView, EmailAvailability, AllInterests, verify_email, email_verification_success, email_verification_failed, AdminLogin, AllUsersList, BlockUser,AuthorDetails, AuthorDetailsById, ResendVerificationEmail, UserInterests
+from .views import Loginview, AddToAllInterests,RegisterView, LogoutView, EmailCheckView, EmailAvailability, AllInterests, verify_email, email_verification_success, email_verification_failed, AdminLogin, AllUsersList, BlockUser,AuthorDetails, AuthorDetailsById, ResendVerificationEmail, UserInterests,UpdateUserDetails, UserInterestsByUserName
 
 urlpatterns = [
     # Normal User
@@ -9,6 +9,9 @@ urlpatterns = [
     path('logout', LogoutView.as_view(), name = "logout"),
     path("email-check", EmailCheckView.as_view() , name="email-check"),
     path("email-availability", EmailAvailability.as_view(), name ="email-availability"),
+    
+    path("add-to-all-interests", AddToAllInterests.as_view(), name="all_interests"),
+
     path("all-interests", AllInterests.as_view(), name="all_interests"),
     path('verify-email/<str:uidb64>/<str:token>/', verify_email, name='verify-email'),
     path('resend-verification-mail', ResendVerificationEmail.as_view(), name="resend-email"  ),
@@ -22,9 +25,13 @@ urlpatterns = [
 
     # Author Details
     path('author-details/<str:user_name>', AuthorDetails.as_view(), name="author_details"),
-    
     path('author-details-by-id/<int:user_id>', AuthorDetailsById.as_view(), name="author_details_by_id"),
 
     # User interests
-    path('user-interests/<int:user_id>' , UserInterests.as_view() , name ="user_interests")
+    
+    path('user-interests-by-username/<str:user_name>' , UserInterestsByUserName.as_view() , name ="user_interests_by_username"),
+    path('user-interests/<int:user_id>' , UserInterests.as_view() , name ="user_interests"),
+
+    # Update User Details
+    path('update-user-details', UpdateUserDetails.as_view(), name = 'update_user_details'),
 ]

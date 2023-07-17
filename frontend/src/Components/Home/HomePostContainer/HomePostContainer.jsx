@@ -27,9 +27,14 @@ const HomePostContainer = (props) => {
     previewImage,
     user_name,
   } = props;
-  const datetimeString = createdAt;
-  const datetime = new Date(datetimeString);
-  const localizedDatetime = datetime.toLocaleDateString();
+  const dateObj = new Date(createdAt);
+  const options = { 
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+  const formattedDate = dateObj.toLocaleDateString('en-US', options);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate = useNavigate();
   // console.log("author", author);
@@ -49,7 +54,7 @@ const HomePostContainer = (props) => {
           <Link to={`${FRONTEND_DOMAIN_NAME}/user/${user_name}`}>{name}</Link>
         </button>
 
-        <span>{localizedDatetime}</span>
+        <span>{formattedDate || "12345"}</span>
         {is_premium ? (
           <div onClick={() => navigate("/premium")} className="homepost_container_premium_icon_container">
             <img className="homepost_container_premium_icon" src={premium} />

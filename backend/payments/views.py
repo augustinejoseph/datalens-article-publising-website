@@ -14,8 +14,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import redirect
 from django.conf import settings
+from django.http import HttpResponse
+from authentication.models import Allusers
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 stripe.api_key = env('STRIPE_SECRET_KEY')
+stripe_webhook_secret = env('STRIPE_WEBHOOK_SECRET')
+
 @api_view(['POST'])
 def test_payment(request):
     test_payment_intent = stripe.PaymentIntent.create(
@@ -26,13 +33,14 @@ def test_payment(request):
 
 
 FRONTEND_SITE_URL = env('FRONTEND_SITE_URL')
-STRIPE_CORS_ORIGINS = ["http://localhost:5173"]
 
 class StripeCheckoutView(APIView):
     def post(self, request):
         try:
             price_id = request.data.get('priceId')
+            user_id = request.data.get('userId')
             print(price_id)
+            print(user_id)
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
@@ -42,9 +50,13 @@ class StripeCheckoutView(APIView):
                 ],
                 payment_method_types=['card'],
                 mode='subscription',
-                success_url = env('DJANGO_SERVER')
+                success_url = f"{FRONTEND_SITE_URL}/payment/success",
+                cancel_url = f"{FRONTEND_SITE_URL}/payment/failed" ,
+                metadata = {
+                    'user_id': user_id,
+                }
             )
-            return redirect(checkout_session.url)
+            return Response(checkout_session.url)
         except Exception as e:
             print("Exception in stripe session creation:", str(e))
             print(traceback.format_exc())
@@ -52,3 +64,28 @@ class StripeCheckoutView(APIView):
                 {'error': 'Something went wrong when creating stripe checkout session'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+        
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.headers.get('Stripe-Signature')
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, stripe_webhook_secret)
+    except ValueError as e:
+        return Response(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        return Response(status=400)
+
+    if event.type == 'payment_intent.succeeded':
+        payment_intent = event.data.object
+        payment_id = payment_intent.id
+        amount = payment_intent.amount
+        user_id = payment_intent.metadata.get('user_id')
+        user =  Allusers.objects.get(id = user_id)
+        user.is_premium = True
+        user.save()
+    return Response(status=200)

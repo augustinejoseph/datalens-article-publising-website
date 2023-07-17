@@ -14,7 +14,7 @@ const TrendingInSide = () => {
   const { loading, error, data } = useQuery(GET_TRENDING_ARTICLES);
   console.log("trending articles", data);
   if (loading) {
-    return <p>Loading...</p>;
+    return <></>;
   }
   if (error) {
     navigate("/error")

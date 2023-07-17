@@ -63,6 +63,7 @@ const Login = () => {
       const tokenData = jwt_decode(data.access_token);
 
       const LoggedInUser = {
+        user_name : tokenData.user_name,
         name: tokenData.name,
         email: tokenData.email,
         is_active: tokenData.is_active,

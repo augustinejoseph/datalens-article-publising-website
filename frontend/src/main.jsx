@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <App />
         </ToastProvider>
       </ChakraProvider>
-      ,{/* </React.StrictMode> */}
+      {/* </React.StrictMode> */}
     </ApolloProvider>
   </AuthProvider>
 );

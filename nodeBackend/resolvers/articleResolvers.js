@@ -1,11 +1,15 @@
 const { Article, Category } = require('../models/models');
 const { DJANGO_SERVER } = require('../config/config');
+const axios = require('axios')
+const { ObjectId } = require('mongoose').Types;
+
 
 const resolvers = {
   Query: {
     // All articles
     articles: async () => {
       try {
+        console.log('inside all articles try');
         const articles = await Article.find().populate('category');
         return articles;
       } catch (error) {
@@ -43,13 +47,13 @@ const resolvers = {
     // Articles by author
     articlesByAuthor: async (_, { userName }) => {
       try {
-        // console.log("resolver user name", userName);
+        console.log("resolver user name", userName);
         // console.log('resolver articlesByAuthor try block');
         const articlesByAuthor = await Article.find({ user_name: userName }).populate('category');
-        // console.log('returned articles', articlesByAuthor);
+        console.log('returned articles');
         return articlesByAuthor;
       } catch (error) {
-        // console.log('error articlesByAuthor', error);
+        console.log('error articlesByAuthor', error);
         throw new Error("Error retrieving articles by author");
       }
     },
@@ -102,14 +106,45 @@ const resolvers = {
     
     
     // Articles Based on user Interests
+
+
     articlesByUserInterest: async (_, { userId }) => {
       try {
-        const response = axios.get(`${DJANGO_SERVER}/user/user-interests/${userId}`)
-        console.log('--------user interest from django', response);
+        const response = await axios.get(`${DJANGO_SERVER}/user/user-interests/${userId}`);
+        const userInterests = response.data.user_interests;
+        console.log('User interests from Django:', userInterests);
+        const articles = [];
+    
+        for (const interest of userInterests) {
+          const lowercaseInterest = interest.interest.toLowerCase(); // Convert to lowercase
+    
+          // Find category document by lowercase name
+          const category = await Category.findOne({ name: lowercaseInterest });
+    
+          if (category) {
+            console.log('category id', category._id);
+            // Find articles by matching category or hashtags
+            const matchedArticles = await Article.find({
+              $or: [
+                { category: category._id },
+                { hashtags: { $in: [lowercaseInterest] } }
+              ]
+            }).populate('category');
+    
+            articles.push(...matchedArticles);
+          }
+        }
+    
+        console.log('Articles based on user interests:', articles);
+        return articles;
       } catch (error) {
-        console.log('----------------error from django in user interests', error);
+        console.log('Error from Django in user interests:', error);
+        throw new Error('Failed to fetch articles based on user interests');
       }
     }
+    
+    
+    
 
 
   },

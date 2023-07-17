@@ -8,7 +8,7 @@ const {Article} = require('../models/models.js')
 router.get('/all-categories', async (req, res) => {
     try {
       const categories = await Category.find();
-      console.log('all categories', categories);
+      // console.log('all categories', categories);
       res.json(categories);
     } catch (error) {
       console.error('Error fetching categories:', error);

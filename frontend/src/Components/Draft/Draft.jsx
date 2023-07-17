@@ -2,6 +2,7 @@ import {React,useToast, extractBodyText, useNavigate, deleteDraft, ARTICLE_SERVE
 import './Draft.css'
 
 const Draft = ({title, body, id}) => {
+    const [refreshState, setRefreshState] = useState(true)
     const showToast = useToast()
     const navigate = useNavigate()
     const [showConfirmation, setShowConfirmation] = useState(false)
@@ -18,11 +19,13 @@ const Draft = ({title, body, id}) => {
         
     }
     const handleConfirmDelete = () => {
+        setRefreshState(!refreshState)
         deleteDraft(id, showToast)
         setShowConfirmation(false)
 
     }
     const handleCancelDelete =() => {
+        setRefreshState(!refreshState)
         setShowConfirmation(false)
     }
 

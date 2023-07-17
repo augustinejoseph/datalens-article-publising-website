@@ -14,7 +14,7 @@ const FeaturedArticles = () => {
   const { loading, error, data } = useQuery(GET_FEATURED_ARTICLES);
   console.log("features articles", data);
   if (loading) {
-    return <p>Loading...</p>;
+    return <></>;
   }
   if (error) {
     navigate("/error")

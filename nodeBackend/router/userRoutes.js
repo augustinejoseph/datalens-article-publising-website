@@ -162,10 +162,10 @@ router.post('/add-comment/:id', async (req, res) => {
   
   //  Get all drafts of a single author
   router.get('/all-drafts/:user_id', async function(req, res) {
-    const user_id = req.params.user_id
-    console.log('user id in draft fetch req', user_id);
+    const username = req.params.username
+    console.log('user id in draft fetch req', username);
     try{
-      const drafts = await Draft.find({user_id : user_id})
+      const drafts = await Draft.find({user_name : username})
       if(drafts){
         res.status(200).json(drafts)
         console.log('drafts found', drafts);

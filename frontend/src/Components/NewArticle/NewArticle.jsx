@@ -20,6 +20,7 @@ import {
   deleteDraft,
   CustomToastContainer,
   useToast,
+  LoadingModal,
 
 } from "../index";
 import { storage } from '../../Firebase/FirebaseConfig';
@@ -29,6 +30,7 @@ import "./NewArticle.css";
 // import storage from '../../Firebase/FirebaseConfig'
 
 const NewArticle = () => {
+  const [loading, setLoading] = useState(true)
   const showToast = useToast()
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -64,7 +66,6 @@ const NewArticle = () => {
   console.log("next button disabled", isNextButtonDisabled);
 
   useEffect(() => {
-    // Fetch categories
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
@@ -82,6 +83,7 @@ const NewArticle = () => {
   useEffect(() => {
     if (id) {
       const fetchDraft = async () => {
+        setLoading(true)
         try {
           const response = await adminAxiosToDjangoServerInterceptor.get(
             `${ARTICLE_SERVER_NODE_BASE_URL}/user/draft/${id}`
@@ -99,13 +101,17 @@ const NewArticle = () => {
             title: response.data.title || content.title,
             body: response.data.body.ops || [],
           });
+        setLoading(false)
         } catch (error) {
+        setLoading(false)
           console.error("Error fetching draft:", error);
         }
       };
 
       fetchDraft();
       setNextButtonDisabled(!content.title || !content.body);
+    }else{
+      setLoading(false)
     }
   }, [id]);
 
@@ -188,27 +194,33 @@ const NewArticle = () => {
     try {
       if (id) {
         try {
+        setLoading(true)
           const response = await adminAxiosToDjangoServerInterceptor.put(
             `${ARTICLE_SERVER_NODE_BASE_URL}/user/update-draft/${id}`,
             updatedContent
           );
           console.log("draft updated successfully", response);
+        setLoading(false)
           showToast(response.data.message, response.status);
           navigate(`/user/${user?.user_name}` || "/");
         } catch (error) {
+        setLoading(false)
           showToast("Failed to update draft", 500);
           console.log("Error updating draft", error);
         }
       } else {
+        setLoading(true)
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}/user/save-to-draft`,
           updatedContent
         );
+        setLoading(false)
         showToast(response.data.message, response.status)
         console.log("save to draft", response.data);
         navigate(`/user/${user?.user_name}` || "/");
       }
     } catch (error) {
+      setLoading(false)
       showToast(response.data.message, response.status)
       setErrorMessage("An error occurred while saving the article to draft");
       console.error("Error saving to draft:", error);
@@ -235,11 +247,13 @@ const NewArticle = () => {
 
     try {
       if (id) {
+        setLoading(true)
         deleteDraft(id);
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}/newarticle`,
           updatedContent
         );
+        setLoading(false)
         showToast(response.data.message, response.status)
         console.log("Article saved:", response.data);
         const articleId = response.data.articleId;
@@ -249,6 +263,7 @@ const NewArticle = () => {
 
         setContent({ title: "", body: "" });
       } else {
+        setLoading(true)
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}/user/new-article`,
           updatedContent
@@ -257,11 +272,13 @@ const NewArticle = () => {
         showToast(response.data.message, response.status)
         setTimeout(() => {
           setSuccessMsg("");
+        setLoading(false)
           navigate(`/article/${articleId}`);
         }, 1000);
         setContent({ title: "", body: "" });
       }
     } catch (error) {
+      setLoading(false)
       showToast(response.data.message, response.status)
       setTimeout(() => {
         setErrorMessage("");
@@ -291,7 +308,11 @@ const NewArticle = () => {
   console.log(hashtags);
 
   return (
-    <div>
+  loading ? (
+    <LoadingModal />):
+
+ 
+    (<div>
       {errorMessage && (
         <div className="newarticle_errormessage">{errorMessage}</div>
       )}
@@ -316,8 +337,12 @@ const NewArticle = () => {
             ) : (
               <button onClick={handlePublish}>Publish</button>
             )}
-            <button onClick={clearLocalStorage}>Clear Draft</button>
-            <button onClick={handleSaveToDraft}>Save as Draft</button>
+            <button className="newarticle_clear_draft_button" onClick={clearLocalStorage}>Clear Draft</button>
+            <button className={
+                  isNextButtonDisabled
+                    ? "newarticle_nextbutton_disabled1"
+                    : "newarticle_nextbutton"
+                } disabled={isNextButtonDisabled} onClick={handleSaveToDraft}>Save as Draft</button>
           </div>
           <div className="newarticle_title">
             <input
@@ -443,7 +468,7 @@ const NewArticle = () => {
           </div>
         </div>
       )}
-    </div>
+    </div>)
   );
 };
 

@@ -34,11 +34,16 @@ import {
   AiFAB,
   adminAxiosToDjangoServerInterceptor,
   useToast,
+  SaveFill,
+  BACKEND_BASE_URL,
+  LoadingModal,
 } from "../../index";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 
 const ArticlePage = () => {
+  const [loading, setLoading] = useState(true)
+  const [refreshState, setRefreshState] = useState(true)
   const navigate = useNavigate();
   const [article, setArticle] = useState({});
   const [articleBody, setArticleBody] = useState({});
@@ -58,17 +63,21 @@ const ArticlePage = () => {
   console.log("show comment boolean ", showComment);
   console.log("comment list frmm db", commentsList);
   console.log("comment button disabled", commentButtonDisabled);
+  console.log('article', article);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const articleUrl = `${FRONTEND_DOMAIN_NAME}/${id}`;
   const showToast = useToast()
 
+   
   useEffect(() => {
     const fetchArticle = async () => {
       try {
+        setLoading(true)
         const { data } = await axios.get(
           `${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${id}`
         );
         if (!data) {
+        setLoading(false)
           showToast("Article not found", 404);
           navigate("/404"); // Redirect to home page
           return;
@@ -78,8 +87,10 @@ const ArticlePage = () => {
         setArticleBody(data.body);
         setHashtags(data.hashtags);
         setCommentsList(data.comments);
+        setLoading(false)
         console.log('full article data-------------------------', data);
       } catch (error) {
+        setLoading(false)
         showToast("Error in fetching article", 500);
         navigate('/404')
         console.log("error in full article-----------------------------", error);
@@ -87,7 +98,7 @@ const ArticlePage = () => {
     };
   
     fetchArticle();
-  }, [id, clap, newComment]);
+  }, [id, clap, newComment, refreshState]);
   
 
   useEffect(() => {
@@ -128,7 +139,7 @@ const ArticlePage = () => {
   const handleCommentChange = (e) => {
     const value = e.target.value;
     setNewComment(value);
-    setCommentButtonDisabled(value.trim() === ""); // Disable the button if the comment is empty or contains only whitespace
+    setCommentButtonDisabled(value.trim() === ""); 
   };
 
   const handleCommentSubmit = async () => {
@@ -157,8 +168,40 @@ const ArticlePage = () => {
     }
   };
 
+
+
+  const handleAddToSavedArticle = async () => {
+    try {
+      const response = await axios.post(`${BACKEND_BASE_URL}/article/add-to-saved-article`, {
+        articleId: id,
+        userId: user?.user_id,
+        previewImage : article.previewImage,
+        readingTime : article.readingTime,
+        summary : article.summary,
+        title : article.title,
+        userName : article.user_name,
+        userId : user?.user_id,
+      });
+  
+      if (response.status === 200 && response.data.message === 'Article is already saved') {
+        showToast('Article is already saved', 200);
+      } else if (response.status === 200 && response.data.message === 'Article saved successfully') {
+        showToast('Article saved successfully', 200);
+      } else {
+        console.log(response);
+        showToast('Internal server error', 500);
+      }
+    } catch (error) {
+      showToast('Internal server error', 500);
+    }
+  };
   return (
-    <div className="article_container">
+  
+  loading ?
+   (<LoadingModal /> ):
+
+
+   ( <div className="article_container">
       <div className="article_fab_container">
         < AiFAB />
       </div>
@@ -220,11 +263,19 @@ const ArticlePage = () => {
                 </span>
               </>
             )}
+              <span
+                  className="articel_interaction_button"
+                  onClick={handleAddToSavedArticle}
+                >
+                  {" "}
+                  <SaveFill />
+                </span>
             <>
               <WhatsappShareButton url={articleUrl}>
                 <Whatsapp className="articel_interaction_button" />
               </WhatsappShareButton>
             </>
+            
           </div>
         </div>
 
@@ -337,7 +388,7 @@ const ArticlePage = () => {
 
         </div>
       )}
-    </div>
+    </div>)
   );
 };
 

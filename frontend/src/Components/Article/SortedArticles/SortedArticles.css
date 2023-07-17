@@ -4,7 +4,7 @@
   
   @media (max-width: 1200px) and (min-width: 100px) {
     .sortedarticle_container {
-        margin: 10px 50px 10px 50px;
+        margin: 10px 10px 10px 10px;
 
     }
   }
@@ -27,10 +27,14 @@
 
     margin: .1rem .2rem;
 }
-
+.sortedarticle_tab-content{
+  margin: 0px;
+  padding: 0px;
+}
 
 .sortedarticle_tab-navigation {
     display: flex;
+    padding: 0rem 2rem;
   }
   
   .sortedarticle_tab-navigation button {

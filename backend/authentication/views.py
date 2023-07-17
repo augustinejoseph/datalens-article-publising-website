@@ -125,7 +125,6 @@ class Loginview(APIView):
             if not user.check_password(password):
                 raise AuthenticationFailed("Incorrect Password")
 
-            # Create a dictionary payload for the access token
             payload = {
                 'user_id': user.id,
                 'name': user.first_name,
@@ -138,7 +137,6 @@ class Loginview(APIView):
                 'exp': datetime.utcnow() + timedelta(minutes=15),
             }
 
-            # Generate the access token
             access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
             refresh_token = str(RefreshToken.for_user(user))
             return Response({
@@ -206,6 +204,23 @@ class EmailAvailability(APIView):
         except ObjectDoesNotExist:
             return Response(True)
     
+class AddToAllInterests(APIView):
+    def post(self, request):
+        interest_name = request.data.get('interest_name')
+        if not  interest_name:
+            return Response({"message: Interest cannot be empty"})
+        interest_name = interest_name.lower()
+
+        existing_interest = Interests.objects.filter(interestName=interest_name).first()
+        if existing_interest:
+            return Response({'message': 'Interest already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Create a new interest
+        new_interest = Interests.objects.create(interestName=interest_name)
+        
+        return Response({'message': 'Interest created successfully', 'interest_id': new_interest.id})
+
+
 class AllInterests(APIView):
     def get(self, request):
         interests = Interests.objects.all()
@@ -324,17 +339,71 @@ class ResendVerificationEmail(APIView):
             return Response({"success": False, "message": "User not found."},
                             status=status.HTTP_404_NOT_FOUND)
         
-
+# User interest by user_id
 class UserInterests(APIView):
     def get(self, request, user_id):
         try:
             user_interests = Userinterests.objects.filter(user_id=user_id)
-            print("user interests from  table", user_interests)
+            print("user interests from table", user_interests)
+            serialized_interests = [{'user': interest.user.user_name, 'interest': interest.interest.interestName} for interest in user_interests]
+            return Response({'user_interests': serialized_interests}, status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
-            print("user not exist------------")
+            print("user does not exist")
             return Response({'error': 'User interests not found'}, status=status.HTTP_404_NOT_FOUND)
-
         except Exception as e:
-            print("user exception------------",e)
-
+            print("internal server error:", e)
             return Response({'error': "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# User interests by user_name 
+class UserInterestsByUserName(APIView):
+    def get(self, request, user_name):
+        try:
+            print('-----------inside user interests by username', user_name)
+            user1 = Allusers.objects.get(user_name=user_name)
+            print(f"---------------user in all users{user1}")
+            user_interests = Userinterests.objects.filter(user__user_name=user_name)
+            print("user interests from table", user_interests)
+            serialized_interests = [{'user': interest.user.user_name, 'interest': interest.interest.interestName} for interest in user_interests]
+            return Response({'user_interests': serialized_interests}, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            print("-------user does not exist in user interests by username")
+            return Response({'error': 'User interests not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print("internal server error:", e)
+            return Response({'error': "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+
+class UpdateUserDetails(APIView):
+    def post(self, request):
+        user_id = request.data.get('id')
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
+        interests = request.data.get('interests')
+        profile_picture = request.FILES.get('profile_image')
+        print('--------all request data user update', request.data)
+        try:
+            user = Allusers.objects.get(id=user_id)
+            print("-------------------user found", user)
+            print('-------------------profile pic', profile_picture)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.profile_picture = profile_picture
+            user.save()
+
+            user_interests = Userinterests.objects.filter(user=user)
+            user_interests.delete()
+            print("--------------user interests deleted")
+
+            for interest in interests:
+                interest_obj, _ = Interests.objects.get_or_create(interestName=interest)
+                Userinterests.objects.create(user=user, interest=interest_obj)
+                print("-------------------new user interests created")
+
+            return Response({"message": "Updated Successfully"})
+        except Allusers.DoesNotExist:
+            print('-------------------user does not exist')
+            return Response({"message": "User does not exist"})
+        except Exception as e:
+            print('-------------------internal server error:', str(e))
+            return Response({"message": "Internal Server Error"})

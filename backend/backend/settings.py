@@ -7,7 +7,7 @@ from pathlib import Path
 import os
 import urllib.parse as up
 
-# Elephantsql db
+# ElephantSql db
 up.uses_netloc.append("postgres")
 url = up.urlparse(os.environ["DATABASE_URL"])
 
@@ -31,11 +31,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
-    # Dajngo rest framework
+    'payments',
+    'article',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-    #for social login
    
 ]
 
@@ -71,7 +71,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
 
 # Database
 if DEBUG == True:
@@ -134,9 +133,7 @@ STATIC_URL = 'static/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 AUTH_USER_MODEL = 'authentication.Allusers'
-
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -171,7 +168,6 @@ JWT_AUTH = {
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=5),
     'JWT_ISSUER': None,
-
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
@@ -190,3 +186,9 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+
+# Media files
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
