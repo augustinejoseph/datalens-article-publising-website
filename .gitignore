@@ -1,8 +1,9 @@
 datalens-virtual-env
-backend/backend/.env
-backend/authentication/__pycache__
-# frontend/src/API/Api.jsx
-nodeBackend/node_modules
-# frontend/.env
-# nodeBackend/src/.env
-# nodeBackend/src/config/
+
+django/backend/.env
+
+react/.env
+react/node_modules
+
+node/node_modules
+node/.env

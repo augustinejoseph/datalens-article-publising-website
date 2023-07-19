@@ -1,0 +1,76 @@
+.admin_panel_section_title{
+    font-size: x-large;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* padding-bottom: 2rem; */
+}
+
+
+.admin_layout_container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+  }
+
+  .admin_sidebar_active {
+    background-color: #1e8d11;
+    color: white;
+    
+  }
+  .admin_sidebar ul li {
+    border-radius: 20px 0 0px 20px;
+  }
+
+
+  /* Search and add new section */
+  .admin_panel_search_add{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 1rem 5rem;
+  }
+
+  .category-input{
+    border-radius: 20px;
+    border: 1px solid gray;
+    padding: .5rem;
+  }
+  .search-input{
+    border-radius: 20px;
+    border: 1px solid gray;
+    padding: .5rem;
+  }
+  .search-container{
+    /* background-color: #1e8d11; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .search-container > svg{
+    margin-left: 1rem;
+    background-size: contain;
+  }
+  .create-category{
+    padding-right: 29rem;
+    
+  }
+  .create-button{
+    padding : 0.3rem .8rem;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+    margin-left: 1rem;
+  }
+
+
+  /* Table container for all */
+  .admin_table_container{
+    padding: 1rem ;
+  }
+  .admin_actual_table{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }

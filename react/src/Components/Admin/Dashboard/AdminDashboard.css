@@ -1,0 +1,30 @@
+.admin_dash_container{
+ /* background-color: red; */
+ min-height: 70vh;
+}
+.admin_dash_overview{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+        
+}
+.admin_dash_overview > *{
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    height: auto;
+    width: 20vw;
+    border: 1px solid black;
+}
+.admin_dash_overview_users{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: large;
+    font-weight: 700;
+}
+.admin_dash_overview_users >span:not(:first-child){
+    font-size: xx-large;
+    margin-top: 1rem;
+}
