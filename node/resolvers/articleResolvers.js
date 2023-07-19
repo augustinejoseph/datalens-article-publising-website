@@ -19,9 +19,6 @@ const resolvers = {
       }
     },
 
-
-
-
     // Featured Articles
     featuredArticles: async () => {
       try {
@@ -104,25 +101,23 @@ const resolvers = {
       }
     },
 
-    
-    
-    
+
     // Articles Based on user Interests
-
-
     articlesByUserInterest: async (_, { userId }) => {
       try {
+        console.log('user id revieved :', userId);
+        console.log('django server url', DJANGO_SERVER);
         const response = await axios.get(`${DJANGO_SERVER}/author/user-interests/${userId}`);
         const userInterests = response.data.user_interests;
         console.log('User interests from Django:', userInterests);
         const articles = [];
-    
+
         for (const interest of userInterests) {
           const lowercaseInterest = interest.interest.toLowerCase(); // Convert to lowercase
-    
+
           // Find category document by lowercase name
           const category = await Category.findOne({ name: lowercaseInterest });
-    
+
           if (category) {
             console.log('category id', category._id);
             // Find articles by matching category or hashtags
@@ -132,21 +127,19 @@ const resolvers = {
                 { hashtags: { $in: [lowercaseInterest] } }
               ]
             }).populate('category');
-    
+
             articles.push(...matchedArticles);
           }
         }
-    
-        console.log('Articles based on user interests:', articles);
         return articles;
       } catch (error) {
         console.log('Error from Django in user interests:', error);
         throw new Error('Failed to fetch articles based on user interests');
       }
     }
-    
-    
-    
+
+
+
 
 
   },

@@ -20,7 +20,7 @@ const FeaturedArticles = () => {
     navigate("/error")
   }
 
-  const featuredArticles = data.featuredArticles.slice(0, 3);
+  const featuredArticles = data?.featuredArticles.slice(0, 3);
 
   const style = {
     margin: " 10px 10px",

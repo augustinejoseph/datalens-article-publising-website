@@ -28,7 +28,7 @@ const MainFeed = () => {
   const shouldUserBasedQuery = user && user?.user_id
   console.log(shouldUserBasedQuery, 'user based query for article');
   const [loading, setLoading] = useState(true); 
-  const [initialLoad, setInitialLoad] = useState(true); 
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -58,11 +58,11 @@ const MainFeed = () => {
     }
   }, [articlesLoading, initialLoad]);
 
-  useEffect(() => {
-    if (initialLoad) {
-      setLoading(true);
-    }
-  }, [initialLoad]);
+  // useEffect(() => {
+  //   if (initialLoad) {
+  //     setLoading(true);
+  //   }
+  // }, [initialLoad]);
 
   if (loading && initialLoad) {
     
@@ -76,7 +76,8 @@ const MainFeed = () => {
   }
 
   const articles = (shouldUserBasedQuery ? data?.articlesByUserInterest ?? [] : data?.articles);
-  console.log('received articles', data?.articlesByUserInterest);
+  console.log('received articles by user interest', data?.articlesByUserInterest);
+  console.log('received articles not based on user interest', data?.articles);
   
   return (
     <div className="mainfeed_container">

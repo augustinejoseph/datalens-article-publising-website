@@ -82,7 +82,7 @@ class UserInterests(APIView):
     def get(self, request, user_id):
         try:
             user_interests = Userinterests.objects.filter(user_id=user_id)
-            print("user interests from table", user_interests)
+            print("user interests from table based on user interets.  from node server ", user_interests)
             serialized_interests = [{'user': interest.user.user_name, 'interest': interest.interest.interestName} for interest in user_interests]
             return Response({'user_interests': serialized_interests}, status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
