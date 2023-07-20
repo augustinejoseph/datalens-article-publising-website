@@ -11,6 +11,7 @@ adminAxiosToDjangoServerInterceptor.interceptors.request.use(
     const refreshToken = Cookies.get('refresh_token');
     const decoded_token = jwtDecode(accessToken)
     const admin = decoded_token.is_admin
+    console.log("interesceptor accessed");
     console.log('is admin in interceptor', admin);
     if (!accessToken || isTokenExpired(accessToken)) {
       if (refreshToken) {

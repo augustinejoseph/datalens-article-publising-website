@@ -68,6 +68,8 @@ const AuthorProfile = () => {
     setActiveTab(tab);
   };
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -168,7 +170,7 @@ const AuthorProfile = () => {
       console.log("User details updated successfully");
       showToast(response.data.message, 200);
     } catch (error) {
-      showToast(error.data.message, 500);
+      showToast("Internal server error", 500);
       console.error("Error updating user details:", error);
     }
   };

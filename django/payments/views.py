@@ -35,6 +35,42 @@ def test_payment(request):
 
 FRONTEND_SITE_URL = env('FRONTEND_SITE_URL')
 
+# class StripeCheckoutView(APIView):
+#     def post(self, request):
+#         try:
+#             price_id = request.data.get('priceId')
+#             user_id = request.data.get('userId')
+#             print(price_id)
+#             print(user_id)
+#             customer = stripe.Customer.create(metadata={'user_id': user_id})
+
+#             checkout_session = stripe.checkout.Session.create(
+#                 line_items=[
+#                     {
+#                         'price': price_id,
+#                         'quantity': 1,
+#                     },
+#                 ],
+#                 payment_method_types=['card'],
+#                 mode='subscription',
+#                 success_url = f"{FRONTEND_SITE_URL}/payment/success",
+#                 cancel_url = f"{FRONTEND_SITE_URL}/payment/failed" ,
+#                 subscription_data={
+#                     'metadata': {
+#                         'user_id': user_id,
+#                     }
+#                 }
+#             )
+#             print('checkout session : ',  checkout_session)
+#             return Response(checkout_session.url)
+#         except Exception as e:
+#             print("Exception in stripe session creation:", str(e))
+#             print(traceback.format_exc())
+#             return Response(
+#                 {'error': 'Something went wrong when creating stripe checkout session'},
+#                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
+#             )
+        
 class StripeCheckoutView(APIView):
     def post(self, request):
         try:
@@ -42,6 +78,8 @@ class StripeCheckoutView(APIView):
             user_id = request.data.get('userId')
             print(price_id)
             print(user_id)
+            customer = stripe.Customer.create(metadata={'user_id': user_id})
+
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
@@ -51,12 +89,16 @@ class StripeCheckoutView(APIView):
                 ],
                 payment_method_types=['card'],
                 mode='subscription',
-                success_url = f"{FRONTEND_SITE_URL}/payment/success",
-                cancel_url = f"{FRONTEND_SITE_URL}/payment/failed" ,
-                metadata = {
-                    'user_id': user_id,
+                success_url=f"{FRONTEND_SITE_URL}/payment/success",
+                cancel_url=f"{FRONTEND_SITE_URL}/payment/failed",
+                customer=customer.id,
+                subscription_data={
+                    'metadata': {
+                        'user_id': user_id,
+                    }
                 }
             )
+            print('checkout session : ', checkout_session)
             return Response(checkout_session.url)
         except Exception as e:
             print("Exception in stripe session creation:", str(e))
@@ -65,7 +107,7 @@ class StripeCheckoutView(APIView):
                 {'error': 'Something went wrong when creating stripe checkout session'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
+
 
 
 @csrf_exempt
@@ -89,9 +131,10 @@ def stripe_webhook(request):
     if event.type == 'payment_intent.succeeded':
         payment_intent = event.data.object
         print('payment intent webhook', payment_intent)
-        payment_id = payment_intent.id
-        amount = payment_intent.amount
-        user_id = payment_intent.metadata.get('user_id')
+        customer_id = payment_intent.customer
+        Customer = stripe.Customer.retrieve(customer_id)
+        user_id = Customer.metadata.get('user_id')
+        print('user id in customer', user_id, '   customer', Customer)
         user =  Allusers.objects.get(id = user_id)
         print('user in webhook', user)
         user.is_premium = True

@@ -64,7 +64,7 @@ export {default as MainFeed} from './Article/MainFeed/MainFeed';
 export {default as Sidebar} from './Article/SideBar/Sidebar';
 export {default as EmailVerifiedProtectedRoute} from './Authentication/ProtectedRoutes/EmailVerifiedProtectedRoute';
 export {default as AiFAB} from './Article/AiFAB/AiFAB';
-export { adminAxiosToDjangoServerInterceptor } from './Admin';
+export { adminAxiosToDjangoServerInterceptor } from '../Axios/AxiosInstance'
 export {TokenRefresh} from '../TokenRefresh/TokenRefresh'
 export {default as Cookies} from "js-cookie";
 export {default as CustomToastContainer} from './Toast/Toast';

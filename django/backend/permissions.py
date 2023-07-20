@@ -4,23 +4,27 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class IsUserInPayload(BasePermission):
     def has_permission(self, request, view):
         jwt_auth = JWTAuthentication()
+        print(' before try in is user in payload', jwt_auth)
         try:
             token = jwt_auth.get_validated_token(request.headers.get('Authorization').split(' ')[1])
             user = jwt_auth.get_user(token) 
-            print('user in middleware', user)           
-            return user is not None
-        except:
+            print('user in middleware', user)  
+            user = not user.is_superuser         
+            return user is True
+        except Exception as e:
+            print('user token error in middleware', e)
             return False
 
 class IsAdminInPayload(BasePermission):
     def has_permission(self, request, view):
         jwt_auth = JWTAuthentication()
+        print(' before try in is admin in payload', jwt_auth)
         try:
             token = jwt_auth.get_validated_token(request.headers.get('Authorization').split(' ')[1])
             user = jwt_auth.get_user(token)
             print('admin in middleware', user)           
             is_admin = user.is_superuser
-            print('is admin', is_admin)
+            print('is admin in token check middleware', is_admin)
             return is_admin is True
         except Exception as e:
             print('Error in permission check:', e)

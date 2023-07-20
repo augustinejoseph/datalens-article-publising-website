@@ -9,6 +9,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from authentication.models import Interests
+from dashboard.models import DashBoardCount
 
 class AllUsersList(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
@@ -43,7 +44,6 @@ class AddToAllInterests(APIView):
         
         # Create a new interest
         new_interest = Interests.objects.create(interestName=interest_name)
-        
         return Response({'message': 'Interest created successfully', 'interest_id': new_interest.id})
 
 

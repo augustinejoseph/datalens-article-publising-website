@@ -8,6 +8,7 @@ import {
   useState,
   useEffect,
   HomePostContainer,
+  LoadingModal,
 } from "../../index";
 import "./AllFeatured.css";
 
@@ -40,7 +41,7 @@ const AllFeatured = () => {
   }, [data, location.pathname]);
 
   if (loading) {
-    return <div>Loading!!!</div>;
+    return <LoadingModal />;
   }
 
   if (error) {

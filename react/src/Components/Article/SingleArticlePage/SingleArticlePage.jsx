@@ -65,12 +65,14 @@ const ArticlePage = () => {
   console.log("comment button disabled", commentButtonDisabled);
   console.log('article', article);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const articleUrl = `${FRONTEND_DOMAIN_NAME}/${id}`;
+  const articleUrl = `${FRONTEND_DOMAIN_NAME}/article/${id}`;
   const showToast = useToast()
-
-   
+  const category = article?.category?.[0]?.name
+  console.log('-----category', category );
+  
   useEffect(() => {
     const fetchArticle = async () => {
+      console.log(' ---------------url', articleUrl);
       try {
         setLoading(true)
         const { data } = await axios.get(
@@ -312,12 +314,17 @@ const ArticlePage = () => {
           ""
         )}
         {/* Related */}
-
+        {category &&
         <div className="article_related_articles">
-          <HomePostContainer category={article.category} />
+          <HomePostContainer category={category} />
         </div>
+            }   
         <Footer />
       </div>
+
+
+
+
 
       {/* Comment modal */}
       {showComment && (

@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         <div className="admin_dash_overview">
             <div className="admin_dash_overview_users">
                 <span>Users</span>
-                <span>120</span>
+                <span>2</span>
             </div>
             <div className="admin_dash_overview_users">
               <span>Page views</span>
@@ -20,11 +20,11 @@ const AdminDashboard = () => {
             </div>
             <div className="admin_dash_overview_users">
               <span>Interest</span>
-                <span>120</span>
+                <span>12</span>
             </div>
             <div className="admin_dash_overview_users">
               <span>categories</span>
-                <span>120</span>
+                <span>9</span>
             </div>
         </div>
       </div>

@@ -39,11 +39,9 @@ class CustomTokenRefreshView(APIView):
         print('refresh token received', refresh_token)
 
         try:
-            print("inside refresh token try")
             decoded_refresh_token = jwt.decode(refresh_token, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = decoded_refresh_token.get('user_id')
             user = Allusers.objects.get(id=user_id)
-            print("user", user)
             jti = str(uuid.uuid4())
             payload = {
                 'user_id': user.id,
@@ -53,12 +51,14 @@ class CustomTokenRefreshView(APIView):
                 'is_active': user.is_active,
                 'is_banned': user.is_banned,
                 'is_admin': user.is_superuser,
+                'is_premium' : user.is_premium,
                 'jti': jti,
                 "token_type": "access",
                 'exp': datetime.utcnow() + timedelta(minutes=15),
             }
 
             access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
+            print("-------token refreshed by: ", user, "---------")
             return Response({'access_token': access_token})
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Refresh token has expired'}, status=400)

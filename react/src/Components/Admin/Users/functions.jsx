@@ -15,14 +15,60 @@ const unblockButtonStyle = {
     padding : "0 10px"
 }
 
+// export const columns = (handleBlockUser) => [
+//   { field: "id", headerName: "ID", width: 100 },
+//   { field: "email", headerName: "Email", width: 200 },
+//   { field: "user_name", headerName: "Username", width: 150 },
+//   { field: "first_name", headerName: "First Name", width: 150 },
+//   { field: "is_banned", headerName: "Banned", width: 150 },
+//   { field: "is_premium", headerName: "Premium", width: 170 },
+//   { field: "is_active", headerName: "Email Verified", width: 170 , },
+//   {
+//     field: "actions",
+//     headerName: "Block",
+//     width: 150,
+//     sortable: false,
+//     renderCell: (params) => {
+//       const userId = params.row.id;
+//       const isUserBlocked = params.row.is_banned;
+
+//       const handleBlockUserClick = () => {
+//         handleBlockUser(userId);
+//       };
+
+//       if (isUserBlocked) {
+//         return <button style={unblockButtonStyle} onClick={handleBlockUserClick}>Unblock</button>;
+//       } else {
+//         return <button style={blockedButtonStyle} onClick={handleBlockUserClick}>Block</button>
+//       }
+//     },
+//   },
+// ];
+
+
 export const columns = (handleBlockUser) => [
   { field: "id", headerName: "ID", width: 100 },
   { field: "email", headerName: "Email", width: 200 },
   { field: "user_name", headerName: "Username", width: 150 },
   { field: "first_name", headerName: "First Name", width: 150 },
-  { field: "is_banned", headerName: "Banned", width: 150 },
-  { field: "is_premium", headerName: "Premium", width: 170 },
-  { field: "is_active", headerName: "Email Verified", width: 170 , },
+  { 
+    field: "is_banned",
+    headerName: "Banned",
+    width: 150,
+    renderCell: (params) => (params.value ? "Yes" : "No"), // Render "Yes" if true, "No" if false
+  },
+  { 
+    field: "is_premium",
+    headerName: "Premium",
+    width: 170,
+    renderCell: (params) => (params.value ? "Yes" : "No"), // Render "Yes" if true, "No" if false
+  },
+  { 
+    field: "is_active",
+    headerName: "Email Verified",
+    width: 170,
+    renderCell: (params) => (params.value ? "Yes" : "No"), // Render "Yes" if true, "No" if false
+  },
   {
     field: "actions",
     headerName: "Block",
@@ -44,7 +90,6 @@ export const columns = (handleBlockUser) => [
     },
   },
 ];
-
 
 export const onBlockUser = async (userId) => {
     if (!userId) {

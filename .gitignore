@@ -7,3 +7,5 @@ react/node_modules
 
 node/node_modules
 node/.env
+.vscode
+.git

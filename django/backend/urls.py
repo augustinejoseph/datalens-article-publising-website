@@ -13,6 +13,8 @@ urlpatterns = [
     path('payments/', include('payments.urls')),
     path('article/', include('article.urls')),
     path('author/', include('author.urls')),
+    path('dashboard/', include('dashboard.urls')),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name ="token_obtain_pair"),
     path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

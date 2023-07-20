@@ -30,10 +30,11 @@ const AdminLogin = () => {
         user
       );
       console.log("data form axios req" ,data)
-
-      // Storing Access in cookie
+      const refreshTokenExpiration = 7; // 7 days
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + refreshTokenExpiration);
       Cookies.set("access_token", data.access_token);
-      Cookies.set("refresh_token", data.refresh_token);
+      Cookies.set("refresh_token", data.refresh_token,  { expires: expirationDate });
       const tokenData = jwt_decode(data.access_token);
 
       const LoggedInUser = {

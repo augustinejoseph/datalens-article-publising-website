@@ -48,7 +48,7 @@ class SaveArticle(APIView):
     
 class AllSavedArticles(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
-    permission_classes =[IsUserInPayload]
+    # permission_classes =[IsUserInPayload]
     def get(self, request, user_name):
         try:
             user = Allusers.objects.get(user_name = user_name)

@@ -126,8 +126,12 @@
 .article_quill h4,
 .article_quill h5,
 .article_quill h6 {
-  margin-top: 20px;
+    margin-top: 2rem !important;
 
+}
+
+.article_quill img {
+    padding: 2rem;
 }
 
 .article_hashtag{

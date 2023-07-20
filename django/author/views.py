@@ -47,7 +47,7 @@ class UserInterestsByUserName(APIView):
         
 class UpdateUserDetails(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
-    permission_classes =[IsUserInPayload , IsAdminInPayload]
+    permission_classes =[IsUserInPayload]
     def post(self, request):
         user_id = request.data.get('id')
         first_name = request.data.get('first_name')
