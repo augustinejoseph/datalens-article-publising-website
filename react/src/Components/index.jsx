@@ -1,4 +1,7 @@
-export { FRONTEND_DOMAIN_NAME, ARTICLE_SERVER_NODE_BASE_URL,BACKEND_BASE_URL } from "../API/Api";
+export const ARTICLE_SERVER_NODE_BASE_URL = import.meta.env.VITE_ARTICLE_SERVER_NODE_BASE_URL;
+export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+export const FRONTEND_DOMAIN_NAME = import.meta.env.VITE_FRONTEND_DOMAIN_NAME;
+// export { FRONTEND_DOMAIN_NAME, ARTICLE_SERVER_NODE_BASE_URL,BACKEND_BASE_URL } from "../API/Api";
 export {default as fullLogo} from '../Constants/full_logo.png'
 export {default as premium} from '../Constants/premium.png'
 export { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
@@ -72,5 +75,3 @@ export {default as LoadingModal} from './Shimmers/LoadingModal/LoadingModal';
 export {default as PaymentSuccess} from './PaymentStatus/PaymentSuccess';
 export {default as PaymentFailed} from './PaymentStatus/PaymentFailed';
 export {default as AdminPanelInterests} from './Admin/Interests/AdminPanelInterests';
-
-

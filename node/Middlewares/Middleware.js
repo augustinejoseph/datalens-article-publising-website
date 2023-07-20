@@ -8,6 +8,7 @@ function userTokenMiddlewareForJWT(req, res, next) {
   // const key = process.env.SECRET_KEY
   console.log(JWT_SECRET_KEY);
   const authHeader = req.headers['authorization'];
+  console.log('token recieved :  ', authHeader);
   const token = authHeader && authHeader.split(' ')[1];
     // console.log('authheader', authHeader , '---- and --- token', token);
 
@@ -33,6 +34,8 @@ function adminTokenMiddlewareForJWT(req, res, next) {
   console.log('jwt secret keyt', JWT_SECRET_KEY);
 
   const authHeader = req.headers['authorization'];
+  console.log('token recieved :  ', authHeader);
+
   const token = authHeader && authHeader.split(' ')[1];
 
   if (token == null) {

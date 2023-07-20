@@ -63,7 +63,7 @@ router.delete('/category/:id', async (req, res) => {
 module.exports = router;
 
 
-
+// Ban article
 router.put('/article/ban/:articleId', async (req, res) => {
     const {articleId} = req.params
     console.log("article id in ban article admin route", articleId)
@@ -74,7 +74,7 @@ router.put('/article/ban/:articleId', async (req, res) => {
         }
         article.is_banned = !article.is_banned
         await article.save()
-        res.status(200).json({ message: `Article with isbeen ${article.is_banned ? 'banned' : 'unbanned'}` });
+        res.status(200).json({ message: `Article with id has been ${article.is_banned ? 'banned' : 'unbanned'}` });
     }catch(error){
         console.error(error)
         res.status(500).json({message: "Internal server errro"})

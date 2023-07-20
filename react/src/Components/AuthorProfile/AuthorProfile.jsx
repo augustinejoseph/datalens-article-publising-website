@@ -1,6 +1,6 @@
 import {
   React,
-  ARTICLE_SERVER_NODE_BASE_URL,
+  // ARTICLE_SERVER_NODE_BASE_URL,
   useEffect,
   useParams,
   useContext,
@@ -23,15 +23,16 @@ import {
   useRef,
   PencilSquare,
 } from "../index";
+const ARTICLE_SERVER_NODE_BASE_URL = import.meta.env.VITE_ARTICLE_SERVER_NODE_BASE_URL;
 import "./AuthorProfile.css";
 import { handleImageResize } from "./functions";
 
+console.log('server url from .env ', ARTICLE_SERVER_NODE_BASE_URL);
 const client = new ApolloClient({
   uri: `${ARTICLE_SERVER_NODE_BASE_URL}/graphql`,
   cache: new InMemoryCache(),
   credentials: "same-origin",
 });
-
 const AuthorProfile = () => {
   const [refreshState, setRefreshState] = useState(true);
   const { username } = useParams();
