@@ -17,6 +17,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from authentication.models import Allusers
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 
 
@@ -68,24 +69,32 @@ class StripeCheckoutView(APIView):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def stripe_webhook(request):
+    print('stripe wh secret key : ', stripe_webhook_secret)
     payload = request.body
     sig_header = request.headers.get('Stripe-Signature')
     event = None
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, stripe_webhook_secret)
+        print('stripe wh event')
     except ValueError as e:
+        print('stripe wh first error:   ', e)
         return Response(status=400)
     except stripe.error.SignatureVerificationError as e:
+        print('stripe wh signature error:   ', e)
         return Response(status=400)
 
     if event.type == 'payment_intent.succeeded':
         payment_intent = event.data.object
+        print('payment intent webhook', payment_intent)
         payment_id = payment_intent.id
         amount = payment_intent.amount
         user_id = payment_intent.metadata.get('user_id')
         user =  Allusers.objects.get(id = user_id)
+        print('user in webhook', user)
         user.is_premium = True
         user.save()
+        
     return Response(status=200)
