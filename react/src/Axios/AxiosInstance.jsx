@@ -1,5 +1,3 @@
-// adminAxiosToDjangoServerInterceptor.js
-
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BACKEND_BASE_URL, useNavigate, useState } from '../Components/index';

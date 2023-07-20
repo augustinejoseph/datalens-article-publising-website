@@ -1,9 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
 import LoadingMainFeed from "../../Shimmers/LoadingMainFeed";
-import {
-  ARTICLE_SERVER_NODE_BASE_URL,
-  BACKEND_BASE_URL,
-} from "../../../API/Api";
 import { columns, handleRowClick } from "./functions";
 import {
   DataGrid,
@@ -12,6 +8,8 @@ import {
   useState,
   axios,
   adminAxiosToDjangoServerInterceptor,
+  ARTICLE_SERVER_NODE_BASE_URL,
+  BACKEND_BASE_URL
 } from "../index";
 import "./AdminPanelArticles.css";
 import { GET_ARTICLES } from "../../../Queries/getArticlesGraphQL";

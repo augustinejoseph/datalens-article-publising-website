@@ -13,24 +13,6 @@ const AdminPanelUser = () => {
   console.log(allUsersList);
   const token = Cookies.get('access_token')
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await axios.get(`${BACKEND_BASE_URL}user/all-users`,
-  //         {headers: {
-  //           Authorization: `Bearer ${token}`,
-
-  //         }}
-  //       );
-  //       setAllUsersList(response.data);
-  //       console.log("all users list",allUsersList);
-  //     } catch (error) {
-  //       console.error("Error fetching users:", error);
-  //     }
-  //   };
-
-  //   fetchUsers();
-  // }, [update]);
 
   useEffect(() => {
     const fetchUsers = async () => {

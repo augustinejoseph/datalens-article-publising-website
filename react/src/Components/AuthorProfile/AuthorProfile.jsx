@@ -159,7 +159,7 @@ const AuthorProfile = () => {
         interests: selectedInterests,
       };
 
-      const response = await axios.post(
+      const response = await adminAxiosToDjangoServerInterceptor.post(
         `${BACKEND_BASE_URL}/author/update-user-details`,
         updatedUser
       );

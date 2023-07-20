@@ -1,8 +1,7 @@
 import { useContext } from "react";
 import jwt_decode from "jwt-decode";
 import "./Login.css";
-import { BACKEND_BASE_URL } from "../../../API/Api";
-import {useState,AuthContext, React, fullLogo,  useToast,Cookies,axios,Link, Navigate, useNavigate } from "../../index";
+import {useState,AuthContext, React, fullLogo,  useToast,Cookies,axios,Link, Navigate, useNavigate,BACKEND_BASE_URL } from "../../index";
 import 'react-toastify/dist/ReactToastify.css';
 
 
