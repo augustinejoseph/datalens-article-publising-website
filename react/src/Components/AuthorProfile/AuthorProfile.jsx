@@ -99,7 +99,7 @@ const AuthorProfile = () => {
             axios.get(`${BACKEND_BASE_URL}/author/user-interests-by-username/${username}`),
             axios.get(`${BACKEND_BASE_URL}/author/author-details/${username}`),
             axios.get(`${BACKEND_BASE_URL}/user/all-interests`),
-            adminAxiosToDjangoServerInterceptor.get(`${BACKEND_BASE_URL}/article/all-saved-article/${username}`),
+            axios.get(`${BACKEND_BASE_URL}/article/all-saved-article/${username}`),
           ]);
 
         // Draft
@@ -161,7 +161,7 @@ const AuthorProfile = () => {
         interests: selectedInterests,
       };
 
-      const response = await adminAxiosToDjangoServerInterceptor.post(
+      const response = await axios.post(
         `${BACKEND_BASE_URL}/author/update-user-details`,
         updatedUser
       );
