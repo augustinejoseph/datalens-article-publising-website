@@ -13,7 +13,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 
 
 class SaveArticle(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
     # permission_classes =[IsUserInPayload]
     def post(self, request):
         print("--------------------------saved articles req data", request.data)
@@ -47,7 +47,7 @@ class SaveArticle(APIView):
 
     
 class AllSavedArticles(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
     # permission_classes =[IsUserInPayload]
     def get(self, request, user_name):
         try:

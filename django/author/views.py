@@ -46,7 +46,7 @@ class UserInterestsByUserName(APIView):
             return Response({'error': "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class UpdateUserDetails(APIView):
-    authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
     # permission_classes =[IsUserInPayload]
     def post(self, request):
         user_id = request.data.get('id')
