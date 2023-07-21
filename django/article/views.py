@@ -14,7 +14,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 
 class SaveArticle(APIView):
     authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
-    permission_classes =[IsUserInPayload]
+    # permission_classes =[IsUserInPayload]
     def post(self, request):
         print("--------------------------saved articles req data", request.data)
         user_id = request.data.get('userId')
