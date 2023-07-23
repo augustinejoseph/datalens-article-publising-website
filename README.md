@@ -1,6 +1,15 @@
 # --DATALENS--
 Datalens is a Article publishing website where any users can publish an article on anything and anybody can read the articles for free.
 
+<br>
+
+
+![Website Configuration https://lucid.app/lucidchart/952d8061-f8cc-4004-8be0-3c885036244e/edit?viewport_loc=-3094%2C-1195%2C9356%2C3612%2C0_0&invitationId=inv_981072ed-c9e2-42a8-b38e-468c7f69a88d](<Readme images/Website configuration.png>)
+
+#### Latest Website configuration can be seen [here](https://lucid.app/lucidchart/952d8061-f8cc-4004-8be0-3c885036244e/edit?viewport_loc=-3094%2C-1195%2C9356%2C3612%2C0_0&invitationId=inv_981072ed-c9e2-42a8-b38e-468c7f69a88d)
+
+<br>
+
 ## Key Features
 * **Microservice architecture.**
 * **Frontend written in React.**
@@ -12,7 +21,6 @@ Datalens is a Article publishing website where any users can publish an article 
 
 
 <br>
-<hr>
 <br>
 
 ## Authentication
@@ -24,7 +32,6 @@ Datalens is a Article publishing website where any users can publish an article 
 Access token is valid only for 5 minutes and new access token is generated using the refresh tokens. Secret key is added to enhance the security.
 
 <br>
-<hr>
 <br>
 
 ## Backend Specification
@@ -37,7 +44,6 @@ Access token is valid only for 5 minutes and new access token is generated using
 * MongoDB Atlas is used to store data in mongoDB servers. 
 
 <br>
-<hr>
 <br>
 
 ## API
@@ -50,14 +56,12 @@ For fetching the articles preview data which contains only some selected fields,
 Internal API calls between the Node.js server and Django server are made to update user payment details and handle users' interest inquiries.
 
 <br>
-<hr>
 <br>
 
 ## Webhooks
 Webhooks are implemented in django to receive real time payment updates form stripe.
 
 <br>
-<hr>
 <br>
 
 ## Deployment

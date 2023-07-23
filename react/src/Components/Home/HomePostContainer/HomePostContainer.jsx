@@ -104,8 +104,6 @@ const HomePostContainer = (props) => {
           " "
         )}
         <span>{readingTime ? readingTime + "min read" : ""} </span>
-        {/* <span>save</span> */}
-        {/* <span>More</span> */}
       </div>
       <div className="homepost_container_fifthrow"></div>
     </div>
