@@ -2,9 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.text import slugify
 
+
 class TemplateTable(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
         abstract = True
 
@@ -45,47 +47,51 @@ class Allusers(AbstractUser):
     is_banned = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
     user_name = models.CharField(max_length=250, unique=True, null=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
-    
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/", null=True, blank=True
+    )
+
     def save(self, *args, **kwargs):
         print(self.user_name)
         if not self.user_name:
             # Generate username from email and append a unique suffix
-            user_name = slugify(self.email.split('@')[0])
+            user_name = slugify(self.email.split("@")[0])
             suffix = 1
             while Allusers.objects.filter(user_name=user_name).exists():
-                print('inside user exists, adding suffix')
+                print("inside user exists, adding suffix")
                 user_name = f"{slugify(self.email.split('@')[0])}{suffix}"
                 suffix += 1
             self.user_name = user_name
         super().save(*args, **kwargs)
 
     username = None
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
     class Meta:
-        db_table = 'allusers'
-
+        db_table = "allusers"
 
 
 # User Interests
 class Interests(models.Model):
-    interestName  = models.CharField(max_length=250)
+    interestName = models.CharField(max_length=250)
+
     def __str__(self):
         return self.interestName
+
     class Meta:
         db_table = "All Interests"
 
 
-# 
+#
 class Userinterests(models.Model):
-    user  = models.ForeignKey(Allusers, on_delete=models.CASCADE)
+    user = models.ForeignKey(Allusers, on_delete=models.CASCADE)
     interest = models.ForeignKey(Interests, on_delete=models.CASCADE)
+
     def __str__(self):
         return f"{self.user.first_name} - {self.interest.interestName}"
-    
+
     class Meta:
         db_table = "User Interests"

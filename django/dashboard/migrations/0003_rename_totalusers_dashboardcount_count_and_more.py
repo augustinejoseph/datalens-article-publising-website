@@ -4,24 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0002_alter_dashboardcount_totaluserinterest_and_more'),
+        ("dashboard", "0002_alter_dashboardcount_totaluserinterest_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='dashboardcount',
-            old_name='totalUsers',
-            new_name='count',
+            model_name="dashboardcount",
+            old_name="totalUsers",
+            new_name="count",
         ),
         migrations.RemoveField(
-            model_name='dashboardcount',
-            name='totalUserInterest',
+            model_name="dashboardcount",
+            name="totalUserInterest",
         ),
         migrations.AddField(
-            model_name='dashboardcount',
-            name='name',
-            field=models.CharField(default='name', max_length=250),
+            model_name="dashboardcount",
+            name="name",
+            field=models.CharField(default="name", max_length=250),
         ),
     ]

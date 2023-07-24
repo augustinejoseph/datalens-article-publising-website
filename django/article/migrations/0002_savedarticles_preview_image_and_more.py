@@ -4,39 +4,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('article', '0001_initial'),
+        ("article", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='savedarticles',
-            name='preview_image',
-            field=models.CharField(default='', max_length=1000),
+            model_name="savedarticles",
+            name="preview_image",
+            field=models.CharField(default="", max_length=1000),
         ),
         migrations.AddField(
-            model_name='savedarticles',
-            name='reading_time',
-            field=models.CharField(default='', max_length=100),
+            model_name="savedarticles",
+            name="reading_time",
+            field=models.CharField(default="", max_length=100),
         ),
         migrations.AddField(
-            model_name='savedarticles',
-            name='summary',
-            field=models.TextField(default=''),
+            model_name="savedarticles",
+            name="summary",
+            field=models.TextField(default=""),
         ),
         migrations.AddField(
-            model_name='savedarticles',
-            name='title',
-            field=models.CharField(default='', max_length=250),
+            model_name="savedarticles",
+            name="title",
+            field=models.CharField(default="", max_length=250),
         ),
         migrations.AddField(
-            model_name='savedarticles',
-            name='user_name',
-            field=models.CharField(default='', max_length=250),
+            model_name="savedarticles",
+            name="user_name",
+            field=models.CharField(default="", max_length=250),
         ),
         migrations.AlterModelTable(
-            name='savedarticles',
-            table='Saved Articles',
+            name="savedarticles",
+            table="Saved Articles",
         ),
     ]

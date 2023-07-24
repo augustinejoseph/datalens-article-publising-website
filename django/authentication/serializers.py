@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Allusers, Interests, Userinterests
 
+
 class InterestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interests
@@ -9,10 +10,11 @@ class InterestSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     interests = InterestSerializer(many=True)
+
     class Meta:
         model = Allusers
-        fields = ['id', 'email', 'password', "first_name", "last_name", "interests"]
-        
+        fields = ["id", "email", "password", "first_name", "last_name", "interests"]
+
     def create(self, validated_data):
         password = validated_data.pop("password")
         interests_data = validated_data.pop("interests")
@@ -32,12 +34,11 @@ class UserSerializer(serializers.ModelSerializer):
 class AllUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allusers
-        exclude = ['password', 'is_superuser']
+        exclude = ["password", "is_superuser"]
 
 
 # Author Details
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allusers
-        fields = ['id', 'email', 'first_name', 'last_name','user_name']
-
+        fields = ["id", "email", "first_name", "last_name", "user_name"]

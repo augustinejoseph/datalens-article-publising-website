@@ -1,5 +1,6 @@
 import secrets
 
+
 def generate_verification_token(user):
     # Generate a random token
     token = secrets.token_urlsafe(32)
