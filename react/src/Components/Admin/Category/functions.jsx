@@ -47,13 +47,15 @@ export const columns = (handleCategoryDelete) => [
 
 
 //   Get all categories
-export const fetchCategories = async (setCategories) => {
+export const fetchCategories = async (setCategories, setLoading) => {
   try {
+    setLoading(true)
     const response = await axios.get(`${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`);
     const categories = response.data.map((category) => ({
       ...category,
       id: category._id, 
     }));
+    setLoading(false)
     console.log(response);
     setCategories(categories);
   } catch (error) {
@@ -69,21 +71,24 @@ export const createCategory = async (
   setCategories,
   categories,
   setNewCategoryName,
-  showToast
-  
+  showToast,
+  setLoading,
 ) => {
   try {
+    setLoading(true)
     const response = await adminAxiosToDjangoServerInterceptor.post(`${ARTICLE_SERVER_NODE_BASE_URL}/admin/category`, {
       name: newCategoryName,
     });
+    setLoading(false)
     setNewCategoryName("");
-    showToast("Category created successfully", "success");
+    showToast("Category created successfully", 200);
   } catch (error) {
+    setLoading(false)
     if (error.response) {
       const { message, status } = error.response.data;
       showToast(message, "error", status);
     } else if (error.request) {
-      showToast("Server not responding", "error");
+      showToast("Server not responding", 500);
     } else {
       console.error("Error creating category:", error);
     }

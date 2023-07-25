@@ -91,7 +91,7 @@ export const columns = (handleBlockUser) => [
   },
 ];
 
-export const onBlockUser = async (userId) => {
+export const onBlockUser = async (userId, setLoading) => {
     if (!userId) {
       console.error("Invalid userId");
       return;
@@ -99,10 +99,11 @@ export const onBlockUser = async (userId) => {
   
     const formattedUserId = String(userId);
     console.log(formattedUserId, "user id in block fn for user");
-  
-    const response = await adminAxiosToDjangoServerInterceptor.put(
+    setLoading(true);
+        const response = await adminAxiosToDjangoServerInterceptor.put(
       `${BACKEND_BASE_URL}/admin/block-user/${userId}`
     );
+    setLoading(false);
     console.log("block user ", response);
   };
   

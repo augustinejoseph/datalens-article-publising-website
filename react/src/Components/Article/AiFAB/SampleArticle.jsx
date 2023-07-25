@@ -54,4 +54,4 @@ Above we are installing:
 graphql-tag: In Apollo Server V4 template literal tag is no longer exported, we will be using the graphql-tag for our template literal tag to parse GraphQL query strings into the standard GraphQL AST
 mongoose: a MongoDB object modeling tool
 Next, well create the directory and files needed for our application To do this enter the following command into the application terminal:`;
-;
+

@@ -1,5 +1,5 @@
 .admin_sidebar {
-    background-color: #e1dbdb;
+    background-color: #020e15a3;
     width: 200px;
     height: 100%;
     position: fixed;
@@ -17,9 +17,10 @@
   }
   
   .menu-item a {
-    color: black;
+    color: rgb(255, 255, 255);
     text-decoration: none;
-    padding-left: 10px;
+    /* padding-left: 10px; */
+    padding: .5rem .5rem .3rem .7rem;
   }
   
 

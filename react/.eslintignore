@@ -1,0 +1,8 @@
+node_modules
+package.lock.json
+build
+tailwind.config.js
+postcss.config.js
+.gitignore
+.eslint.json
+.

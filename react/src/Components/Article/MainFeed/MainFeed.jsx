@@ -1,6 +1,5 @@
 import "./MainFeed.css";
 import {
-  React,
   useEffect,
   useState,
   HomeCategoryList,
@@ -12,7 +11,6 @@ import {
   ARTICLE_SERVER_NODE_BASE_URL,
   Footer,
   useNavigate,
-  Banner,
   useContext,
   AuthContext,
   GET_ARTICLES_BY_USER_INTEREST,

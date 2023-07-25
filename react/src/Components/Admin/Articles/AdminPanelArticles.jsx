@@ -1,21 +1,19 @@
-import { useQuery, gql } from "@apollo/client";
-import LoadingMainFeed from "../../Shimmers/LoadingMainFeed";
+import { useQuery } from "@apollo/client";
 import { columns, handleRowClick } from "./functions";
 import {
   DataGrid,
-  React,
   useEffect,
   useState,
-  axios,
+  LoadingModal,
   adminAxiosToDjangoServerInterceptor,
   ARTICLE_SERVER_NODE_BASE_URL,
-  BACKEND_BASE_URL
 } from "../index";
 import "./AdminPanelArticles.css";
 import { GET_ARTICLES } from "../../../Queries/getArticlesGraphQL";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminPanelArticles = () => {
+  const [serverLoading, setServerLoading] = useState(false)
   const theme = createTheme();
   const [articleId, setArticleId] = useState("");
   const [articles, setArticles] = useState([]);
@@ -25,11 +23,12 @@ const AdminPanelArticles = () => {
   // Ban article
   const handleBanToggle = async (id, isBanned) => {
     try {
+      setServerLoading(true)
       const response = await adminAxiosToDjangoServerInterceptor.put(
         `${ARTICLE_SERVER_NODE_BASE_URL}/admin/article/ban/${id}`,
         { is_banned: !isBanned }
       );
-
+        setServerLoading(false)
       const updatedArticles = articles.map((article) => {
         if (article.articleId === id) {
           return { ...article, is_banned: !isBanned };
@@ -41,12 +40,11 @@ const AdminPanelArticles = () => {
 
       console.log("Response from ban article admin panel", response.data);
     } catch (error) {
+      setServerLoading(false)
       console.log("Error in banning article:", error);
     }
   };
 
-  // Featured Article
-  const handleFeaturedArticle = () => {};
   const { loading, error, data } = useQuery(GET_ARTICLES);
 
   useEffect(() => {
@@ -60,22 +58,25 @@ const AdminPanelArticles = () => {
     }
   }, [loading, error, data]);
 
-  if (loading) {
-    return <LoadingMainFeed />;
-  }
-
+  
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-
+  
   const filteredArticles = articles.filter((article) =>
-    article.title.toLowerCase().includes(searchQuery.toLowerCase())
+  article.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
+  
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
 
+
+  if (loading || serverLoading) {
+    return <LoadingModal />;
+  }
+
+  if (!serverLoading || !loading){
   return (
     <div className="admin_table_container">
       <div className="admin_panel_section_title">
@@ -107,7 +108,7 @@ const AdminPanelArticles = () => {
         </ThemeProvider>
       </div>
     </div>
-  );
+  );}
 };
 
 export default AdminPanelArticles;

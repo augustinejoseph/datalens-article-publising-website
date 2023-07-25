@@ -1,6 +1,5 @@
 import './LoadingModal.css'
 
-import React from 'react'
 
 const LoadingModal = () => {
   return (

@@ -18,7 +18,6 @@ import {
   useLocation,
   ArrowLeftCircleFill,
   deleteDraft,
-  CustomToastContainer,
   useToast,
   LoadingModal,
 
@@ -145,6 +144,7 @@ const NewArticle = () => {
     const containerDiv = document.createElement("div");
     containerDiv.innerHTML = bodyHTML;
     const images = containerDiv.querySelectorAll("img");
+    console.log(' all images from innrer html', images);
 
     const uploadImages = async () => {
       const newUploadedImages = [];

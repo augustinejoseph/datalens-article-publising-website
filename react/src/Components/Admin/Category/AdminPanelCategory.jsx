@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
   axios,
+  LoadingModal,
   ARTICLE_SERVER_NODE_BASE_URL,
   useToast,
 } from "../index";
@@ -18,6 +19,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminPanelCategory = () => {
+  const [loading, setLoading] = useState(true);
   const showToast = useToast()
   const theme = createTheme();
   const [categories, setCategories] = useState([]);
@@ -26,15 +28,20 @@ const AdminPanelCategory = () => {
   const getRowId = (row, index) => row._id;
 
   useEffect(() => {
-    fetchCategories(setCategories);
+    fetchCategories(setCategories, setLoading);
   }, []);
 
   const handleCreateCategory = async () => {
-    await createCategory(newCategoryName, setCategories, categories, setNewCategoryName, showToast);
+    await createCategory(newCategoryName, setCategories, categories, setNewCategoryName, showToast, setLoading);
     setNewCategoryName("");
   };
 
+
   return (
+    <>
+    {loading ? (
+      <LoadingModal />
+    ) :(
     <div className="admin_table_container">
       <div className="admin_panel_section_title">
         <span>Categories</span>
@@ -79,6 +86,8 @@ const AdminPanelCategory = () => {
         </ThemeProvider>
       </div>
     </div>
+    )}
+    </>
   );
 };
 

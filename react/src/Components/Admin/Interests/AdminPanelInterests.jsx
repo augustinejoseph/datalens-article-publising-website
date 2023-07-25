@@ -1,7 +1,8 @@
-import {React,Trash2Fill, Search, DataGrid, useToast, useState, useEffect,BACKEND_BASE_URL, adminAxiosToDjangoServerInterceptor } from '../index'
+import {LoadingModal,Trash2Fill, Search, DataGrid, useToast, useState, useEffect,BACKEND_BASE_URL, adminAxiosToDjangoServerInterceptor } from '../index'
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {columns, handleInterestDelete} from './functions'
 const AdminPanelInterests = () => {
+  const [loading, setLoading] = useState(true);
     const showToast = useToast()
     const theme = createTheme();
     const [newInterestName, setNewInterestName] = useState('')
@@ -9,27 +10,34 @@ const AdminPanelInterests = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        fetchInterests()
-    }, [newInterestName])
+    fetchInterests()
+    }, [])
 
     const fetchInterests = async () =>{
-        try{
-            const response  = await adminAxiosToDjangoServerInterceptor.get(`${BACKEND_BASE_URL}/admin/all-interests`)
-            setAllInterests(response.data)
+    try{
+      setLoading(true);
+
+      const response  = await adminAxiosToDjangoServerInterceptor.get(`${BACKEND_BASE_URL}/admin/all-interests`)
+      setAllInterests(response.data)
+      setLoading(false);
     }catch(error){
-            console.log('interest get error', error);
+      setLoading(false);
+      console.log('interest get error', error);
         }
     }
 
     const handleInterestCreation = async () => {
+      setLoading(true);
       try {
         const response = await adminAxiosToDjangoServerInterceptor.post(`${BACKEND_BASE_URL}/admin/new-interest`, {
           interestName: newInterestName
         });
-        setNewInterestName("")
         fetchInterests();
+        setLoading(false);
+        setNewInterestName("")
         showToast(response.data.message, response.status);
       } catch (error) {
+        setLoading(false);
         if (error.response && error.response.status === 409) {
           showToast("Interest already exists", error.response.status);
         } else if (error.response && error.response.status === 400) {
@@ -40,7 +48,10 @@ const AdminPanelInterests = () => {
         console.log('new interest creation error', error);
       }
     };
-    
+    if(loading){
+      return <LoadingModal />
+    }
+    if(!loading){
     return (
         <div className="admin_table_container">
           <div className="admin_panel_section_title">
@@ -88,7 +99,7 @@ const AdminPanelInterests = () => {
             </ThemeProvider>
           </div>
         </div>
-      );
+      );}
 }
 
 export default AdminPanelInterests
