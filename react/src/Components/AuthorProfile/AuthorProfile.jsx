@@ -22,6 +22,8 @@ import {
   EmptyMessage,
   useRef,
   PencilSquare,
+  LoadingModal,
+
 } from "../index";
 const ARTICLE_SERVER_NODE_BASE_URL = import.meta.env.VITE_ARTICLE_SERVER_NODE_BASE_URL;
 import "./AuthorProfile.css";
@@ -34,6 +36,7 @@ const client = new ApolloClient({
   credentials: "same-origin",
 });
 const AuthorProfile = () => {
+  const [loading, setLoading] = useState(true);
   const [refreshState, setRefreshState] = useState(true);
   const { username } = useParams();
   const showToast = useToast();
@@ -73,6 +76,7 @@ const AuthorProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         console.log("fetch data accessed");
 
         const { data, loading, error } = await client.query({
@@ -81,14 +85,14 @@ const AuthorProfile = () => {
         });
 
         if (error) {
+        setLoading(false)
+
           console.log("articles by author error", error);
         }
         if (data) {
+          setLoading(false)
           console.log("--------articles by author", data);
           setArticles(data.articlesByAuthor);
-        }
-        if (loading) {
-          console.log("loading", loading);
         }
 
         console.log("user id", userId, "and", username);
@@ -104,9 +108,13 @@ const AuthorProfile = () => {
 
         // Draft
         if (author && user && author?.id === user?.user_id) {
+            setLoading(true)
+
           const draftsResponse = await adminAxiosToDjangoServerInterceptor.get(
             `${ARTICLE_SERVER_NODE_BASE_URL}/user/all-drafts/${username}`
           );
+        setLoading(false)
+
           setDrafts(draftsResponse.data);
         }
 
@@ -125,6 +133,8 @@ const AuthorProfile = () => {
 
         // Rest of your code
       } catch (error) {
+        setLoading(false)
+
         // Handle any errors that occur during the requests
         console.error(error);
       }
@@ -154,6 +164,8 @@ const AuthorProfile = () => {
 
   const handleEditSubmit = async () => {
     try {
+      setLoading(true)
+
       const updatedUser = {
         id: author.id,
         first_name: firstName,
@@ -167,37 +179,28 @@ const AuthorProfile = () => {
       );
       TokenRefresh();
       setEditMode(false);
+      setLoading(false)
+
       console.log("User details updated successfully");
       showToast(response.data.message, 200);
     } catch (error) {
+      setLoading(false)
+
       showToast("Internal server error", 500);
       console.error("Error updating user details:", error);
     }
   };
 
-  // const handleImageChange = async (e) => {
-  //   const selectedFile = e.target.files[0];
-  
-  //   try {
-  //     const resizedImage = await handleImageResize(selectedFile);
-  //   setProfileImage(URL.createObjectURL(resizedImage));
-  //     console.log("Resized image:", resizedImage);
-  //   } catch (error) {
-  //     console.error("Error resizing image:", error);
-  //   }
-  // };
-  
-  
-  // const handleImageClick = () => {
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
+
 
   return (
+    <>
+    {loading ? (
+      < LoadingModal />
+    ):(
     <div className="profile_container">
       <div className="profile_name_container">
-        <span>{author?.first_name + " " + author?.last_name}</span>
+        <span>{author.first_name  && author.last_name ? author?.first_name + " " + author?.last_name : "Loading..."}</span>
       </div>
       <div className="profile_tab-navigation">
         <button
@@ -403,6 +406,8 @@ const AuthorProfile = () => {
         )}
       </div>
     </div>
+    )}
+    </>
   );
 };
 

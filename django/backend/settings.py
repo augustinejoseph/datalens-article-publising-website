@@ -9,10 +9,6 @@ import os
 import urllib.parse as up
 
 
-# ElephantSql db
-up.uses_netloc.append("postgres")
-url = up.urlparse(os.environ["DATABASE_URL"])
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env("SECRET_KEY")

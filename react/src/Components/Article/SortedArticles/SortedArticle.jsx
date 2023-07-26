@@ -107,6 +107,7 @@ if(hashtagName){
                 summary={article.summary}
                 previewImage={article.previewImage}
                 user_id={article.user_id}
+                user_name={article.user_name}
               />
             ))
             )}

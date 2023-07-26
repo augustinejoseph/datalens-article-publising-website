@@ -9,6 +9,6 @@ node/node_modules
 node/.env
 .vscode
 .git
-
+react/dist
 
 

@@ -47,9 +47,7 @@ class Allusers(AbstractUser):
     is_banned = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
     user_name = models.CharField(max_length=250, unique=True, null=True)
-    profile_picture = models.ImageField(
-        upload_to="profile_pictures/", null=True, blank=True
-    )
+
 
     def save(self, *args, **kwargs):
         print(self.user_name)
