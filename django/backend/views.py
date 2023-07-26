@@ -62,7 +62,6 @@ class CustomTokenRefreshView(APIView):
             access_token = jwt.encode(
                 payload, settings.SECRET_KEY, algorithm="HS256"
             ).decode("utf-8")
-            print("-------token refreshed by: ", user, "---------")
             return Response({"access_token": access_token})
         except jwt.ExpiredSignatureError:
             return Response({"error": "Refresh token has expired"}, status=400)
