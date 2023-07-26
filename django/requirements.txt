@@ -1,7 +1,7 @@
 idna==2.9
 psycopg2-binary>=2.9,<3.0
-Django==4.2.2
-# gunicorn==21.2.0
+# Django==4.2.2
+gunicorn==21.2.0
 Django==3.2.20
 django-cors-headers==4.0.0
 django-environ==0.10.0
