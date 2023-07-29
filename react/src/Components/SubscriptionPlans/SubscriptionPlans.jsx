@@ -12,42 +12,36 @@ import { loadStripe } from "@stripe/stripe-js";
 const VITE_MONTHLY_PRICE_ID = import.meta.env.VITE_MONTHLY_PRICE_ID;
 const VITE_ANNUAL_PRICE_ID = import.meta.env.VITE_ANNUAL_PRICE_ID;
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-console.log(" stripe promise ", stripePromise);
 
 const SubscriptionPlans = () => {
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const [stripeResponse, setStripeResponse] = useState(false);
   const [paymentUrlFromStripe, setPaymentUrlFromStripe] = useState("");
   const navigate = useNavigate();
 
   const handleSelectPlan = async (priceId) => {
-    if(user){
-    try {
-      const stripe = await stripePromise;
+    if (user) {
+      try {
+        const stripe = await stripePromise;
 
-      const response = await fetch(
-        `${BACKEND_BASE_URL}/payments/create-checkout-session`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${BACKEND_BASE_URL}/payments/create-checkout-session`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ priceId, userId: user?.user_id }),
           },
-          body: JSON.stringify({ priceId , userId: user?.user_id}),
-        }
-      );
+        );
 
-      const session = await response.json();
-      if (session) {
-        console.log("url stripe", session);
-        setPaymentUrlFromStripe(session);
-        setStripeResponse(true);
-      }
-    } catch (error) {
-      console.log("Error: 1111", error);
-    }
-  }else(
-    navigate("/login")
-  )
+        const session = await response.json();
+        if (session) {
+          setPaymentUrlFromStripe(session);
+          setStripeResponse(true);
+        }
+      } catch (error) {}
+    } else navigate("/login");
   };
 
   const handlePayment = () => {

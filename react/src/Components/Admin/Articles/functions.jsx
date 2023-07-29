@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import {FRONTEND_DOMAIN_NAME} from '../../index'
+import { FRONTEND_DOMAIN_NAME } from "../../index";
 import { borderRadius } from "@mui/system";
 const generateSerialNumber = (params) => (params.rowIndex + 1).toString();
 
@@ -26,15 +26,15 @@ export const GET_ARTICLES = gql`
 
 const unblockButtonStyle = {
   backgroundColor: "green",
-  padding : ".3rem 1rem",
-  borderRadius : "10px",
-  color : "white",
+  padding: ".3rem 1rem",
+  borderRadius: "10px",
+  color: "white",
 };
 const blockedButtonStyle = {
   backgroundColor: "red",
-  padding : ".3rem 1rem",
-  borderRadius : "10px",
-  color : "white",
+  padding: ".3rem 1rem",
+  borderRadius: "10px",
+  color: "white",
 };
 export const columns = (handleBanToggle) => [
   {
@@ -89,7 +89,7 @@ export const columns = (handleBanToggle) => [
     sortable: false,
     renderCell: (params) => {
       const articleId = params.row.id;
-      console.log('article id in admin article for ban', articleId);
+
       const isArticleBanned = params.row.is_banned;
 
       const handleBlockArticleClick = () => {

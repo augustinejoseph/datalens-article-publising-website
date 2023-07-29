@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import AuthContext from '../../../Contexts/AuthContext';
-import RoundLoading from '../../Shimmers/RoundLoading';
+import { useEffect, useState, useContext } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import AuthContext from "../../../Contexts/AuthContext";
+import RoundLoading from "../../Shimmers/RoundLoading";
 
 const UserProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -18,13 +18,15 @@ const UserProtectedRoute = ({ children }) => {
     return (
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
-        <div><RoundLoading /></div>
+        <div>
+          <RoundLoading />
+        </div>
       </div>
     );
   }
@@ -36,7 +38,7 @@ const UserProtectedRoute = ({ children }) => {
     return (
       <Navigate
         to={{
-          pathname: '/login'
+          pathname: "/login",
         }}
       />
     );

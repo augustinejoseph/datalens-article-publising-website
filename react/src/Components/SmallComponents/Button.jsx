@@ -1,12 +1,13 @@
-import React from 'react'
-import "./Button.css"
+import React from "react";
+import "./Button.css";
 
 const Button = (props) => {
-    const {style, data } = props;
+  const { style, data } = props;
   return (
     <div style={style}>
-        <span> {data?.data} </span> </div>
-  )
-}
+      <span> {data?.data} </span>{" "}
+    </div>
+  );
+};
 
-export default Button
+export default Button;

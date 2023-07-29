@@ -12,11 +12,11 @@ import Cookies from "js-cookie";
 
 const AdminPanelUser = () => {
   const [loading, setLoading] = useState(true);
-  console.log("loading state", loading);
+
   const theme = createTheme();
   const [allUsersList, setAllUsersList] = useState([]);
   const [update, setUpdate] = useState("");
-  console.log(allUsersList);
+
   const token = Cookies.get("access_token");
 
   useEffect(() => {
@@ -24,11 +24,10 @@ const AdminPanelUser = () => {
       try {
         setLoading(true);
         const response = await adminAxiosToDjangoServerInterceptor.get(
-          `${BACKEND_BASE_URL}/admin/all-users`
+          `${BACKEND_BASE_URL}/admin/all-users`,
         );
         setLoading(false);
         setAllUsersList(response.data);
-        console.log("all users list", allUsersList);
       } catch (error) {
         setLoading(false);
         console.error("Error fetching users:", error);
@@ -46,7 +45,7 @@ const AdminPanelUser = () => {
           return { ...user, is_banned: !user.is_banned };
         }
         return user;
-      })
+      }),
     );
   };
 

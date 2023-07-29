@@ -1,18 +1,31 @@
-
 import "./Register.css";
-import ReCAPTCHA from "react-google-recaptcha"
-import {Flag,dotenv, VerifyEmail, BACKEND_BASE_URL, Link, useNavigate,axios,useState , useRef, fullLogo, useToast} from '../../index'
+import ReCAPTCHA from "react-google-recaptcha";
+import {
+  Flag,
+  dotenv,
+  VerifyEmail,
+  BACKEND_BASE_URL,
+  Link,
+  useNavigate,
+  axios,
+  useState,
+  useRef,
+  fullLogo,
+  useToast,
+} from "../../index";
 
 const Register = () => {
-  const showToast = useToast()
+  const showToast = useToast();
   const [email, setEmail] = useState("");
   const [emailStepCompleted, setEmailStepCompleted] = useState(false);
   const [isPasswordStepCompleted, setIsPasswordStepCompleted] = useState(false);
-  const [isUserDetailsStepCompleted, setIsUserDetailsStepCompleted] = useState(false);
-  const [isInterestStepsCompleted, setIsInterestStepsCompleted] = useState(false);
+  const [isUserDetailsStepCompleted, setIsUserDetailsStepCompleted] =
+    useState(false);
+  const [isInterestStepsCompleted, setIsInterestStepsCompleted] =
+    useState(false);
   const [isEmailVerifCompleted, setisEmailVerifCompleted] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isCaptchaSuccess, setIsCaptchaSuccess] = useState(false)
+  const [isCaptchaSuccess, setIsCaptchaSuccess] = useState(false);
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirm_password] = useState("");
   const [first_name, setFirst_name] = useState("");
@@ -23,14 +36,12 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [allIntersetFromAPI, setAllIntersetFromAPI] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
-  const GOOGLE_CAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY
-  const captchaRef = useRef(null)
+  const GOOGLE_CAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
+  const captchaRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const getAllInterestsListFromServer = async () => {
-    const response = await axios.get(
-      `${BACKEND_BASE_URL}/user/all-interests`,
-      
-    );
+    const response = await axios.get(`${BACKEND_BASE_URL}/user/all-interests`);
     setAllIntersetFromAPI(response.data);
   };
 
@@ -43,29 +54,39 @@ const Register = () => {
       setErrorMessage("Enter a valid email id");
       return;
     }
-  
-    const validDomains = ["gmail.com", "yahoo.com", "hotmail.com", "nasskar.com", "dronetz.com", "edulena.com"];
-  
+
+    const validDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "hotmail.com",
+      "nasskar.com",
+      "dronetz.com",
+      "edulena.com",
+    ];
+
     const domain = email.split("@")[1];
     if (!validDomains.includes(domain)) {
       setErrorMessage("Enter a valid email domain");
       return;
     }
-  
-  
+
     try {
+      setLoading(true);
       const response = await axios.post(
         `${BACKEND_BASE_URL}/user/email-availability`,
-        { email: email }
+        { email: email },
       );
-      console.log(response.data);
+
       if (response.data === true) {
+        setLoading(false);
         setEmailStepCompleted(true);
       } else {
+        setLoading(false);
         setErrorMessage("Account already exists.");
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+
       showToast("Internal Server Error");
     }
   };
@@ -77,9 +98,9 @@ const Register = () => {
     const isValid = validatePassword(newPassword);
     setIsPasswordValid(isValid);
     if (isValid) {
-      isPasswordValid(true);
+      setIsPasswordValid(true);
     } else {
-      isPasswordValid(false);
+      setIsPasswordValid(false);
     }
   };
   const validatePassword = (password) => {
@@ -121,7 +142,7 @@ const Register = () => {
   const handleInterestClick = (interest) => {
     if (selectedInterests.includes(interest)) {
       setSelectedInterests(
-        selectedInterests.filter((item) => item !== interest)
+        selectedInterests.filter((item) => item !== interest),
       );
     } else {
       setSelectedInterests([...selectedInterests, interest]);
@@ -132,17 +153,18 @@ const Register = () => {
   const handleCaptchaChange = () => {
     const captchaValue = captchaRef.current.getValue();
 
-  if (captchaValue) {
-    setIsCaptchaSuccess(true)
-  }else{
-    setErrorMsg("Captcha verification Failed")
-  }
-}
+    if (captchaValue) {
+      setIsCaptchaSuccess(true);
+    } else {
+      setErrorMsg("Captcha verification Failed");
+    }
+  };
 
   // submit final data to DB
   const submit = async (e) => {
-  e.preventDefault();
-      const user = {
+    setLoading(true);
+    e.preventDefault();
+    const user = {
       email: email,
       password: password,
       first_name: first_name,
@@ -152,37 +174,39 @@ const Register = () => {
     try {
       const { data } = await axios.post(
         `${BACKEND_BASE_URL}/user/register`,
-        user
+        user,
       );
       if (data.success) {
-        console.log("success msg form final summit", data.success);
+        setLoading(false);
+
         setSuccessMsg(data.message);
-        showToast(data.message, data.status)
+        showToast(data.message, data.status);
         setIsUserDetailsStepCompleted(true);
         navigate("/verify-email");
-        console.log("data from registere", data);
       } else {
-        showToast(data.error, 500)
-        console.log("error from data after final submit", data.error);
+        setLoading(false);
+        showToast(data.error, 500);
+
         setErrorMsg(data.errors);
       }
     } catch (error) {
-      showToast("Internal server error", 500)
+      setLoading(false);
+      showToast("Internal server error", 500);
       console.error("Error: ", error);
       setErrorMsg({ general: "An error occurred. Please try again." });
     }
-  
   };
-  
+
   return (
     <>
-      
-
-
       {/* Email Step 1 */}
       {!emailStepCompleted && (
         <div className="login-container">
-          <img onClick={() => navigate("/")} className="login_logo" src={fullLogo} />
+          <img
+            onClick={() => navigate("/")}
+            className="login_logo"
+            src={fullLogo}
+          />
           <h1 className="login-heading">Sign up with email</h1>
           <p className="login-paragraph">
             Enter the email address to create an account.
@@ -208,7 +232,17 @@ const Register = () => {
               </div>
             )}
             <button onClick={handleEmailCheck} className="login-next-button">
-              Continue
+              {loading ? null : "Continue"}
+              {loading && (
+                <svg className="loadingmodal_svg_login" viewBox="25 25 50 50">
+                  <circle
+                    className="loadingmodal_circle_login"
+                    r="20"
+                    cy="50"
+                    cx="50"
+                  ></circle>
+                </svg>
+              )}
             </button>
           </div>
           <div className="login-register-container">
@@ -226,7 +260,10 @@ const Register = () => {
       {emailStepCompleted && !isPasswordStepCompleted && (
         <div className="login-container">
           <h1 className="login-heading">Set a Password</h1>
-          <p className="login-paragraph">Enter a strong Password at least 8 letters and one special character.</p>
+          <p className="login-paragraph">
+            Enter a strong Password at least 8 letters and one special
+            character.
+          </p>
           <span className="login-title">{email}</span>
           <div className="login-email">
             <input
@@ -250,7 +287,9 @@ const Register = () => {
             <button
               disabled={!isPasswordValid}
               onClick={handlePasswordSubmission}
-              className={`login-next-button ${!isPasswordValid ? 'disabled-button' : ''}`}
+              className={`login-next-button ${
+                !isPasswordValid ? "disabled-button" : ""
+              }`}
             >
               User Details
             </button>
@@ -269,15 +308,13 @@ const Register = () => {
       {/* User Details Step 3 */}
       {emailStepCompleted &&
         isPasswordStepCompleted &&
-        !isUserDetailsStepCompleted && !isEmailVerifCompleted && (
+        !isUserDetailsStepCompleted &&
+        !isEmailVerifCompleted && (
           <div className="login-container">
             <h1 className="login-heading">User Details</h1>
             <p className="login-paragraph">
               Enter your first name and last name
             </p>
-            {/* <span className="login-title">
-              {first_name} {last_name}
-            </span> */}
 
             <span style={{ color: "grey" }} className="register-name-display">
               {email}
@@ -308,9 +345,13 @@ const Register = () => {
                   {errorMessage}{" "}
                 </div>
               )}
-              <button 
-              
-              disabled={!first_name || ! last_name } onClick={handleUserData} className={`login-next-button ${!first_name || ! last_name ? 'disabled-button' : ''}`}>
+              <button
+                disabled={!first_name || !last_name}
+                onClick={handleUserData}
+                className={`login-next-button ${
+                  !first_name || !last_name ? "disabled-button" : ""
+                }`}
+              >
                 Choose Interests
               </button>
             </div>
@@ -328,7 +369,8 @@ const Register = () => {
       {/* Intersets step 4 */}
       {emailStepCompleted &&
         isPasswordStepCompleted &&
-        isUserDetailsStepCompleted && !isEmailVerifCompleted && (
+        isUserDetailsStepCompleted &&
+        !isEmailVerifCompleted && (
           <div className="login-container">
             <h1 className="login-heading">Choose Interests</h1>
             <p className="login-paragraph">
@@ -338,7 +380,7 @@ const Register = () => {
               {first_name} {last_name}
             </span>
             <div>
-              {allIntersetFromAPI.map(interest => (
+              {allIntersetFromAPI.map((interest) => (
                 <button
                   className={`interest-button ${
                     selectedInterests.includes(interest) ? "selected" : ""
@@ -346,16 +388,15 @@ const Register = () => {
                   onClick={() => handleInterestClick(interest)}
                 >
                   {interest.interestName}
-                  {/* {selectedInterests.includes(interest) && <span className="tick-mark">✔</span>} */}
                 </button>
-
               ))}
-              
             </div>
             <div>
-            <ReCAPTCHA sitekey={GOOGLE_CAPTCHA_SITE_KEY}
-            ref = {captchaRef}
-            onChange={handleCaptchaChange} />
+              <ReCAPTCHA
+                sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                ref={captchaRef}
+                onChange={handleCaptchaChange}
+              />
             </div>
 
             <div className="login-next-container">
@@ -364,24 +405,40 @@ const Register = () => {
                   {errorMessage}{" "}
                 </div>
               )}
-              <button onClick={submit} 
-              className={`login-next-button ${!isCaptchaSuccess || !selectedInterests ? 'disabled-button' : ''}`}
-              // className="login-next-button"
-              disabled={!isCaptchaSuccess}>
-                Finish SignUp
+              <button
+                onClick={submit}
+                className={`login-next-button ${
+                  !isCaptchaSuccess || selectedInterests.length === 0
+                    ? "disabled-button"
+                    : ""
+                }`}
+                // className="login-next-button"
+                disabled={!isCaptchaSuccess && selectedInterests.length === 0}
+              >
+                {loading ? null : "Finish Setup"}
+                {loading && (
+                  <svg className="loadingmodal_svg_login" viewBox="25 25 50 50">
+                    <circle
+                      className="loadingmodal_circle_login"
+                      r="20"
+                      cy="50"
+                      cx="50"
+                    ></circle>
+                  </svg>
+                )}
               </button>
             </div>
           </div>
         )}
 
-        {/* Verify email step 5 */}
+      {/* Verify email step 5 */}
       {emailStepCompleted &&
         isPasswordStepCompleted &&
         isUserDetailsStepCompleted &&
-        isInterestStepsCompleted && !isEmailVerifCompleted && (
-          < VerifyEmail first_name={first_name} email ={email} />
+        isInterestStepsCompleted &&
+        !isEmailVerifCompleted && (
+          <VerifyEmail first_name={first_name} email={email} />
         )}
-       
     </>
   );
 };

@@ -1,2 +1,1 @@
-import { useNavigate } from "../index"
-
+import { useNavigate } from "../index";

@@ -4,7 +4,7 @@ import Button from "../SmallComponents/Button";
 import { useNavigate } from "../index";
 
 const HomeCategoryList = ({ categories, onCategoryClick }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const style = {
     margin: "0px 0px 0px 30px",
     cursor: "pointer",
@@ -16,7 +16,7 @@ const HomeCategoryList = ({ categories, onCategoryClick }) => {
   };
 
   const handleCategoryClick = (name) => {
-   navigate(`/category/${name}`)
+    navigate(`/category/${name}`);
   };
 
   return (

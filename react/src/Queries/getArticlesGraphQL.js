@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 // Get articles by users preference
 export const GET_ARTICLES_BY_USER_INTEREST = gql`
-  query GetArticlesByUserInterest($userId : ID!) {
-    articlesByUserInterest(userId : $userId) {
+  query GetArticlesByUserInterest($userId: ID!) {
+    articlesByUserInterest(userId: $userId) {
       title
       category {
         name
@@ -42,7 +42,6 @@ export const GET_ARTICLES = gql`
   }
 `;
 
-
 // Articles by author
 export const GET_ARTICLES_BY_AUTHOR = gql`
   query GetArticlesByAuthor($userName: String!) {
@@ -62,7 +61,6 @@ export const GET_ARTICLES_BY_AUTHOR = gql`
     }
   }
 `;
-
 
 // Articles by category
 export const GET_ARTICLES_BY_CATEGORY = gql`
@@ -85,8 +83,8 @@ export const GET_ARTICLES_BY_CATEGORY = gql`
 
 // Articles by hashtag
 export const GET_ARTICLES_BY_HASHTAG = gql`
-  query GetArticlesByHashtag($hashtagName : String){
-    articlesByHashtag(hashtagName : $hashtagName){
+  query GetArticlesByHashtag($hashtagName: String) {
+    articlesByHashtag(hashtagName: $hashtagName) {
       title
       name
       createdAt
@@ -100,9 +98,7 @@ export const GET_ARTICLES_BY_HASHTAG = gql`
       user_name
     }
   }
-
-`
-
+`;
 
 // Featured
 export const GET_FEATURED_ARTICLES = gql`
@@ -126,7 +122,7 @@ export const GET_FEATURED_ARTICLES = gql`
   }
 `;
 // Trending Articles
-export const GET_TRENDING_ARTICLES = gql `
+export const GET_TRENDING_ARTICLES = gql`
   query GetTrendingArticles {
     trendingArticles {
       title
@@ -148,9 +144,9 @@ export const GET_TRENDING_ARTICLES = gql `
 `;
 
 // Premium Articles
-export const GET_PREMIUM_ARTICLES = gql `
-  query GetPremiumArticles{
-    premiumArticles{
+export const GET_PREMIUM_ARTICLES = gql`
+  query GetPremiumArticles {
+    premiumArticles {
       title
       category {
         name
@@ -167,4 +163,4 @@ export const GET_PREMIUM_ARTICLES = gql `
       user_id
     }
   }
-`
+`;

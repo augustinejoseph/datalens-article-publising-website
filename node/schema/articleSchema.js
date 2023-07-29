@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require("apollo-server");
 
 const typeDefs = gql`
   type Category {
@@ -18,20 +18,19 @@ const typeDefs = gql`
     previewImage: String
     claps: Int
     is_featured: Boolean
-    user_id : Int
-    user_name : String
+    user_id: Int
+    user_name: String
   }
 
   type Query {
     articles: [Article!]!
     featuredArticles: [Article]!
-    trendingArticles: [Article] !
-    premiumArticles: [Article] !
-    articlesByAuthor(userName : String!) : [Article]
-    articlesByCategory(categoryName: String!) : [Article]
-    articlesByHashtag(hashtagName : String!) : [Article]
-    articlesByUserInterest(userId : ID!) : [Article]
-    
+    trendingArticles: [Article]!
+    premiumArticles: [Article]!
+    articlesByAuthor(userName: String!): [Article]
+    articlesByCategory(categoryName: String!): [Article]
+    articlesByHashtag(hashtagName: String!): [Article]
+    articlesByUserInterest(userId: ID!): [Article]
   }
 `;
 

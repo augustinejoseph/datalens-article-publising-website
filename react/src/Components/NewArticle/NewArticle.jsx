@@ -20,22 +20,22 @@ import {
   deleteDraft,
   useToast,
   LoadingModal,
-
 } from "../index";
-import { storage } from '../../Firebase/FirebaseConfig';
+import { storage } from "../../Firebase/FirebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import "./NewArticle.css";
 // import storage from '../../Firebase/FirebaseConfig'
 
 const NewArticle = () => {
-  const [loading, setLoading] = useState(true)
-  const showToast = useToast()
+  const [loadingButton, setLoadingButton] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const showToast = useToast();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const user_id = user?.user_id;
   const name = user?.name;
-  const user_name = user?.user_name
+  const user_name = user?.user_name;
   const [content, setContent] = useState({});
   // const [content, setContent] = useState({ title: "", body: "" });
   const [summaryValue, setSummaryValue] = useState("");
@@ -51,24 +51,22 @@ const NewArticle = () => {
   const [readingTime, setReadingTime] = useState();
   const [uploadedImages, setUploadedImages] = useState([]);
   const [isPublishButtonDisabled, setIsPublishButtonDisabled] = useState(true);
-  console.log("publish button status", isPublishButtonDisabled);
+
   // Editing Draft
   const location = useLocation();
   const id = location?.state?.id;
-  // console.log('draft id in editor', location?.state?.id);
-  // console.log("full content in state", content);
-  // console.log("categories", categories);
-  // console.log("selected categories", selectedCategories);
-  // console.log("preview img src", previewImage);
-  // console.log("hash tags", hashtags);
-  console.log('user_name', user_name);
-  console.log("next button disabled", isNextButtonDisabled);
+  //
+  //
+  //
+  //
+  //
+  //
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`,
         );
         setCategories(response.data);
       } catch (error) {
@@ -82,35 +80,34 @@ const NewArticle = () => {
   useEffect(() => {
     if (id) {
       const fetchDraft = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
           const response = await adminAxiosToDjangoServerInterceptor.get(
-            `${ARTICLE_SERVER_NODE_BASE_URL}/user/draft/${id}`
+            `${ARTICLE_SERVER_NODE_BASE_URL}/user/draft/${id}`,
           );
-          console.log("draft feched in editor", response.data);
+
           const { title, body } = response.data;
           console.log(
             "title in draft recieved in editor after spreading",
-            title
+            title,
           );
-          console.log("bosy in draft recieved in editor after spreading", body);
 
           setContent({
             ...content,
             title: response.data.title || content.title,
             body: response.data.body.ops || [],
           });
-        setLoading(false)
+          setLoading(false);
         } catch (error) {
-        setLoading(false)
+          setLoading(false);
           console.error("Error fetching draft:", error);
         }
       };
 
       fetchDraft();
       setNextButtonDisabled(!content.title || !content.body);
-    }else{
-      setLoading(false)
+    } else {
+      setLoading(false);
     }
   }, [id]);
 
@@ -132,10 +129,10 @@ const NewArticle = () => {
     if (firstImage && firstImage.src) {
       const firstImageSrc = firstImage.src;
       setPreviewImage(firstImageSrc);
-      // console.log("Preview image set:", firstImageSrc);
+      //
     } else {
       setPreviewImage("");
-      // console.log("No preview image found");
+      //
     }
     const readingTime = calculateReadingTime(words.length);
     setReadingTime(readingTime);
@@ -144,34 +141,30 @@ const NewArticle = () => {
     const containerDiv = document.createElement("div");
     containerDiv.innerHTML = bodyHTML;
     const images = containerDiv.querySelectorAll("img");
-    console.log(' all images from innrer html', images);
 
     const uploadImages = async () => {
       const newUploadedImages = [];
-    
+
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
-        const file = image.getAttribute('src');
-    
+        const file = image.getAttribute("src");
+
         try {
           const fileName = `article_${Date.now()}`;
-          const storageRef = ref(storage,  `/user-profilePhoto` + fileName);
+          const storageRef = ref(storage, `/user-profilePhoto` + fileName);
           await uploadBytes(storageRef, file);
           const downloadUrl = await getDownloadURL(storageRef);
-          console.log('Image uploaded successfully:', downloadUrl);
+
           newUploadedImages.push(downloadUrl);
         } catch (error) {
           console.error(`Error uploading image ${i + 1}:`, error);
         }
       }
-    
+
       setUploadedImages(newUploadedImages);
     };
-    
 
     uploadImages();
-
-    
   };
 
   const handleTitleChange = (e) => {
@@ -194,34 +187,33 @@ const NewArticle = () => {
     try {
       if (id) {
         try {
-        setLoading(true)
+          setLoading(true);
           const response = await adminAxiosToDjangoServerInterceptor.put(
             `${ARTICLE_SERVER_NODE_BASE_URL}/user/update-draft/${id}`,
-            updatedContent
+            updatedContent,
           );
-          console.log("draft updated successfully", response);
-        setLoading(false)
+
+          setLoading(false);
           showToast(response.data.message, response.status);
           navigate(`/user/${user?.user_name}` || "/");
         } catch (error) {
-        setLoading(false)
+          setLoading(false);
           showToast("Failed to update draft", 500);
-          console.log("Error updating draft", error);
         }
       } else {
-        setLoading(true)
+        setLoading(true);
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}/user/save-to-draft`,
-          updatedContent
+          updatedContent,
         );
-        setLoading(false)
-        showToast(response.data.message, response.status)
-        console.log("save to draft", response.data);
+        setLoading(false);
+        showToast(response.data.message, response.status);
+
         navigate(`/user/${user?.user_name}` || "/");
       }
     } catch (error) {
-      setLoading(false)
-      showToast(response.data.message, response.status)
+      setLoading(false);
+      showToast(response.data.message, response.status);
       setErrorMessage("An error occurred while saving the article to draft");
       console.error("Error saving to draft:", error);
       setTimeout(() => {
@@ -241,21 +233,20 @@ const NewArticle = () => {
       category: selectedCategories,
       previewImage: previewImage,
       readingTime: readingTime,
-      user_name : user_name,
+      user_name: user_name,
     };
-    console.log('new article contents', updatedContent);
 
     try {
       if (id) {
-        setLoading(true)
+        setLoading(true);
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}/user/new-article`,
-          updatedContent
+          updatedContent,
         );
         deleteDraft(id);
-        setLoading(false)
-        showToast(response.data.message, response.status)
-        console.log("------------new article response:", response);
+        setLoading(false);
+        showToast(response.data.message, response.status);
+
         const articleId = response.data.articleId;
         setTimeout(() => {
           navigate(`/article/${articleId}`);
@@ -263,24 +254,24 @@ const NewArticle = () => {
 
         setContent({ title: "", body: "" });
       } else {
-        setLoading(true)
+        setLoading(true);
         const response = await adminAxiosToDjangoServerInterceptor.post(
           `${ARTICLE_SERVER_NODE_BASE_URL}/user/new-article`,
-          updatedContent
+          updatedContent,
         );
         const articleId = response.data.articleId;
-        showToast(response.data.message, response.status)
+        showToast(response.data.message, response.status);
         setTimeout(() => {
           setSuccessMsg("");
-        setLoading(false)
+          setLoading(false);
           navigate(`/article/${articleId}`);
         }, 1000);
         setContent({ title: "", body: "" });
       }
     } catch (error) {
-      setLoading(false)
-      console.log('----------new artilce error', error);
-      showToast('Internal server Error', 500)
+      setLoading(false);
+
+      showToast("Internal server Error", 500);
       setTimeout(() => {
         setErrorMessage("");
       }, 1000);
@@ -295,7 +286,7 @@ const NewArticle = () => {
 
     const isCategorySelected = selectedOptions.length > 0;
     setIsPublishButtonDisabled(
-      !isCategorySelected || !content.title || !content.body
+      !isCategorySelected || !content.title || !content.body,
     );
   };
 
@@ -306,14 +297,10 @@ const NewArticle = () => {
     setHashtags(words);
   };
 
-  console.log(hashtags);
-
-  return (
-  loading ? (
-    <LoadingModal />):
-
- 
-    (<div>
+  return loading ? (
+    <LoadingModal />
+  ) : (
+    <div>
       {errorMessage && (
         <div className="newarticle_errormessage">{errorMessage}</div>
       )}
@@ -338,12 +325,23 @@ const NewArticle = () => {
             ) : (
               <button onClick={handlePublish}>Publish</button>
             )}
-            <button className="newarticle_clear_draft_button" onClick={clearLocalStorage}>Clear Draft</button>
-            <button className={
-                  isNextButtonDisabled
-                    ? "newarticle_nextbutton_disabled1"
-                    : "newarticle_nextbutton"
-                } disabled={isNextButtonDisabled} onClick={handleSaveToDraft}>Save as Draft</button>
+            <button
+              className="newarticle_clear_draft_button"
+              onClick={clearLocalStorage}
+            >
+              Clear Draft
+            </button>
+            <button
+              className={
+                isNextButtonDisabled
+                  ? "newarticle_nextbutton_disabled1"
+                  : "newarticle_nextbutton"
+              }
+              disabled={isNextButtonDisabled}
+              onClick={handleSaveToDraft}
+            >
+              Save as Draft
+            </button>
           </div>
           <div className="newarticle_title">
             <input
@@ -438,11 +436,13 @@ const NewArticle = () => {
                 </div>
               </div>
               <span className="articleCompleted_hashtags">Add Hashtags</span>
-              <input
-                className="articleCompleted_hashtag"
-                value={hashtags.join(" ")}
-                onChange={handleHashtagChange}
-              />
+              <div className="articleCompleted_hashtag">
+                <input
+                  // className="articleCompleted_hashtag"
+                  value={hashtags.join(" ")}
+                  onChange={handleHashtagChange}
+                />
+              </div>
             </div>
 
             <div className="articleCompleted_buttons_mobile">
@@ -469,7 +469,7 @@ const NewArticle = () => {
           </div>
         </div>
       )}
-    </div>)
+    </div>
   );
 };
 

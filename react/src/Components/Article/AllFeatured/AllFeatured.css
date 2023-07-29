@@ -1,8 +1,7 @@
-.featured_title{
-    display: flex;
-    justify-content: center;
-    font-size: x-large;
-    font-weight: 600;
-    padding: 1rem 0;
-
+.featured_title {
+  display: flex;
+  justify-content: center;
+  font-size: x-large;
+  font-weight: 600;
+  padding: 1rem 0;
 }

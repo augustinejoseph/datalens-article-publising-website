@@ -8,16 +8,16 @@ import {
   Link,
   useNavigate,
 } from "../../index.jsx";
-import './TrendingInSide.css'
+import "./TrendingInSide.css";
 const TrendingInSide = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_TRENDING_ARTICLES);
-  console.log("trending articles", data);
+
   if (loading) {
     return <></>;
   }
   if (error) {
-    navigate("/error")
+    navigate("/error");
   }
 
   const TrendingInSide = data.trendingArticles.slice(0, 2);
@@ -43,8 +43,8 @@ const TrendingInSide = () => {
               <Link to={`/article/${article.articleId}`}>
                 <div className="featured_article_secondrow">
                   {/* <div> */}
-                    <PersonCircle />
-                    <p>{article.name}</p>
+                  <PersonCircle />
+                  <p>{article.name}</p>
                   {/* </div> */}
                 </div>
                 <div className="featured_article_thirdrow">
@@ -54,11 +54,17 @@ const TrendingInSide = () => {
                       : article.title}
                   </span>
                 </div>
-                </Link>
-                <div className="featured_category_container">
-                  <span onClick={() => navigate(`/category/${article.category[0].name}`)} style={style}>{article.category[0].name}</span>
-                </div>
-              
+              </Link>
+              <div className="featured_category_container">
+                <span
+                  onClick={() =>
+                    navigate(`/category/${article.category[0].name}`)
+                  }
+                  style={style}
+                >
+                  {article.category[0].name}
+                </span>
+              </div>
             </React.Fragment>
           </div>
         );

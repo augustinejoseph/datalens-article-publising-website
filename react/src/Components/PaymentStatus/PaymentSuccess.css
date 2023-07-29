@@ -1,50 +1,50 @@
-.payment_container{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-top: 4rem;
+.payment_container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 4rem;
 }
-.payment_title{
-    font-size: xx-large;
-    margin-bottom: 2rem;
+.payment_title {
+  font-size: xx-large;
+  margin-bottom: 2rem;
 }
-.payment_description{
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    font-size: larger;
-    color: gray;
+.payment_description {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  font-size: larger;
+  color: gray;
 }
-.payment_home_link > button{
-    background-color: green;
-    padding: .2rem 2rem;
-    border-radius: 20px;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
+.payment_home_link > button {
+  background-color: green;
+  padding: 0.2rem 2rem;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
 }
 
 .payment_image_failed {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    color: red;
-    font-size: 48px;
-  }
-  .payment_image_failed svg{
-      height: 20vh;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  color: red;
+  font-size: 48px;
+}
+.payment_image_failed svg {
+  height: 20vh;
+}
 
-  .payment_image_success {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    color: rgb(41, 110, 28);
-    font-size: 48px;
-  }
-  .payment_image_success svg{
-      height: 20vh;
-  }
+.payment_image_success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  color: rgb(41, 110, 28);
+  font-size: 48px;
+}
+.payment_image_success svg {
+  height: 20vh;
+}

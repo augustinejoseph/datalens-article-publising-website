@@ -1,19 +1,18 @@
-.mainfeed_container{
-    /* background-color: aquamarine; */
-    border-right: var(--border);
-    margin-left: 0px;
-    min-width: 60vw
+.mainfeed_container {
+  /* background-color: aquamarine; */
+  border-right: var(--border);
+  margin-left: 0px;
+  min-width: 60vw;
 }
 .mainfeed_footer {
-    display: none; /* Hide the footer by default */
+  display: none; /* Hide the footer by default */
 }
 
 @media (max-width: 1100px) {
-    .mainfeed_container {
-        min-width: 100vw
-    }
-    .mainfeed_footer {
-        display: block; /* Show the footer when the width is below 1100px */
-    }
+  .mainfeed_container {
+    min-width: 100vw;
   }
-
+  .mainfeed_footer {
+    display: block; /* Show the footer when the width is below 1100px */
+  }
+}

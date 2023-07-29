@@ -1,42 +1,40 @@
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 // const { JWT_SECRET_KEY } = require('../config/config');
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 function userTokenMiddlewareForJWT(req, res, next) {
-  console.log('jwt secret keyt', JWT_SECRET_KEY);
+  
   // const key = process.env.SECRET_KEY
-  console.log(JWT_SECRET_KEY);
-  const authHeader = req.headers['authorization'];
-  console.log('token recieved :  ', authHeader);
-  const token = authHeader && authHeader.split(' ')[1];
-    // console.log('authheader', authHeader , '---- and --- token', token);
+  
+  const authHeader = req.headers["authorization"];
+  
+  const token = authHeader && authHeader.split(" ")[1];
+  // 
 
-    if (token == null){
-      // console.log('empty token in node middleware');
-      return res.sendStatus(401);
-    }
+  if (token == null) {
+    // 
+    return res.sendStatus(401);
+  }
 
-jwt.verify(token, JWT_SECRET_KEY, (err, user) => {
+  jwt.verify(token, JWT_SECRET_KEY, (err, user) => {
     if (err) {
-      console.log(err);
+      
       return res.sendStatus(403);
     }
-    // console.log('user in middleware jwt in nodejs', user);
+    // 
     req.user = user;
     next();
   });
 }
 
-
-
 function adminTokenMiddlewareForJWT(req, res, next) {
-  console.log('jwt secret keyt', JWT_SECRET_KEY);
+  
 
-  const authHeader = req.headers['authorization'];
-  console.log('token recieved :  ', authHeader);
+  const authHeader = req.headers["authorization"];
+  
 
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (token == null) {
     return res.sendStatus(401);
@@ -58,5 +56,5 @@ function adminTokenMiddlewareForJWT(req, res, next) {
 
 module.exports = {
   userTokenMiddlewareForJWT,
-  adminTokenMiddlewareForJWT
+  adminTokenMiddlewareForJWT,
 };

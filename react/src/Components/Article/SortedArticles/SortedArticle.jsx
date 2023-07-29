@@ -16,12 +16,12 @@ import {
 import "./SortedArticles.css";
 
 const SortedArticle = () => {
-  const showToast = useToast()
+  const showToast = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("recent");
   const [articles, setArticles] = useState([]);
-  const [featuredArticles, setFeaturedArticles] = useState([])
-  console.log('featured articles', featuredArticles);
+  const [featuredArticles, setFeaturedArticles] = useState([]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -29,43 +29,40 @@ const SortedArticle = () => {
   const { categoryName, hashtagName } = useParams();
   const isCategory = !!categoryName;
 
-  if (categoryName){
-  const { loading, error, data } = useQuery(GET_ARTICLES_BY_CATEGORY, {
-    variables: { categoryName: categoryName },
-  });
-  useEffect(() => {
-    if (data) {
-      setArticles(data.articlesByCategory);
+  if (categoryName) {
+    const { loading, error, data } = useQuery(GET_ARTICLES_BY_CATEGORY, {
+      variables: { categoryName: categoryName },
+    });
+    useEffect(() => {
+      if (data) {
+        setArticles(data.articlesByCategory);
+      }
+    }, [data, categoryName, activeTab]);
+    if (loading) {
+      return <LoadingModal />;
     }
-  }, [data,categoryName,activeTab]);
-  if (loading) {
-    return <LoadingModal />;
-  }
-  if (error) {
-    showToast("Error", 500)
-    console.log(error);
-  }
-}
-
-
-if(hashtagName){
-  const { loading, error, data } = useQuery(GET_ARTICLES_BY_HASHTAG, {
-   variables: {hashtagName : hashtagName },
-  });
-  console.log('sorted article tag data',data);
-  useEffect(() => {
-    if (data) {
-      setArticles(data.articlesByHashtag);
+    if (error) {
+      showToast("Error", 500);
     }
-  }, [data,hashtagName,activeTab]);
-  if (loading) {
-    <LoadingModal />
   }
-  if (error) {
-    console.log("error in  hashtag frontend catch",error);
-    showToast("Error", 500)
+
+  if (hashtagName) {
+    const { loading, error, data } = useQuery(GET_ARTICLES_BY_HASHTAG, {
+      variables: { hashtagName: hashtagName },
+    });
+
+    useEffect(() => {
+      if (data) {
+        setArticles(data.articlesByHashtag);
+      }
+    }, [data, hashtagName, activeTab]);
+    if (loading) {
+      <LoadingModal />;
+    }
+    if (error) {
+      showToast("Error", 500);
+    }
   }
-}
   return (
     <div className="sortedarticle_container">
       <div className="sortedarticle_name_container">
@@ -91,47 +88,54 @@ if(hashtagName){
       <div className="sortedarticle_tab-content">
         {activeTab === "recent" && (
           <div>
-
-          {articles.length === 0 ? (
-              <EmptyMessage place="articles" link="/category/technology" action="Read"/>
-            ) : (
-            articles.map((article) => (
-              <HomePostContainer
-                key={article.articleId}
-                title={article.title}
-                name={article.name}
-                createdAt={article.createdAt}
-                is_premium={article.is_premium}
-                readingTime={article.readingTime}
-                articleId={article.articleId}
-                summary={article.summary}
-                previewImage={article.previewImage}
-                user_id={article.user_id}
-                user_name={article.user_name}
+            {articles.length === 0 ? (
+              <EmptyMessage
+                place="articles"
+                link="/category/technology"
+                action="Read"
               />
-            ))
+            ) : (
+              articles.map((article) => (
+                <HomePostContainer
+                  key={article.articleId}
+                  title={article.title}
+                  name={article.name}
+                  createdAt={article.createdAt}
+                  is_premium={article.is_premium}
+                  readingTime={article.readingTime}
+                  articleId={article.articleId}
+                  summary={article.summary}
+                  previewImage={article.previewImage}
+                  user_id={article.user_id}
+                  user_name={article.user_name}
+                />
+              ))
             )}
           </div>
         )}
         {activeTab === "featured" && (
           <div>
-          {featuredArticles.length === 0 ? (
-              <EmptyMessage place="articles" link="/category/technology" action="Read"/>
-            ) : (
-            featuredArticles.map((article) => (
-              <HomePostContainer
-                key={article.articleId}
-                title={article.title}
-                name={article.name}
-                createdAt={article.createdAt}
-                is_premium={article.is_premium}
-                readingTime={article.readingTime}
-                articleId={article.articleId}
-                summary={article.summary}
-                previewImage={article.previewImage}
-                user_id={article.user_id}
+            {featuredArticles.length === 0 ? (
+              <EmptyMessage
+                place="articles"
+                link="/category/technology"
+                action="Read"
               />
-            ))
+            ) : (
+              featuredArticles.map((article) => (
+                <HomePostContainer
+                  key={article.articleId}
+                  title={article.title}
+                  name={article.name}
+                  createdAt={article.createdAt}
+                  is_premium={article.is_premium}
+                  readingTime={article.readingTime}
+                  articleId={article.articleId}
+                  summary={article.summary}
+                  previewImage={article.previewImage}
+                  user_id={article.user_id}
+                />
+              ))
             )}
           </div>
         )}

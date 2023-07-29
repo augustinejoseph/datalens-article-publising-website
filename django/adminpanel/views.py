@@ -103,7 +103,6 @@ class DeleteInterest(APIView):
     permission_classes = [IsAdminInPayload]
 
     def delete(self, request, interestName):
-        print("inside interest delete django", interestName)
         try:
             Interests.objects.get(interestName=interestName).delete()
             return Response(status=status.HTTP_200_OK)
@@ -122,7 +121,6 @@ class CreateInterest(APIView):
     def post(self, request):
         try:
             interestName = request.data.get("interestName")
-            print("interest name received:", interestName)
             if not interestName:
                 return Response(
                     {"error": "Interest field empty"},
@@ -144,10 +142,8 @@ class CreateInterest(APIView):
                     "interestName": instance.interestName,
                 }
                 return Response(response_data, status=status.HTTP_201_CREATED)
-            print("serializer error", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            print(e)
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

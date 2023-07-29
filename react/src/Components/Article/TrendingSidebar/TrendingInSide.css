@@ -1,13 +1,12 @@
-.home_sidebar_firstrow span{
-    font-size: larger;
+.home_sidebar_firstrow span {
+  font-size: larger;
 }
 
-.home_sidebar_forthrow{
-    display: flex;
-    flex-direction: row;
-    overflow: scroll;
+.home_sidebar_forthrow {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
 }
 .home_sidebar_forthrow::-webkit-scrollbar {
-    width: 0.5em;
-  }
-  
+  width: 0.5em;
+}

@@ -1,4 +1,4 @@
-export const sampleArticle =  `
+export const sampleArticle = `
     REST API is a widely used client-server communication protocol, but it has limitations when dealing with clients such as web, iOS, Android, smart devices, etc All of these have varying demands for data granularity, speed, and performance GraphQL, on the other hand, excels in this area by allowing clients to define the structure of the data to be returned by the server, as well as allowing multiple resource requests in a single query call, which makes it faster and more efficient
 
 Its like when a teacher keeps a class register with detailed information about each student, such as their name, age, favorite color, etc
@@ -54,4 +54,3 @@ Above we are installing:
 graphql-tag: In Apollo Server V4 template literal tag is no longer exported, we will be using the graphql-tag for our template literal tag to parse GraphQL query strings into the standard GraphQL AST
 mongoose: a MongoDB object modeling tool
 Next, well create the directory and files needed for our application To do this enter the following command into the application terminal:`;
-

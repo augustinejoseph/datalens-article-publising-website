@@ -1,12 +1,10 @@
-
 .home_container {
-    display: flex;
-    margin-top: 20px;
-    
-  } 
+  display: flex;
+  margin-top: 20px;
+}
 
-  @media (max-width: 1100px) {
-    .home_container_sidebar {
-      display: none;
-    }
+@media (max-width: 1100px) {
+  .home_container_sidebar {
+    display: none;
   }
+}

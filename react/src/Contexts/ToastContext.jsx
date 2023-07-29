@@ -1,7 +1,7 @@
-import { createContext, useContext } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './ToastContext.css'
+import { createContext, useContext } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./ToastContext.css";
 
 const ToastContext = createContext();
 
@@ -9,11 +9,11 @@ export const ToastProvider = ({ children }) => {
   const showToast = (message, statusCode) => {
     if (statusCode >= 200 && statusCode < 300) {
       toast.success(message, {
-        className: 'toast-success',
+        className: "toast-success",
       });
     } else {
       toast.error(message, {
-        className: 'toast-error',
+        className: "toast-error",
       });
     }
   };
@@ -21,7 +21,12 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={showToast}>
       {children}
-      <ToastContainer position="top-right" autoClose={3000}  closeOnClick pauseOnHover />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        closeOnClick
+        pauseOnHover
+      />
     </ToastContext.Provider>
   );
 };

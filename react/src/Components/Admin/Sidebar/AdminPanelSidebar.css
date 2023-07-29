@@ -1,52 +1,49 @@
 .admin_sidebar {
-    background-color: #020e15a3;
-    width: 200px;
+  background-color: #020e15a3;
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  top: 70;
+  left: 0;
+  padding: 20px 0 20px 20px;
+}
+
+.menu {
+  list-style: none;
+}
+
+.menu-item {
+  margin-bottom: 10px;
+}
+
+.menu-item a {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  /* padding-left: 10px; */
+  padding: 0.5rem 0.5rem 0.3rem 0.7rem;
+}
+
+.admin_sidebar_icon_with_label {
+  display: flex;
+  align-items: center;
+}
+.admin_sidebar_icon_with_label span:first-child {
+  /* display: flex; */
+  /* align-items: center; */
+  padding-right: 10px;
+}
+
+@media (max-width: 1024px) {
+  .admin_sidebar_icon_with_label .label {
+    display: none;
+  }
+  .admin_sidebar {
+    background-color: #e1dbdb;
+    width: 70px;
     height: 100%;
     position: fixed;
     top: 70;
     left: 0;
-    padding: 20px 0 20px 20px;
+    /* padding: 20px 0 20px 20px; */
   }
-  
-  .menu {
-    list-style: none;
-  }
-  
-  .menu-item {
-    margin-bottom: 10px;
-  }
-  
-  .menu-item a {
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    /* padding-left: 10px; */
-    padding: .5rem .5rem .3rem .7rem;
-  }
-  
-
-  
-  .admin_sidebar_icon_with_label {
-    display: flex;
-    align-items: center;
-  }
-  .admin_sidebar_icon_with_label  span:first-child{
-    /* display: flex; */
-    /* align-items: center; */
-    padding-right: 10px;
-  }
-  
-  @media (max-width: 1024px) {
-    .admin_sidebar_icon_with_label .label {
-      display: none;
-    }
-    .admin_sidebar {
-        background-color: #e1dbdb;
-        width: 70px;
-        height: 100%;
-        position: fixed;
-        top: 70;
-        left: 0;
-        /* padding: 20px 0 20px 20px; */
-      }
-  }
-  
+}

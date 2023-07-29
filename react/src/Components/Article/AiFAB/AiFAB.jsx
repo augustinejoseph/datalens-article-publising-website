@@ -5,10 +5,10 @@ import { MdAdd } from "react-icons/md";
 import { FcBusinessman, FcFullTrash } from "react-icons/fc";
 import cn from "classnames";
 import { React, useState, X, ArrowLeftCircleFill } from "../../index";
-import {makeArticleSummaryRequest} from './ChatGpt'
+import { makeArticleSummaryRequest } from "./ChatGpt";
 const FAB = () => {
   const articleUrl = window.location.href;
-  console.log(articleUrl);
+
   const [openModal, setOpenModal] = useState(false);
   const [optionsPressed, setOptionsPressed] = useState(false);
   const handleShowAIModal = () => {
@@ -21,11 +21,9 @@ const FAB = () => {
   };
 
   const handleArticleSummaryPress = () => {
-    setOptionsPressed(true)
-    makeArticleSummaryRequest(articleUrl)
-    console.log('handle summart press in aifab');
-
-  }
+    setOptionsPressed(true);
+    makeArticleSummaryRequest(articleUrl);
+  };
 
   return (
     <>

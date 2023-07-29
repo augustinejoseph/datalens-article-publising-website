@@ -1,49 +1,65 @@
 import { useContext } from "react";
 import jwt_decode from "jwt-decode";
 import "./Login.css";
-import {useState,AuthContext, React, fullLogo,  useToast,Cookies,axios,Link, Navigate, useNavigate,BACKEND_BASE_URL } from "../../index";
-import 'react-toastify/dist/ReactToastify.css';
-
+import {
+  useState,
+  AuthContext,
+  React,
+  fullLogo,
+  useToast,
+  Cookies,
+  axios,
+  Link,
+  Navigate,
+  useNavigate,
+  BACKEND_BASE_URL,
+} from "../../index";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const originalLocation = sessionStorage.getItem("originalLocation");
-  console.log("redirevt locaion in login componen", originalLocation);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailChecked, setEmailChecked] = useState(false);
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState({});
   const { setUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
-  const showToast = useToast()
-
+  const showToast = useToast();
+  const [loading, setLoading] = useState(false);
   // Email check
   const handleEmailCheck = async (e) => {
-    try{
-    e.preventDefault();
-    setErrorMessage("");
-    const response = await axios.post(`${BACKEND_BASE_URL}/user/email-check`, {
-      email: email,
-    });
+    try {
+      setLoading(true);
+      e.preventDefault();
+      setErrorMessage("");
+      const response = await axios.post(
+        `${BACKEND_BASE_URL}/user/email-check`,
+        {
+          email: email,
+        },
+      );
+      setLoading(false);
 
-    console.log("response from api", response);
-    if (response.data.status == true) {
-      setEmailChecked(true);
-      setName(response.data.user.first_name);
-    } else {
-      showToast("Invalid email Id", 404)
-      setEmailChecked(false);
+      if (response.data.status == true) {
+        setLoading(false);
+        setEmailChecked(true);
+        setName(response.data.user.first_name);
+      } else {
+        setLoading(false);
+        showToast("Invalid email Id", 404);
+        setEmailChecked(false);
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response && error.response.status) {
+        showToast("Internal Server Error", error.response.status);
+      } else {
+        showToast("Internal Server Error");
+      }
     }
-  }catch(error){
-    console.log('login email check error', error);
-    
-    if (error.response && error.response.status) {
-      showToast("Internal Server Error", error.response.status);
-    } else {
-      showToast("Internal Server Error");
-    }
-  }
   };
 
   // Login Function
@@ -54,6 +70,7 @@ const Login = () => {
       password: password,
     };
     try {
+      setLoading(true);
       const { data } = await axios.post(`${BACKEND_BASE_URL}/user/login`, user);
 
       // Storing Access in cookie
@@ -62,11 +79,13 @@ const Login = () => {
       expirationDate.setDate(expirationDate.getDate() + refreshTokenExpiration);
 
       Cookies.set("access_token", data.access_token);
-      Cookies.set("refresh_token", data.refresh_token,  { expires: expirationDate });
+      Cookies.set("refresh_token", data.refresh_token, {
+        expires: expirationDate,
+      });
       const tokenData = jwt_decode(data.access_token);
 
       const LoggedInUser = {
-        user_name : tokenData.user_name,
+        user_name: tokenData.user_name,
         name: tokenData.name,
         email: tokenData.email,
         is_active: tokenData.is_active,
@@ -77,10 +96,12 @@ const Login = () => {
       };
 
       setUser(LoggedInUser);
-      showToast('Logged in successfully', data.status)
+      setLoading(false);
+      showToast("Logged in successfully", data.status);
       if (!LoggedInUser.is_active) {
         navigate("/verify-email");
       } else {
+        setLoading(false);
         if (originalLocation) {
           sessionStorage.removeItem("originalLocation");
           return <Navigate to={originalLocation} replace />;
@@ -89,15 +110,14 @@ const Login = () => {
         }
       }
       navigate("/");
-      console.log('login data', data);
     } catch (error) {
       if (error.response || error.response) {
-        showToast("Wrong  Password")
+        setLoading(false);
+        showToast("Wrong  Password");
         setErrorMessage("Wrong password");
-        console.log(error);
       } else {
+        setLoading(false);
         setErrorMessage("An error occurred during authentication.");
-        console.log(error);
       }
     }
   };
@@ -128,7 +148,17 @@ const Login = () => {
             </div>
           )}
           <button onClick={submit} className="login-next-button">
-            Login
+            {loading ? null : "Login"}
+            {loading && (
+              <svg className="loadingmodal_svg_login" viewBox="25 25 50 50">
+                <circle
+                  className="loadingmodal_circle_login"
+                  r="20"
+                  cy="50"
+                  cx="50"
+                ></circle>
+              </svg>
+            )}
           </button>
         </div>
         <div className="login-register-container">
@@ -144,7 +174,6 @@ const Login = () => {
   ) : (
     <>
       <div className="login-container">
-      <img onClick={() => navigate("/")} className="login_logo" src={fullLogo} />
         <h1 className="login-heading">Sign in with email</h1>
         <p className="login-paragraph">
           Enter the email address associated with your account.
@@ -169,9 +198,21 @@ const Login = () => {
               {errorMessage}{" "}
             </div>
           )}
-          <button onClick={handleEmailCheck} className="login-next-button">
-            Continue
-          </button>
+          <div className="login-next-button-container">
+            <button onClick={handleEmailCheck} className="login-next-button">
+              {loading ? null : "Continue"}
+              {loading && (
+                <svg className="loadingmodal_svg_login" viewBox="25 25 50 50">
+                  <circle
+                    className="loadingmodal_circle_login"
+                    r="20"
+                    cy="50"
+                    cx="50"
+                  ></circle>
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
         <div className="login-register-container">
           <Link className="login-register-button" to="/register">
@@ -186,42 +227,3 @@ const Login = () => {
   );
 };
 export default Login;
-
-//     return(
-//       <div className="login_container">
-//         <div className="Auth-form-container d-flex justify-content-center align-items-center">
-//           <form className="Auth-form" onSubmit={submit}>
-//             <div className="Auth-form-content">
-//               <h3 className="Auth-form-title">Sign In</h3>
-//               { errorMessage && <div> {errorMessage}</div>}
-//               <div className="form-group mt-3">
-//                 <label>Email</label>
-//                 <input className="form-control mt-1"
-//                   placeholder="Enter Email"
-//                   name='email'
-//                   type='email' value={email}
-//                   required
-//                   onChange={e => setEmail(e.target.value)}/>
-//               </div>
-//               <div className="form-group mt-3">
-//                 <label>Password</label>
-//                 <input name='password'
-//                   type="password"
-//                   className="form-control mt-1"
-//                   placeholder="Enter password"
-//                   value={password}
-//                   required
-//                   onChange={e => setPassword(e.target.value)}/>
-//               </div>
-//               <div className="d-grid gap-2 mt-3">
-//                 <button type="submit"
-//                    className="btn btn-primary">Submit</button>
-//               </div>
-//             </div>
-//          </form>
-//        </div>
-//        </div>
-//     )
-// }
-
-// export default Login

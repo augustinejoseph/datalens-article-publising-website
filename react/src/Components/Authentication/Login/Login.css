@@ -1,117 +1,131 @@
-.login-container{
-    display:  flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    min-height: 70vh;
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  min-height: 70vh;
 }
 .login-next-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
-.login_logo{
-    max-height: 70px;
-    margin: 2rem 0;
-    cursor: pointer;
+.login-next-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-.login-email-input{
-    border: none;
-    outline: none;
-    background-color: transparent;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+.login_logo {
+  max-height: 70px;
+  margin: 2rem 0;
+  cursor: pointer;
 }
-.login-heading{
-    font-size: x-large;
-    font-weight: 500;
-    padding-bottom: 40px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    
+.login-email-input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
-.login-title{
-    font-size: large;
-    padding: 20px;
-    color: gray;
-    margin-bottom: 30px;
-    margin-top: 30px;
+.login-heading {
+  font-size: x-large;
+  font-weight: 500;
+  padding-bottom: 40px;
+  padding-top: 6rem;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.login-title {
+  font-size: large;
+  padding: 20px;
+  color: gray;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.login-paragraph {
+  padding: 0px 50px;
+  color: gray;
+  margin-bottom: 2rem;
+}
+.login-email-underline {
+  padding: 0;
+  margin: 0;
+  color: grey;
+  line-height: 0%;
+}
+.login-next-button {
+  background-color: rgb(0, 0, 0);
+  color: white;
+  padding: 7px 5vw;
+  border-radius: 20px;
+  margin-top: 30px;
+}
+.login-register-container {
+  margin: 20px;
+}
+.login-register-button {
+  color: rgb(64, 193, 79);
+  padding-right: 20px;
+}
+.login-home-button {
+  color: rgb(64, 193, 79);
+  padding-left: 20px;
+}
+.login-firstname-input {
+  text-align: center;
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  outline: none;
+}
 
+.login-lastname-input {
+  text-align: center;
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  outline: none;
 }
-.login-paragraph{
-    padding: 0px 50px;
-    color: gray;
-    margin-bottom: 2rem;
-
+.register-name-display {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-.login-email-underline{
-    padding: 0;
-    margin: 0;
-    color: grey;
-    line-height: 0%;
+.interest-button {
+  padding: 7px 15px;
+  background-color: rgb(2, 130, 2);
+  border-radius: 20px;
+  margin: 5px;
+  color: whitesmoke;
+  /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+  font-weight: 400;
 }
-.login-next-button{
-    background-color: rgb(0, 0, 0);
-    color: white;
-    padding: 7px 5vw;
-    border-radius: 20px;
-    margin-top: 30px;
-}
-.login-register-container{
-    margin: 20px;
-    
-
-}
-.login-register-button{
-    color: rgb(64, 193, 79);
-    padding-right: 20px ;
-    
-}
-.login-home-button{
-    color: rgb(64, 193, 79);
-    padding-left: 20px ;
-    
-}
-.login-firstname-input{
-    text-align: center;
-    padding: 5px;
-    margin: 5px;
-    border: none;
-    outline: none;
-}
-
-.login-lastname-input{
-    text-align: center;
-    padding: 5px;
-    margin: 5px;
-    border: none;
-    outline: none;
-}
-.register-name-display{
-    padding-top: 5px;
-    padding-bottom: 5px;
-
-}
-.interest-button{
-    padding: 7px 15px;
-    background-color: rgb(2, 130, 2);
-    border-radius: 20px;
-    margin: 5px;
-    color: whitesmoke;
-    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
-    font-weight: 400;
-
-}
-.interest-button.selected{
-    background-color: rgb(30, 30, 182);
-
+.interest-button.selected {
+  background-color: rgb(30, 30, 182);
 }
 .tick-mark {
-    margin-left: 5px;
-  }
+  margin-left: 5px;
+}
 
+.disabled-button {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
-  .disabled-button {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+/* Loading */
+.loadingmodal_svg_login {
+  width: 1.25em;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+}
+
+.loadingmodal_svg_login > circle {
+  fill: none;
+  stroke: hsl(0, 0%, 100%);
+  stroke-width: 5;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
+}

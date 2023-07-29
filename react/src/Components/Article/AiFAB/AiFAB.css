@@ -1,4 +1,4 @@
-.fab_container{
+.fab_container {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
@@ -9,11 +9,10 @@
   border-radius: 50px;
   cursor: pointer;
 }
-.fab_container:hover{
+.fab_container:hover {
   background-color: rgb(90, 166, 166);
   cursor: pointer;
 }
-
 
 /* Modal */
 .fab_ai_modal_full_container {
@@ -35,13 +34,12 @@
   font-size: 24px;
 }
 
-.fav_ai_modal_content_container{
+.fav_ai_modal_content_container {
   margin: 10vh 30vw;
   background-color: white;
   min-height: 90vh;
   min-width: 90vw;
   border-radius: 10px;
-
 }
 .fav_modal_close_btn {
   display: flex;
@@ -58,18 +56,17 @@
   margin-left: auto;
 }
 
-
-.fav_modal_options_buttons_container{
+.fav_modal_options_buttons_container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 3rem;
 }
-.fav_modal_options_buttons_container button{
+.fav_modal_options_buttons_container button {
   background-color: green;
   color: white;
   border-radius: 20px;
   padding: 1rem 2rem;
-  margin:1rem ;
+  margin: 1rem;
 }

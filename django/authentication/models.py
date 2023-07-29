@@ -48,15 +48,12 @@ class Allusers(AbstractUser):
     is_premium = models.BooleanField(default=False)
     user_name = models.CharField(max_length=250, unique=True, null=True)
 
-
     def save(self, *args, **kwargs):
-        print(self.user_name)
         if not self.user_name:
             # Generate username from email and append a unique suffix
             user_name = slugify(self.email.split("@")[0])
             suffix = 1
             while Allusers.objects.filter(user_name=user_name).exists():
-                print("inside user exists, adding suffix")
                 user_name = f"{slugify(self.email.split('@')[0])}{suffix}"
                 suffix += 1
             self.user_name = user_name

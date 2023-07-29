@@ -68,7 +68,6 @@ export default function NavigationBar() {
   const location = useLocation();
   const currentUrl = location.pathname;
   const navigate = useNavigate();
-  console.log("user", user);
 
   return (
     <>
@@ -85,8 +84,9 @@ export default function NavigationBar() {
             <Box>
               <img
                 onClick={() => {
-                  {!user?.is_admin ? navigate("/") :
-                  navigate("/admin")}
+                  {
+                    !user?.is_admin ? navigate("/") : navigate("/admin");
+                  }
                 }}
                 style={{ maxWidth: "100%", height: "50px", cursor: "pointer" }}
                 src={fullLogo}
@@ -97,8 +97,6 @@ export default function NavigationBar() {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-    
-
               {Links?.map((link, index) => {
                 if (!link.membersOnly || user) {
                   return (
@@ -125,28 +123,27 @@ export default function NavigationBar() {
             <Flex alignItems={"center"}>
               <Menu>
                 <HStack>
-                  {user.is_admin ?(
-                  <Link
-                    to="/"
-                    onClick={() => navigate("/")}
-                  >
-                    <HStack>
-                      <span style={{ marginRight: "1rem", fontWeight: "600"}}>Visit website</span>
-                    </HStack>
-                  </Link>
-                  ):(
-
-                  <Link
-                    to="/new-article"
-                    onClick={() => navigate("/new-article")}
-                  >
-                    <HStack>
-                      <PencilSquare size={20} />
-                      <span style={{ marginRight: "1rem" }}>Write</span>
-                    </HStack>
-                  </Link>
+                  {user.is_admin ? (
+                    <Link to="/" onClick={() => navigate("/")}>
+                      <HStack>
+                        <span
+                          style={{ marginRight: "1rem", fontWeight: "600" }}
+                        >
+                          Visit website
+                        </span>
+                      </HStack>
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/new-article"
+                      onClick={() => navigate("/new-article")}
+                    >
+                      <HStack>
+                        <PencilSquare size={20} />
+                        <span style={{ marginRight: "1rem" }}>Write</span>
+                      </HStack>
+                    </Link>
                   )}
-
                 </HStack>
 
                 <MenuButton
@@ -171,8 +168,11 @@ export default function NavigationBar() {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      { !user.is_admin ? navigate("/user/" + user?.user_name) :
-                      navigate("/admin")}
+                      {
+                        !user.is_admin
+                          ? navigate("/user/" + user?.user_name)
+                          : navigate("/admin");
+                      }
                     }}
                   >
                     <PersonLinesFill
@@ -232,7 +232,7 @@ export default function NavigationBar() {
                     </NavLink>
                   );
                 }
-                return null; 
+                return null;
               })}
             </Stack>
           </Box>

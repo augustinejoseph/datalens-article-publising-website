@@ -42,8 +42,8 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 
 const ArticlePage = () => {
-  const [loading, setLoading] = useState(true)
-  const [refreshState, setRefreshState] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [refreshState, setRefreshState] = useState(true);
   const navigate = useNavigate();
   const [article, setArticle] = useState({});
   const [articleBody, setArticleBody] = useState({});
@@ -60,53 +60,47 @@ const ArticlePage = () => {
   const [commentsList, setCommentsList] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [commentButtonDisabled, setCommentButtonDisabled] = useState(true);
-  console.log("show comment boolean ", showComment);
-  console.log("comment list frmm db", commentsList);
-  console.log("comment button disabled", commentButtonDisabled);
-  console.log('article', article);
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const articleUrl = `${FRONTEND_DOMAIN_NAME}/article/${id}`;
-  const showToast = useToast()
-  const category = article?.category?.[0]?.name
-  console.log('-----category', category );
-  
+  const showToast = useToast();
+  const category = article?.category?.[0]?.name;
+
   useEffect(() => {
     const fetchArticle = async () => {
-      console.log(' ---------------url', articleUrl);
       try {
-        setLoading(true)
+        setLoading(true);
         const { data } = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${id}`
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${id}`,
         );
         if (!data) {
-        setLoading(false)
+          setLoading(false);
           showToast("Article not found", 404);
           navigate("/404"); // Redirect to home page
           return;
         }
-  
+
         setArticle({ ...data });
         setArticleBody(data.body);
         setHashtags(data.hashtags);
         setCommentsList(data.comments);
-        setLoading(false)
-        console.log('full article data-------------------------', data);
+        setLoading(false);
       } catch (error) {
-        setLoading(false)
+        setLoading(false);
         showToast("Error in fetching article", 500);
-        navigate('/404')
-        console.log("error in full article-----------------------------", error);
+        navigate("/404");
+        console.log(
+          "error in full article-----------------------------",
+          error,
+        );
       }
     };
-  
+
     fetchArticle();
   }, [id, clap, newComment, refreshState]);
-  
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log("user", user);
-    }, 5);
+    const timer = setTimeout(() => {}, 5);
 
     return () => clearTimeout(timer);
   }, [user]);
@@ -115,18 +109,18 @@ const ArticlePage = () => {
     navigate(`/edit-article/${id}`);
   };
 
-  const handleDeleteConfirmation = () => {
-    setShowConfirmation(true);
-  };
-
   const handleUpdateClap = () => {
     addClap(id, ARTICLE_SERVER_NODE_BASE_URL, axios, setClaps);
+  };
+
+  const handleDeleteConfirmation = () => {
+    setShowConfirmation(true);
   };
 
   const handleConfirmDelete = async () => {
     try {
       deleteArticle(id);
-      showToast("Article deleted successfully", 200)
+      showToast("Article deleted successfully", 200);
       setShowConfirmation(false);
       navigate("/");
     } catch (error) {
@@ -141,7 +135,7 @@ const ArticlePage = () => {
   const handleCommentChange = (e) => {
     const value = e.target.value;
     setNewComment(value);
-    setCommentButtonDisabled(value.trim() === ""); 
+    setCommentButtonDisabled(value.trim() === "");
   };
 
   const handleCommentSubmit = async () => {
@@ -152,60 +146,69 @@ const ArticlePage = () => {
       user_name: user?.user_name,
       name: user?.name,
     };
-    console.log("user data in comment for sending to db", data);
+
     try {
       const response = await adminAxiosToDjangoServerInterceptor.post(
         `${ARTICLE_SERVER_NODE_BASE_URL}/user/add-comment/${id}`,
-        data
+        data,
       );
-      showToast(response.data.message, response.status)
-      console.log('response from commnet', response);
-      if (response.data && response.data.comments && response.data.comments.length > 0) {
+      showToast(response.data.message, response.status);
+
+      if (
+        response.data &&
+        response.data.comments &&
+        response.data.comments.length > 0
+      ) {
         setNewComment("");
-        setCommentsList((prevComments) => [...prevComments, response.data.comments[0]]);
+        setCommentsList((prevComments) => [
+          ...prevComments,
+          response.data.comments[0],
+        ]);
       }
     } catch (error) {
-      showToast("Failed to add comment", 500)
-      console.log("comment submit error", error);
+      showToast("Failed to add comment", 500);
     }
   };
-
-
 
   const handleAddToSavedArticle = async () => {
     try {
-      const response = await adminAxiosToDjangoServerInterceptor.post(`${BACKEND_BASE_URL}/article/add-to-saved-article`, {
-        articleId: id,
-        userId: user?.user_id,
-        previewImage : article.previewImage,
-        readingTime : article.readingTime,
-        summary : article.summary,
-        title : article.title,
-        userName : article.user_name,
-        userId : user?.user_id,
-      });
-  
-      if (response.status === 200 && response.data.message === 'Article is already saved') {
-        showToast('Article is already saved', 200);
-      } else if (response.status === 200 && response.data.message === 'Article saved successfully') {
-        showToast('Article saved successfully', 200);
+      const response = await adminAxiosToDjangoServerInterceptor.post(
+        `${BACKEND_BASE_URL}/article/add-to-saved-article`,
+        {
+          articleId: id,
+          userId: user?.user_id,
+          previewImage: article.previewImage,
+          readingTime: article.readingTime,
+          summary: article.summary,
+          title: article.title,
+          userName: article.user_name,
+          userId: user?.user_id,
+        },
+      );
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Article is already saved"
+      ) {
+        showToast("Article is already saved", 200);
+      } else if (
+        response.status === 200 &&
+        response.data.message === "Article saved successfully"
+      ) {
+        showToast("Article saved successfully", 200);
       } else {
-        console.log(response);
-        showToast('Internal server error', 500);
+        showToast("Internal server error", 500);
       }
     } catch (error) {
-      showToast('Internal server error', 500);
+      showToast("Internal server error", 500);
     }
   };
-  return (
-  
-  loading ?
-   (<LoadingModal /> ):
-
-
-   ( <div className="article_container">
+  return loading ? (
+    <LoadingModal />
+  ) : (
+    <div className="article_container">
       <div className="article_fab_container">
-        < AiFAB />
+        <AiFAB />
       </div>
       <div className="article_inner_container">
         <div className="article_main_heading">
@@ -265,19 +268,18 @@ const ArticlePage = () => {
                 </span>
               </>
             )}
-              <span
-                  className="articel_interaction_button"
-                  onClick={handleAddToSavedArticle}
-                >
-                  {" "}
-                  <SaveFill />
-                </span>
+            <span
+              className="articel_interaction_button"
+              onClick={handleAddToSavedArticle}
+            >
+              {" "}
+              <SaveFill />
+            </span>
             <>
               <WhatsappShareButton url={articleUrl}>
                 <Whatsapp className="articel_interaction_button" />
               </WhatsappShareButton>
             </>
-            
           </div>
         </div>
 
@@ -314,17 +316,13 @@ const ArticlePage = () => {
           ""
         )}
         {/* Related */}
-        {category &&
-        <div className="article_related_articles">
-          <HomePostContainer category={category} />
-        </div>
-            }   
+        {category && (
+          <div className="article_related_articles">
+            <HomePostContainer category={category} />
+          </div>
+        )}
         <Footer />
       </div>
-
-
-
-
 
       {/* Comment modal */}
       {showComment && (
@@ -381,8 +379,10 @@ const ArticlePage = () => {
 
           {commentsList.length > 0 &&
             commentsList.reverse().map((commentItem) => (
-              
-              <div key={commentItem._id} className="article_comment_allcomments_container">
+              <div
+                key={commentItem._id}
+                className="article_comment_allcomments_container"
+              >
                 <div className="article_comment_firstcomment_name">
                   {commentItem.name}
                 </div>
@@ -391,13 +391,10 @@ const ArticlePage = () => {
                 </div>
               </div>
             ))}
-
-
         </div>
       )}
-    </div>)
+    </div>
   );
 };
 
 export default ArticlePage;
-

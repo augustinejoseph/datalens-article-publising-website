@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Article = require('./models/models');
+const Article = require("./models/models");
 
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
   // Create a new article instance
   const newArticle = new Article({
     title: req.body.title,
@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
       res.status(201).json(article);
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Failed to create article' });
+      res.status(500).json({ error: "Failed to create article" });
     });
 });
 

@@ -1,26 +1,26 @@
 import {
-    React,
-    useState,
-    useEffect,
-    useContext,
-    axios,
-    ARTICLE_SERVER_NODE_BASE_URL,
-    ReactQuill,
-    AuthContext,
-    modules,
-    formats,
-    useNavigate,
-    useParams,
-    calculateReadingTime,
-    Footer,
-    HomePostContainer,
-    PageNotFound,
-    adminAxiosToDjangoServerInterceptor,
-    useToast,
-  } from '../index'
-  import './EditArticle.css'
+  React,
+  useState,
+  useEffect,
+  useContext,
+  axios,
+  ARTICLE_SERVER_NODE_BASE_URL,
+  ReactQuill,
+  AuthContext,
+  modules,
+  formats,
+  useNavigate,
+  useParams,
+  calculateReadingTime,
+  Footer,
+  HomePostContainer,
+  PageNotFound,
+  adminAxiosToDjangoServerInterceptor,
+  useToast,
+} from "../index";
+import "./EditArticle.css";
 const EditArticle = () => {
-  const showToast = useToast()
+  const showToast = useToast();
   const navigate = useNavigate();
   const { articleId } = useParams();
   const [title, setTitle] = useState("");
@@ -32,12 +32,14 @@ const EditArticle = () => {
   useEffect(() => {
     const fetchArticleData = async () => {
       try {
-        const response = await adminAxiosToDjangoServerInterceptor.get(`${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${articleId}`);
+        const response = await adminAxiosToDjangoServerInterceptor.get(
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/article/${articleId}`,
+        );
         setTitle(response.data.title);
         setContent(response.data.body);
       } catch (error) {
-        showToast("Error in fetching article", 500)
-        navigate('/')
+        showToast("Error in fetching article", 500);
+        navigate("/");
         console.error("Error fetching article data:", error);
       }
     };
@@ -64,23 +66,31 @@ const EditArticle = () => {
     try {
       const response = await adminAxiosToDjangoServerInterceptor.put(
         `${ARTICLE_SERVER_NODE_BASE_URL}/user/update-article/${articleId}`,
-        { title, body: content }
+        { title, body: content },
       );
-      showToast(response.data.message, response.status)
+      showToast(response.data.message, response.status);
     } catch (error) {
-      showToast("Error while updating", 500)
+      showToast("Error while updating", 500);
     }
   };
 
-  
   return (
     <div className="newarticle_container">
-      {errorMessage && <p className="newarticle_errormessage" >{errorMessage}</p>}
+      {errorMessage && (
+        <p className="newarticle_errormessage">{errorMessage}</p>
+      )}
       {successMsg && <p className="newarticle_successmessage">{successMsg}</p>}
       <form onSubmit={handleSubmit}>
         <div className="editarticle_actions">
-          <button className='editarticle_submit_button' type="submit">Make Changes</button>
-          <button className='editarticle_submit_button' onClick={() => navigate(`/article/${articleId}`)}>Cancel</button>
+          <button className="editarticle_submit_button" type="submit">
+            Make Changes
+          </button>
+          <button
+            className="editarticle_submit_button"
+            onClick={() => navigate(`/article/${articleId}`)}
+          >
+            Cancel
+          </button>
         </div>
         <div className="newarticle_title">
           <input

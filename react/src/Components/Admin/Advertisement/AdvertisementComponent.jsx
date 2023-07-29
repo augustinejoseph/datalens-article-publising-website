@@ -1,7 +1,5 @@
 const AdvertisementComponent = () => {
-  return (
-    <div>AdvertisementComponent</div>
-  )
-}
+  return <div>AdvertisementComponent</div>;
+};
 
-export default AdvertisementComponent
+export default AdvertisementComponent;

@@ -36,7 +36,6 @@ class CustomTokenRefreshView(APIView):
     @csrf_exempt
     def post(self, request):
         refresh_token = request.data.get("refresh_token")
-        print("refresh token received", refresh_token)
 
         try:
             decoded_refresh_token = jwt.decode(

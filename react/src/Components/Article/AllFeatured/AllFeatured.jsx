@@ -124,4 +124,4 @@ const AllFeatured = () => {
     </div>
   );
 };
-export default AllFeatured
+export default AllFeatured;

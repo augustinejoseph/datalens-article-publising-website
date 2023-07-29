@@ -8,16 +8,16 @@ import {
   Link,
   useNavigate,
 } from "../../index.jsx";
-import './FeaturedArticles.css'
+import "./FeaturedArticles.css";
 const FeaturedArticles = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_FEATURED_ARTICLES);
-  console.log("features articles", data);
+
   if (loading) {
     return <></>;
   }
   if (error) {
-    navigate("/error")
+    navigate("/error");
   }
 
   const featuredArticles = data?.featuredArticles.slice(0, 3);
@@ -43,8 +43,8 @@ const FeaturedArticles = () => {
               <Link to={`/article/${article.articleId}`}>
                 <div className="featured_article_secondrow">
                   {/* <div> */}
-                    <PersonCircle />
-                    <p>{article.name}</p>
+                  <PersonCircle />
+                  <p>{article.name}</p>
                   {/* </div> */}
                 </div>
                 <div className="featured_article_thirdrow">
@@ -54,11 +54,17 @@ const FeaturedArticles = () => {
                       : article.title}
                   </span>
                 </div>
-                </Link>
-                <div className="featured_category_container">
-                  <span onClick={() => navigate(`/category/${article.category[0].name}`)} style={style}>{article.category[0].name}</span>
-                </div>
-             
+              </Link>
+              <div className="featured_category_container">
+                <span
+                  onClick={() =>
+                    navigate(`/category/${article.category[0].name}`)
+                  }
+                  style={style}
+                >
+                  {article.category[0].name}
+                </span>
+              </div>
             </React.Fragment>
           </div>
         );

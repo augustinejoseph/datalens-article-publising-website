@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import Login from "../Login/Login";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../../../Contexts/AuthContext";
@@ -9,14 +9,13 @@ import Cookies from "js-cookie";
 const AdminLogin = () => {
   const location = useLocation();
   const currentUrl = location.pathname;
-  console.log("params",currentUrl)
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
   // console.log(email, "  .. ", password)
-
 
   const submit = async (e) => {
     e.preventDefault();
@@ -27,42 +26,41 @@ const AdminLogin = () => {
     try {
       const { data } = await axios.post(
         "http://localhost:8000/user/admin-login",
-        user
+        user,
       );
-      console.log("data form axios req" ,data)
+
       const refreshTokenExpiration = 7; // 7 days
       const expirationDate = new Date();
       expirationDate.setDate(expirationDate.getDate() + refreshTokenExpiration);
       Cookies.set("access_token", data.access_token);
-      Cookies.set("refresh_token", data.refresh_token,  { expires: expirationDate });
+      Cookies.set("refresh_token", data.refresh_token, {
+        expires: expirationDate,
+      });
       const tokenData = jwt_decode(data.access_token);
 
       const LoggedInUser = {
         email: tokenData.email,
         is_active: tokenData.is_active,
         is_banned: tokenData.is_banned,
-        is_admin : tokenData.is_admin,
-        name : "Admin"
+        is_admin: tokenData.is_admin,
+        name: "Admin",
       };
       setUser(LoggedInUser);
-      navigate("/admin")
+      navigate("/admin");
     } catch (error) {
-        if (error.response && error.response.data) {
-          setErrorMessage("Invalid email or password");
-        } else {
-          setErrorMessage("An error occurred during authentication.");
-        }
+      if (error.response && error.response.data) {
+        setErrorMessage("Invalid email or password");
+      } else {
+        setErrorMessage("An error occurred during authentication.");
       }
-      
+    }
   };
 
   return (
     <div>
       <div className="login-container">
         <h1 className="login-heading">Admin Sign in</h1>
-        <p className="login-paragraph">
-          Only admins can login here
-        </p>
+        <p className="login-paragraph">Only admins can login here</p>
         <span className="login-title">Your Email</span>
         <div className="login-email">
           <input
@@ -74,9 +72,7 @@ const AdminLogin = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div style={{margin: "10px"}}>
-
-        </div>
+        <div style={{ margin: "10px" }}></div>
         <div className="login-email">
           <input
             className="login-email-input"
@@ -97,8 +93,7 @@ const AdminLogin = () => {
             Login
           </button>
         </div>
-        <div className="login-register-container">
-        </div>
+        <div className="login-register-container"></div>
       </div>
     </div>
   );

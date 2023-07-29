@@ -68,7 +68,9 @@ function App() {
           <Route path="/logout" Component={Logout} />
           <Route
             path="/verify-email"
-            element={user && user.is_active ? <Navigate to="/" /> : <VerifyEmail />}
+            element={
+              user && user.is_active ? <Navigate to="/" /> : <VerifyEmail />
+            }
           />
           <Route path="/article/:id" Component={ArticlePage} />
           <Route path="/user/:username" element={<AuthorProfile />} />

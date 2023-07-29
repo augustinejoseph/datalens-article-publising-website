@@ -13,10 +13,14 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 
 
 class SaveArticle(APIView):
-    # authentication_classes = [JWTAuthentication, SessionAuthentication, BasicAuthentication]
-    # permission_classes =[IsUserInPayload]
+    authentication_classes = [
+        JWTAuthentication,
+        SessionAuthentication,
+        BasicAuthentication,
+    ]
+    permission_classes = [IsUserInPayload]
+
     def post(self, request):
-        print("--------------------------saved articles req data", request.data)
         user_id = request.data.get("userId")
         article_id = request.data.get("articleId")
         preview_image = request.data.get("previewImage")
@@ -27,7 +31,6 @@ class SaveArticle(APIView):
         user_id = request.data.get("userId")
 
         user = Allusers.objects.get(id=user_id)
-        print(f"--------------------user {user}")
 
         if SavedArticles.objects.filter(user=user, article_id=article_id).exists():
             return Response({"message": "Article is already saved"})

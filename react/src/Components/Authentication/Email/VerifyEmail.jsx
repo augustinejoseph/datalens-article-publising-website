@@ -1,29 +1,38 @@
-import { axios, useContext,useState, Link, AuthContext, BACKEND_BASE_URL, TokenRefresh, Navigate, useNavigate } from "../../index";
+import {
+  axios,
+  useContext,
+  useState,
+  Link,
+  AuthContext,
+  BACKEND_BASE_URL,
+  TokenRefresh,
+  Navigate,
+  useNavigate,
+} from "../../index";
 
 const VerifyEmail = (props) => {
-
   const { first_name, email } = props;
-  console.log("verify eaml props", props);
-  const {user} = useContext(AuthContext);
-  const userEmail = user?.email || email
+
+  const { user } = useContext(AuthContext);
+  const userEmail = user?.email || email;
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleEmailResend = async () => {
-    try{
-      const response = await axios.post(`${BACKEND_BASE_URL}/user/resend-verification-mail`, {email :userEmail})
-    }catch(error){
-      console.log(error);
-      navigate('/login')
+    try {
+      const response = await axios.post(
+        `${BACKEND_BASE_URL}/user/resend-verification-mail`,
+        { email: userEmail },
+      );
+    } catch (error) {
+      navigate("/login");
     }
-    
-  }
+  };
   const handleTokenRefresh = async () => {
-    await TokenRefresh()
+    await TokenRefresh();
     window.location.reload();
-    navigate('/login')
-
-  }
+    navigate("/login");
+  };
   return (
     <div className="login-container">
       <h1 className="login-heading">Verify Email</h1>
@@ -40,11 +49,15 @@ const VerifyEmail = (props) => {
         {errorMessage && (
           <div style={{ color: "red", marginTop: "10px" }}>{errorMessage} </div>
         )}
-        
-          <button onClick={handleEmailResend} className="login-next-button">Resend Email</button>
-       
+
+        <button onClick={handleEmailResend} className="login-next-button">
+          Resend Email
+        </button>
+
         <Link to="/login">
-          <button onClick={handleTokenRefresh} className="login-next-button">Already Verified</button>
+          <button onClick={handleTokenRefresh} className="login-next-button">
+            Already Verified
+          </button>
         </Link>
       </div>
       <div className="login-register-container"></div>

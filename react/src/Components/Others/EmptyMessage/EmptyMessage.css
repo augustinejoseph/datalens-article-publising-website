@@ -1,15 +1,14 @@
-.empty_container{
-    display: flex;
-    flex-direction: column;    
+.empty_container {
+  display: flex;
+  flex-direction: column;
 }
-.empty_message:first-child{
-    text-align: center;
-    margin-top: 2rem;
-    font-size: large;
-    color: grey;
+.empty_message:first-child {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: large;
+  color: grey;
 }
-.empty_link{
-    color: grey;
-    text-align: center;
-    
+.empty_link {
+  color: grey;
+  text-align: center;
 }
