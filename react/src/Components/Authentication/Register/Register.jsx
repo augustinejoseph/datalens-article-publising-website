@@ -1,8 +1,6 @@
 import "./Register.css";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
-  Flag,
-  dotenv,
   VerifyEmail,
   BACKEND_BASE_URL,
   Link,
@@ -59,9 +57,6 @@ const Register = () => {
       "gmail.com",
       "yahoo.com",
       "hotmail.com",
-      "nasskar.com",
-      "dronetz.com",
-      "edulena.com",
     ];
 
     const domain = email.split("@")[1];
@@ -380,8 +375,9 @@ const Register = () => {
               {first_name} {last_name}
             </span>
             <div>
-              {allIntersetFromAPI.map((interest) => (
-                <button
+              {allIntersetFromAPI.map((interest,i) => (
+                <button 
+                  key={i}
                   className={`interest-button ${
                     selectedInterests.includes(interest) ? "selected" : ""
                   }`}

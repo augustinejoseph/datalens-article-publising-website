@@ -98,9 +98,8 @@ class RegisterView(APIView):
                     settings.EMAIL_HOST_USER,
                     [user.email],
                 )
-                email.content_subtype = "html"  # Set content type as HTML
+                email.content_subtype = "html" 
 
-                # Send the email
                 email.send()
 
                 return Response(
@@ -115,13 +114,12 @@ class RegisterView(APIView):
         except ValidationError as e:
             errors = {}
             for field, field_errors in e.error_dict.items():
-                # Customize the error messages based on the field
                 if field == "email" and "unique" in field_errors:
                     errors[field] = "Email already exists."
                 elif field == "password":
                     errors[field] = "Invalid password."
                 else:
-                    errors[field] = field_errors[0]  # Use the first error message
+                    errors[field] = field_errors[0] 
 
             return Response(
                 {"success": False, "errors": errors, "status": 400},
@@ -213,10 +211,10 @@ class EmailCheckView(APIView):
                     "name": name,
                     "status": True,
                 }
-                return Response(response)  # Return a Response with the boolean value
+                return Response(response)  
             except Allusers.DoesNotExist:
                 response = {"status": False}
-                return Response(response)  # Return a Response with the boolean value
+                return Response(response)  
         else:
             response = {"status": False}
             return Response(response)
@@ -262,7 +260,6 @@ def email_verification_failed(request):
     return render(request, "email_verification_failed.html")
 
 
-# Admin Login
 class AdminLogin(APIView):
     def post(self, request):
         email = self.request.data["email"]

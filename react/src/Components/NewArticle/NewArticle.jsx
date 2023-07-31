@@ -425,7 +425,7 @@ const NewArticle = () => {
                 <div className="dropdown-options">
                   {categories.map((category) => (
                     <div
-                      // key={category._id}
+                      key={category?._id}
                       className="dropdown-option"
                       selected={selectedCategories[0] === category._id}
                       onClick={() => setSelectedCategories([category._id])}

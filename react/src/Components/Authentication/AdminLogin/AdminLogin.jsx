@@ -1,21 +1,13 @@
-import React, { useState, useContext } from "react";
-import Login from "../Login/Login";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import AuthContext from "../../../Contexts/AuthContext";
-import axios from "axios";
+import {useNavigate, BACKEND_BASE_URL, useState, useContext,axios,AuthContext } from "../../index";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
 const AdminLogin = () => {
-  const location = useLocation();
-  const currentUrl = location.pathname;
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
-  // console.log(email, "  .. ", password)
 
   const submit = async (e) => {
     e.preventDefault();
@@ -25,11 +17,11 @@ const AdminLogin = () => {
     };
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/user/admin-login",
+        `${BACKEND_BASE_URL}/user/admin-login`,
         user,
       );
 
-      const refreshTokenExpiration = 7; // 7 days
+      const refreshTokenExpiration = 7;
       const expirationDate = new Date();
       expirationDate.setDate(expirationDate.getDate() + refreshTokenExpiration);
       Cookies.set("access_token", data.access_token);
