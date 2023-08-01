@@ -1,6 +1,4 @@
 import {
-  React,
-  // ARTICLE_SERVER_NODE_BASE_URL,
   useEffect,
   useParams,
   useContext,
@@ -8,14 +6,11 @@ import {
   BACKEND_BASE_URL,
   axios,
   useState,
-  useQuery,
   GET_ARTICLES_BY_AUTHOR,
   ApolloClient,
   InMemoryCache,
   HomePostContainer,
-  RoundLoading,
   Draft,
-  gql,
   adminAxiosToDjangoServerInterceptor,
   useToast,
   TokenRefresh,
@@ -54,17 +49,6 @@ const AuthorProfile = () => {
   const [savedArticles, setSavedArticles] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
   const fileInputRef = useRef(null);
-
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -126,11 +110,9 @@ const AuthorProfile = () => {
           authorDetails.data;
         setAuthor({ id, user_name, first_name, last_name, email });
 
-        // Rest of your code
       } catch (error) {
         setLoading(false);
 
-        // Handle any errors that occur during the requests
         console.error(error);
       }
     };

@@ -94,6 +94,18 @@
   margin: 0rem 2rem;
   cursor: pointer;
 }
+.homepost_container_make_money_button{
+  margin: 0rem 2rem;
+  cursor: pointer;
+  background-color: green;
+  padding: .1rem 1rem;
+  border-radius: 20px;
+  color: white;
+}
+
+.loadingmodal_circle_homepost_container{
+  background-color: black;
+}
 
 @media (max-width: 1100px) {
   .homepost_container {

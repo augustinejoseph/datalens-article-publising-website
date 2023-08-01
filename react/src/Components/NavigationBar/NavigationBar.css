@@ -1,0 +1,23 @@
+.navbar_newarticle_button{
+    color: grey;
+    font-size: large;
+    text-decoration: none;
+}
+.navbar_newarticle_button:hover{
+    color: black;
+}
+.navbar_top_links > *{
+    font-size: large;
+    color: rgb(85, 78, 78);
+}
+.navbar_top_links > *:hover{
+    color: black;
+}
+.navbar_top_links.active-link {
+    background-color:#39bd7f;
+    padding: .2rem 1rem;
+    border-radius: 10px;
+  }
+.navbar_top_links.active-link >*{
+    color: white;
+}

@@ -20,6 +20,7 @@ import {
   deleteDraft,
   useToast,
   LoadingModal,
+  ButtonLoading,
 } from "../index";
 import { storage } from "../../Firebase/FirebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -37,7 +38,6 @@ const NewArticle = () => {
   const name = user?.name;
   const user_name = user?.user_name;
   const [content, setContent] = useState({});
-  // const [content, setContent] = useState({ title: "", body: "" });
   const [summaryValue, setSummaryValue] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -55,12 +55,6 @@ const NewArticle = () => {
   // Editing Draft
   const location = useLocation();
   const id = location?.state?.id;
-  //
-  //
-  //
-  //
-  //
-  //
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -151,7 +145,7 @@ const NewArticle = () => {
 
         try {
           const fileName = `article_${Date.now()}`;
-          const storageRef = ref(storage, `/user-profilePhoto` + fileName);
+          const storageRef = ref(storage, `/images` + fileName);
           await uploadBytes(storageRef, file);
           const downloadUrl = await getDownloadURL(storageRef);
 

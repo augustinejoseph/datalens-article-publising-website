@@ -15,16 +15,30 @@
   display: flex;
   justify-content: center;
   text-align: center;
-  font-size: x-large;
+  font-size: xx-large;
   font-weight: 800;
   min-width: 20rvw;
   margin: 1rem 5rem;
 }
 .plan_description {
+  margin: 2rem 0 0 0;
   text-align: center;
   display: flex;
   flex-direction: column;
 }
+.plan_description > span {
+  padding: 0 .5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.plan_description > span >img {
+  height: 1rem;
+  padding: 0 .5rem;
+}
+
 .plan_plans {
   display: flex;
   flex-direction: row;

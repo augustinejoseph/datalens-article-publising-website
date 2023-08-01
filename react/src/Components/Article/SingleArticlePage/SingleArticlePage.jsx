@@ -59,8 +59,9 @@ const ArticlePage = () => {
   const [showComment, setShowComment] = useState(false);
   const [commentsList, setCommentsList] = useState([]);
   const [newComment, setNewComment] = useState("");
+  console.log(newComment);
   const [commentButtonDisabled, setCommentButtonDisabled] = useState(true);
-
+  const [commentSubmitted ,setCommentSubmitted] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false);
   const articleUrl = `${FRONTEND_DOMAIN_NAME}/article/${id}`;
   const showToast = useToast();
@@ -97,7 +98,7 @@ const ArticlePage = () => {
     };
 
     fetchArticle();
-  }, [id, clap, newComment, refreshState]);
+  }, [id, clap, refreshState, showToast]);
 
   useEffect(() => {
     const timer = setTimeout(() => {}, 5);
@@ -133,6 +134,7 @@ const ArticlePage = () => {
   };
 
   const handleCommentChange = (e) => {
+    
     const value = e.target.value;
     setNewComment(value);
     setCommentButtonDisabled(value.trim() === "");
@@ -152,19 +154,16 @@ const ArticlePage = () => {
         `${ARTICLE_SERVER_NODE_BASE_URL}/user/add-comment/${id}`,
         data,
       );
-      showToast(response.data.message, response.status);
-
+      
       if (
         response.data &&
         response.data.comments &&
         response.data.comments.length > 0
-      ) {
-        setNewComment("");
-        setCommentsList((prevComments) => [
-          ...prevComments,
-          response.data.comments[0],
-        ]);
-      }
+        ) {
+          setNewComment("");
+          setCommentSubmitted(true)
+        }
+        showToast(response.data.message, response.status);
     } catch (error) {
       showToast("Failed to add comment", 500);
     }
@@ -182,7 +181,6 @@ const ArticlePage = () => {
           summary: article.summary,
           title: article.title,
           userName: article.user_name,
-          userId: user?.user_id,
         },
       );
 
@@ -203,6 +201,8 @@ const ArticlePage = () => {
       showToast("Internal server error", 500);
     }
   };
+
+
   return loading ? (
     <LoadingModal />
   ) : (
@@ -301,7 +301,7 @@ const ArticlePage = () => {
             value={articleBody}
           />
         </div>
-        {hashtags ? (
+        {/* {hashtags ? (
           <div className="article_hashtags_container">
             {hashtags.map((hashtag) => (
               <span
@@ -314,7 +314,8 @@ const ArticlePage = () => {
           </div>
         ) : (
           ""
-        )}
+        )} */}
+
         {/* Related */}
         {category && (
           <div className="article_related_articles">
@@ -344,8 +345,7 @@ const ArticlePage = () => {
           {user ? (
             <div className="article_comment_input_container">
               <div className="article_comment_inner_container">
-                <span>{/* <PersonCircle /> */}</span>
-                <span>{`Comment as ` + user.name}</span>
+                <span>{`Comment as ` + user?.name}</span>
               </div>
               <textarea
                 value={newComment}
@@ -378,7 +378,7 @@ const ArticlePage = () => {
           )}
 
           {commentsList.length > 0 &&
-            commentsList.reverse().map((commentItem) => (
+            commentsList.map((commentItem) => (
               <div
                 key={commentItem._id}
                 className="article_comment_allcomments_container"

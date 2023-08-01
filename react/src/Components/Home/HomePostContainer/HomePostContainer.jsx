@@ -17,6 +17,8 @@ import {
   useToast,
   adminAxiosToDjangoServerInterceptor,
   ARTICLE_SERVER_NODE_BASE_URL,
+  useEffect,
+  ButtonLoading,
 } from "../../index";
 import {
   fetchAuthorData,
@@ -24,6 +26,7 @@ import {
   categoryButtonStyle,
 } from "./functions";
 import { Trash2Fill } from "react-bootstrap-icons";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const HomePostContainer = (props) => {
   const {
@@ -51,11 +54,12 @@ const HomePostContainer = (props) => {
   const location = useLocation();
   const [author, setAuthor] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const navigate = useNavigate();
   const currentLocation = location.pathname;
   const [showConfirmation, setShowConfirmation] = useState(false);
   const showToast = useToast();
-
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+const [addToSavedLoading, setAddToSavedLoading] = useState(true)
   const handleCategoryClick = (categoryName) => {
     setSelectedCategory(categoryName);
     navigate(`/category/${category.name}`);
@@ -82,11 +86,14 @@ const HomePostContainer = (props) => {
 
   const handleConvertToPremium = async () => {
     try {
+      setLoading(true)
       const response = await adminAxiosToDjangoServerInterceptor.put(
-        `${ARTICLE_SERVER_NODE_BASE_URL}/user/make-premium/${articleId}`,
+        `${ARTICLE_SERVER_NODE_BASE_URL}/user/make-premium/${articleId}`
       );
+      setLoading(false)
       showToast(response.data.message, response.status);
     } catch (error) {
+      setLoading(false)
       showToast("Internal server error", 500);
     }
   };
@@ -162,22 +169,34 @@ const HomePostContainer = (props) => {
                   <Trash2Fill />
                 </button>
               ) : (
-                <Save2 />
-              )}
+                addToSavedLoading ? (
+                < ButtonLoading />
+                ): <Save2 />   )}
 
               {location.pathname.startsWith("/user/") &&
               authorId === user?.user_id &&
               user?.is_premium ? (
                 <button onClick={handleConvertToPremium}>
                   <div className="homepost_container_premium_icon_container_2">
-                    {is_premium ? null : "Make Premium"}
-                    <img
-                      className="homepost_container_premium_icon_2"
-                      src={premium}
-                    />{" "}
+                    {loading ? (
+                      <ButtonLoading />
+                    ) : is_premium ? <img className="homepost_container_premium_icon_2" src={premium} /> : (
+                      <>
+                        <span>Make Premium</span>
+                        <img
+                          className="homepost_container_premium_icon_2"
+                          src={premium}
+                          alt="Premium Icon"
+                        />
+                      </>
+                    )}
                   </div>
                 </button>
-              ) : null}
+              ) : 
+              location.pathname.startsWith("/user/") ?
+              (<button onClick={()=>navigate("/plans")} className="homepost_container_make_money_button">Make Money</button>)
+            : ""
+              }
             </div>
           ) : null)}
       </div>

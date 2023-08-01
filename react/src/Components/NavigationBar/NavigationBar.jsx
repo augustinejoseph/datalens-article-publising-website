@@ -24,14 +24,15 @@ import {
   useContext,
   useState,
   Logout,
-  Navigate,
   fullLogo,
   useNavigate,
   useLocation,
   PencilSquare,
   BoxArrowLeft,
   PersonLinesFill,
+  premium_user
 } from "../index";
+import './NavigationBar.css'
 import { FRONTEND_DOMAIN_NAME } from "../Admin";
 import { fontWeight } from "@mui/system";
 const Links = [
@@ -99,9 +100,10 @@ export default function NavigationBar() {
             >
               {Links?.map((link, index) => {
                 if (!link.membersOnly || user) {
+                  const isActive = location.pathname === link.path;
                   return (
-                    <NavLink key={link.name} path={link.path} onClose={onClose}>
-                      <Box>
+                    <NavLink  key={link.name} path={link.path} onClose={onClose}>
+                      <Box className={`navbar_top_links ${isActive ? 'active-link' : ''}`}>
                         {link.membersOnly && !user.is_premium ? (
                           <div onClick={() => navigate("/plans")}>
                             Get Premium
@@ -125,7 +127,7 @@ export default function NavigationBar() {
                 <HStack>
                   {user.is_admin ? (
                     <Link to="/" onClick={() => navigate("/")}>
-                      <HStack>
+                      <HStack >
                         <span
                           style={{ marginRight: "1rem", fontWeight: "600" }}
                         >
@@ -138,7 +140,7 @@ export default function NavigationBar() {
                       to="/new-article"
                       onClick={() => navigate("/new-article")}
                     >
-                      <HStack>
+                      <HStack className="navbar_newarticle_button">
                         <PencilSquare size={20} />
                         <span style={{ marginRight: "1rem" }}>Write</span>
                       </HStack>
@@ -153,17 +155,26 @@ export default function NavigationBar() {
                   cursor={"pointer"}
                   minW={0}
                 >
+                  {user.is_premium ?
+                  <img style={{
+                    maxWidth: "100%",
+                    height: "40px",
+                    borderRadius: "50px",
+                    padding: "1px",
+                  }} src={premium_user} alt="premium user logo" />
+                  : 
                   <PersonFill
-                    style={{
-                      maxWidth: "100%",
-                      height: "30px",
-                      width: "30px",
-                      color: "grey",
-                      border: "1px solid grey",
-                      borderRadius: "50px",
-                      padding: "1px",
-                    }}
+                  style={{
+                    maxWidth: "100%",
+                    height: "30px",
+                    width: "30px",
+                    color: "grey",
+                    border: "1px solid grey",
+                    borderRadius: "50px",
+                    padding: "1px",
+                  }}
                   />
+                }
                 </MenuButton>
                 <MenuList>
                   <MenuItem
