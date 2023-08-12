@@ -2,7 +2,6 @@ import "./Sidebar.css";
 import {
   TrendingInSide,
   FeaturedArticles,
-  SideAdvertisement,
   Footer,
   useContext,
   AuthContext,

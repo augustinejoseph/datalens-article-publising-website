@@ -69,7 +69,6 @@ export { default as NewArticle } from "./NewArticle/NewArticle";
 export { WhatsappShareButton } from "react-share";
 export { default as ErrorPage } from "./Others/ErrorPage";
 export { default as SortedArticle } from "./Article/SortedArticles/SortedArticle";
-export { default as SideAdvertisement } from "./Advertisements/SideAdvertisement";
 export { default as TrendingInSide } from "./Article/TrendingSidebar/TrendingInSide";
 export { default as Button } from "./SmallComponents/Button";
 export { default as AdminLogin } from "./Authentication/AdminLogin/AdminLogin";
