@@ -16,6 +16,7 @@ import {
   GET_ARTICLES_BY_USER_INTEREST,
   useToast,
   EmptyMessage,
+  AdsComponent
 } from "../../index";
 
 const MainFeed = () => {
@@ -32,7 +33,7 @@ const MainFeed = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`,
+          `${ARTICLE_SERVER_NODE_BASE_URL}/open/all-categories`
         );
         setCategories(response.data);
         setLoading(false);
@@ -53,7 +54,7 @@ const MainFeed = () => {
     shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES,
     {
       variables: shouldUserBasedQuery ? { userId: user?.user_id } : undefined,
-    },
+    }
   );
 
   useEffect(() => {
@@ -83,12 +84,14 @@ const MainFeed = () => {
     : data?.articles;
   console.log(
     "received articles by user interest",
-    data?.articlesByUserInterest,
+    data?.articlesByUserInterest
   );
 
   return (
     <div className="mainfeed_container">
-      <HomeCategoryList categories={categories} />
+      <HomeCategoryList
+      key={categories}
+      categories={categories} />
       {articles?.length === 0 ? (
         <EmptyMessage
           place="Interests"
@@ -96,21 +99,26 @@ const MainFeed = () => {
           action="Add"
         />
       ) : (
-        articles?.map((article) => (
-          <HomePostContainer
-            key={article.articleId}
-            title={article.title}
-            category={article.category[0]}
-            name={article.name}
-            createdAt={article.createdAt}
-            is_premium={article.is_premium}
-            readingTime={article.readingTime}
-            articleId={article.articleId}
-            summary={article.summary}
-            previewImage={article.previewImage}
-            user_id={article.user_id}
-            user_name={article.user_name}
-          />
+        articles?.map((article, index) => (
+          <>
+            <HomePostContainer
+              key={article.articleId}
+              title={article.title}
+              category={article.category[0]}
+              name={article.name}
+              createdAt={article.createdAt}
+              is_premium={article.is_premium}
+              readingTime={article.readingTime}
+              articleId={article.articleId}
+              summary={article.summary}
+              previewImage={article.previewImage}
+              user_id={article.user_id}
+              user_name={article.user_name}
+            />
+          {!user?.is_premium &&
+            <>{index > 0 && (index + 1) % 3 === 0 && <AdsComponent dataAdSlot='5440106581' />}</>
+          }
+          </>
         ))
       )}
       <div className="mainfeed_footer">

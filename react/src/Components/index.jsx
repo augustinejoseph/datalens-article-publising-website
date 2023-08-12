@@ -109,3 +109,4 @@ export { default as PaymentSuccess } from "./PaymentStatus/PaymentSuccess";
 export { default as PaymentFailed } from "./PaymentStatus/PaymentFailed";
 export { default as AdminPanelInterests } from "./Admin/Interests/AdminPanelInterests";
 export {default as ButtonLoading} from "./Shimmers/ButtonLoading/ButtonLoading";
+export {default as AdsComponent} from "./AdsComponent/AdsComponent";

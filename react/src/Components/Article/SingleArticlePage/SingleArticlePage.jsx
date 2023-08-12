@@ -37,6 +37,7 @@ import {
   SaveFill,
   BACKEND_BASE_URL,
   LoadingModal,
+  AdsComponent
 } from "../../index";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -283,6 +284,10 @@ const ArticlePage = () => {
           </div>
         </div>
 
+        {!user?.is_premium &&
+      <AdsComponent dataAdSlot='2099024736' />
+      }
+
         {showConfirmation && (
           <DeleteConfirmationBox
             message="Are you sure you want to delete this article?"
@@ -301,6 +306,10 @@ const ArticlePage = () => {
             value={articleBody}
           />
         </div>
+
+        {!user?.is_premium &&
+      <AdsComponent dataAdSlot='2099024736' />
+      }
         {/* {hashtags ? (
           <div className="article_hashtags_container">
             {hashtags.map((hashtag) => (

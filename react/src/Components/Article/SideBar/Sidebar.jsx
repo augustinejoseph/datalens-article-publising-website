@@ -6,6 +6,7 @@ import {
   Footer,
   useContext,
   AuthContext,
+  AdsComponent,
 } from "../../index";
 const Sidebar = () => {
   const {user} = useContext(AuthContext)
@@ -14,7 +15,7 @@ const Sidebar = () => {
       <TrendingInSide />
       <FeaturedArticles />
       {!user?.is_premium &&
-      <SideAdvertisement />
+      <AdsComponent dataAdSlot='1183482594' />
       }
       <Footer />
     </div>
