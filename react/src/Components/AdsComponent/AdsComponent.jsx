@@ -1,8 +1,5 @@
 import { useEffect } from "../index";
 const dataAdClient = import.meta.env.VITE_DATA_ADS_CLIENT
-console.log('====================================');
-console.log(dataAdClient, 'data ad client no');
-console.log('====================================');
 
 const AdsComponent = (props) => {
   const { dataAdSlot } = props;
@@ -11,9 +8,7 @@ const AdsComponent = (props) => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {
-        console.log('====================================');
-        console.log(e);
-        console.log('====================================');
+        console.error(e);
     }
   }, []);
 

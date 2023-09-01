@@ -4,7 +4,7 @@ Datalens is a Article publishing website where any users can publish an article 
 <br>
 
 
-![Website Configuration https://lucid.app/lucidchart/952d8061-f8cc-4004-8be0-3c885036244e/edit?viewport_loc=-3094%2C-1195%2C9356%2C3612%2C0_0&invitationId=inv_981072ed-c9e2-42a8-b38e-468c7f69a88d](<Readme images/Website configuration.png>)
+![](<readme_images/Website configuration.png>)
 
 #### Latest Website configuration can be seen [here](https://lucid.app/lucidchart/952d8061-f8cc-4004-8be0-3c885036244e/edit?viewport_loc=-3094%2C-1195%2C9356%2C3612%2C0_0&invitationId=inv_981072ed-c9e2-42a8-b38e-468c7f69a88d)
 
