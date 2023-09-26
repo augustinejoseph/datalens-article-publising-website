@@ -51,7 +51,7 @@ const MainFeed = () => {
     error,
     data,
   } = useQuery(
-    shouldUserBasedQuery ? GET_ARTICLES_BY_USER_INTEREST : GET_ARTICLES,
+    shouldUserBasedQuery ? GET_ARTICLES : GET_ARTICLES,
     {
       variables: shouldUserBasedQuery ? { userId: user?.user_id } : undefined,
     }
